@@ -20,7 +20,7 @@
   .logo h1 span { color:var(--orta-gri); font-weight: 400;}
   .logo p { font-size:.75rem; color:var(--orta-gri); }
   
-  /* KULLANICI ALANI GÜNCELLENDİ (DAHA BELİRGİN) */
+  /* KULLANICI ALANI */
   .kullanici-alani { display:flex; align-items:center; gap:1rem; }
   .btn-giris { background:var(--siyah); color:var(--beyaz); padding:.5rem 1rem; border:none; border-radius:4px; font-weight:700; cursor:pointer; }
   .kullanici-bilgi { 
@@ -191,7 +191,7 @@
     <div id="kayitFormu" class="gizli">
       <div class="form-grup"><label>İsim Soyisim</label><input type="text" id="regName"></div>
     </div>
-    <div class="form-grup"><label>E-posta</label><input type="text" id="authEmail"></div>
+    <div class="form-grup"><label>E-posta / Kullanıcı Adı</label><input type="text" id="authEmail"></div>
     <div class="form-grup"><label>Şifre</label><input type="password" id="authPass"></div>
     <div class="form-grup gizli" id="sifreTekrarGrup"><label>Şifre Tekrar</label><input type="password" id="authPassRepeat"></div>
     
@@ -292,7 +292,7 @@ if (!users) users = {};
 let isLoginMode = true;
 let bekleyenKayit = null;
 
-// Özel Hoca Hesabı (İsim Güncellendi)
+// Özel Hoca Hesabı
 if (!users['sbg8b2027'] || users['sbg8b2027'].name === "Hoca") {
     users['sbg8b2027'] = { name: "ŞBG 8B Sınıfı", pass: "ruhi1234", completedVideos: [], completedTests: [], testScores: {} };
     saveData();
@@ -317,7 +317,8 @@ function toggleAuthMode() {
 }
 
 function authIslem() {
-    let email = document.getElementById('authEmail').value.trim();
+    // .toLowerCase() ekleyerek büyük/küçük harf duyarsızlığı sağladık (SBG8B2027 de çalışır)
+    let email = document.getElementById('authEmail').value.trim().toLowerCase();
     let pass = document.getElementById('authPass').value;
     
     if (!email || !pass) return alert("Lütfen tüm alanları doldurun.");
@@ -398,7 +399,6 @@ function cikisYap() {
     anaMenuGoster();
 }
 
-// KULLANICI BİLGİ ALANI GÜNCELLENDİ
 function kullaniciGuncelle() {
     let alan = document.getElementById('kullaniciAlani');
     let bilgi = document.getElementById('bilgiKutu');
@@ -840,7 +840,6 @@ function draw(e) {
 }
 
 /* BAŞLANGIÇ */
-document.getElementById("yil") = new Date().getFullYear();
 kullaniciGuncelle();
 anaMenuGoster();
 </script>
