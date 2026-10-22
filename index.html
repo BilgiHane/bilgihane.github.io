@@ -20,10 +20,33 @@
   .logo h1 span { color:var(--orta-gri); font-weight: 400;}
   .logo p { font-size:.75rem; color:var(--orta-gri); }
   
+  /* KULLANICI ALANI GÜNCELLENDİ (DAHA BELİRGİN) */
   .kullanici-alani { display:flex; align-items:center; gap:1rem; }
   .btn-giris { background:var(--siyah); color:var(--beyaz); padding:.5rem 1rem; border:none; border-radius:4px; font-weight:700; cursor:pointer; }
-  .kullanici-bilgi { font-weight:700; font-size:.9rem; color:var(--mavi); display:flex; align-items:center; gap:.5rem; }
-  .btn-cikis { background:var(--acik-gri); border:none; padding:.3rem .6rem; border-radius:4px; font-size:.75rem; cursor:pointer; }
+  .kullanici-bilgi { 
+    font-weight:700; 
+    font-size:0.95rem; 
+    color:var(--beyaz); 
+    background:var(--mavi); 
+    padding:0.4rem 0.8rem; 
+    border-radius:20px; 
+    display:flex; 
+    align-items:center; 
+    gap:0.6rem; 
+    box-shadow:0 2px 5px rgba(0,0,0,0.15);
+  }
+  .btn-cikis { 
+    background:var(--beyaz); 
+    color:var(--kirmizi); 
+    border:none; 
+    padding:0.2rem 0.6rem; 
+    border-radius:12px; 
+    font-size:0.75rem; 
+    font-weight:bold; 
+    cursor:pointer; 
+    transition: 0.2s;
+  }
+  .btn-cikis:hover { background: var(--arka-plan); }
 
   .sekme-grubu { display:flex; flex-wrap:wrap; gap:.4rem; }
   .sekme-grubu button { padding:.45rem .95rem; border:1.5px solid var(--acik-gri); background:var(--beyaz); color:var(--siyah); border-radius:4px; font-weight:600; font-size:.85rem; cursor:pointer; }
@@ -168,7 +191,7 @@
     <div id="kayitFormu" class="gizli">
       <div class="form-grup"><label>İsim Soyisim</label><input type="text" id="regName"></div>
     </div>
-    <div class="form-grup"><label>E-posta</label><input type="email" id="authEmail"></div>
+    <div class="form-grup"><label>E-posta</label><input type="text" id="authEmail"></div>
     <div class="form-grup"><label>Şifre</label><input type="password" id="authPass"></div>
     <div class="form-grup gizli" id="sifreTekrarGrup"><label>Şifre Tekrar</label><input type="password" id="authPassRepeat"></div>
     
@@ -227,20 +250,16 @@
 
 <script>
 /* ============================================================
-   GÜVENLİK ÖNLEMLERİ (Sessiz Korumalar)
+   GÜVENLİK ÖNLEMLERİ
    ============================================================ */
-// Sağ Tık Engelle
 document.addEventListener('contextmenu', event => event.preventDefault());
-
-// F12 ve Kısayol Engelle
 document.onkeydown = function(e) {
-    if (e.keyCode == 123) { return false; } // F12
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } // Ctrl+Shift+J
-    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
+    if (e.keyCode == 123) { return false; } 
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } 
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } 
+    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } 
 };
 
-// Veri Şifreleme Fonksiyonları (Düz metni gizler)
 function encryptData(data) {
     try { return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); } catch(e) { return ""; }
 }
@@ -249,7 +268,7 @@ function decryptData(cipher) {
 }
 
 /* ============================================================
-   0) EMAILJS ENTEGRASYONU (Gizlenmiş / Obfuscated)
+   EMAILJS ENTEGRASYONU
    ============================================================ */
 const _pk1 = "XZZ0KwlP", _pk2 = "upMWnyX3m";
 const _sid1 = "service_qi", _sid2 = "4v6pr";
@@ -260,7 +279,7 @@ const EMAIL_SERVICE_ID = _sid1 + _sid2;
 const EMAIL_TEMPLATE_ID = _tid1 + _tid2; 
 
 /* ============================================================
-   1) VERİ TABANI (ŞİFRELİ LOCALSTORAGE)
+   VERİ TABANI
    ============================================================ */
 let rawUsers = localStorage.getItem('bk_users_enc');
 let users = rawUsers ? decryptData(rawUsers) : {};
@@ -273,9 +292,9 @@ if (!users) users = {};
 let isLoginMode = true;
 let bekleyenKayit = null;
 
-// Özel Hoca Hesabı
-if (!users['sbg8b2027']) {
-    users['sbg8b2027'] = { name: "Hoca", pass: "ruhi1234", completedVideos: [], completedTests: [], testScores: {} };
+// Özel Hoca Hesabı (İsim Güncellendi)
+if (!users['sbg8b2027'] || users['sbg8b2027'].name === "Hoca") {
+    users['sbg8b2027'] = { name: "ŞBG 8B Sınıfı", pass: "ruhi1234", completedVideos: [], completedTests: [], testScores: {} };
     saveData();
 }
 
@@ -379,11 +398,16 @@ function cikisYap() {
     anaMenuGoster();
 }
 
+// KULLANICI BİLGİ ALANI GÜNCELLENDİ
 function kullaniciGuncelle() {
     let alan = document.getElementById('kullaniciAlani');
     let bilgi = document.getElementById('bilgiKutu');
     if (currentUser) {
-        alan.innerHTML = `<div class="kullanici-bilgi">👤 ${currentUser.name} <button class="btn-cikis" onclick="cikisYap()">Çıkış</button></div>`;
+        alan.innerHTML = `
+            <div class="kullanici-bilgi">
+                <span>👤 ${currentUser.name}</span>
+                <button class="btn-cikis" onclick="cikisYap()">Çıkış</button>
+            </div>`;
         if(bilgi) bilgi.innerHTML = `<strong>Hoş geldin, ${currentUser.name}!</strong> Çözdüğün testler ve izlediğin videolar otomatik olarak kaydedilir.`;
     } else {
         alan.innerHTML = `<button class="btn-giris" onclick="girisModalAc()">Giriş Yap / Kayıt Ol</button>`;
@@ -425,41 +449,13 @@ function videoTamamlamisMi(key, videoIndex) {
 }
 
 /* ============================================================
-   2) MÜFREDAT VE SORULAR
+   MÜFREDAT VE SORULAR
    ============================================================ */
 const MUFREDAT = {
-  "5": { 
-    "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Yazım Kuralları"], 
-    "Matematik": ["Doğal Sayılar", "Kesirler", "Ondalık Gösterim", "Yüzdeler"], 
-    "Fen Bilimleri": ["Güneş, Dünya ve Ay", "Canlılar Dünyası", "Kuvvetin Ölçülmesi"], 
-    "Sosyal Bilgiler": ["Birey ve Toplum", "Kültür ve Miras", "İnsanlar, Yerler ve Çevreler"], 
-    "Din Kültürü": ["Allah İnancı", "Ramazan ve Oruç", "Adap ve Nezaket"], 
-    "İngilizce": ["Hello", "My Town", "Games and Hobbies", "My Daily Routine"] 
-  },
-  "6": { 
-    "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiiller", "Sıfatlar"], 
-    "Matematik": ["Doğal Sayılar ve Çarpanlar", "Rasyonel Sayılar", "Cebirsel İfadeler", "Açılar"], 
-    "Fen Bilimleri": ["Güneş Sistemi ve Tutulmalar", "Vücudumuzdaki Sistemler", "Kuvvet ve Hareket"], 
-    "Sosyal Bilgiler": ["Kültür ve Miras", "İnsanlar, Yerler ve Çevreler", "Bilim, Teknoloji ve Toplum"], 
-    "Din Kültürü": ["Peygamberler ve İlahi Kitaplar", "Namaz", "Ahlaki Değerler"], 
-    "İngilizce": ["Downtown", "Weather and Emotions", "Regular Verbs", "Yummy Breakfast"] 
-  },
-  "7": { 
-    "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Fiiller", "Zarflar", "Paragraf"], 
-    "Matematik": ["Tam Sayılar", "Rasyonel Sayılar", "Cebirsel İfadeler", "Oran ve Orantı"], 
-    "Fen Bilimleri": ["Kuvvet ve Enerji", "Işığın Kırılması", "İnsan ve Çevre", "Saf Madde ve Karışımlar"], 
-    "Sosyal Bilgiler": ["İletişim ve İnsan İlişkileri", "Üretim, Dağıtım ve Tüketim", "Küresel Bağlantılar"], 
-    "Din Kültürü": ["Melek ve Ahiret İnancı", "Hac ve Kurban", "Ahlaki Davranışlar"], 
-    "İngilizce": ["Appearance and Personality", "Sports", "Biographies", "Environment"] 
-  },
-  "8": { 
-    "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiilimsiler", "Cümlenin Ögeleri", "Yazım Kuralları"], 
-    "Matematik": ["Çarpanlar ve Katlar", "Üslü İfadeler", "Kareköklü İfadeler", "Cebirsel İfadeler", "Doğrusal Denklemler", "Eşitsizlikler", "Üçgenler"], 
-    "Fen Bilimleri": ["Mevsimler ve İklim", "DNA ve Genetik Kod", "Basınç", "Madde ve Endüstri", "Basit Makineler", "Enerji Dönüşümleri"], 
-    "T.C. İnkılap Tarihi": ["Bir Kahraman Doğuyor", "Millî Uyanış", "Millî Mücadele", "Atatürkçülük ve İnkılaplar"], 
-    "Din Kültürü": ["Kader İnancı", "Zekât ve Sadaka", "Din ve Hayat", "Hz. Muhammed'in Örnekliği"], 
-    "İngilizce": ["Friendship", "Teen Life", "In the Kitchen", "On the Phone", "The Internet", "Adventures", "Tourism"] 
-  }
+  "5": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Yazım Kuralları"], "Matematik": ["Doğal Sayılar", "Kesirler", "Ondalık Gösterim", "Yüzdeler"], "Fen Bilimleri": ["Güneş, Dünya ve Ay", "Canlılar Dünyası", "Kuvvetin Ölçülmesi"], "Sosyal Bilgiler": ["Birey ve Toplum", "Kültür ve Miras", "İnsanlar, Yerler ve Çevreler"], "Din Kültürü": ["Allah İnancı", "Ramazan ve Oruç", "Adap ve Nezaket"], "İngilizce": ["Hello", "My Town", "Games and Hobbies", "My Daily Routine"] },
+  "6": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiiller", "Sıfatlar"], "Matematik": ["Doğal Sayılar ve Çarpanlar", "Rasyonel Sayılar", "Cebirsel İfadeler", "Açılar"], "Fen Bilimleri": ["Güneş Sistemi ve Tutulmalar", "Vücudumuzdaki Sistemler", "Kuvvet ve Hareket"], "Sosyal Bilgiler": ["Kültür ve Miras", "İnsanlar, Yerler ve Çevreler", "Bilim, Teknoloji ve Toplum"], "Din Kültürü": ["Peygamberler ve İlahi Kitaplar", "Namaz", "Ahlaki Değerler"], "İngilizce": ["Downtown", "Weather and Emotions", "Regular Verbs", "Yummy Breakfast"] },
+  "7": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Fiiller", "Zarflar", "Paragraf"], "Matematik": ["Tam Sayılar", "Rasyonel Sayılar", "Cebirsel İfadeler", "Oran ve Orantı"], "Fen Bilimleri": ["Kuvvet ve Enerji", "Işığın Kırılması", "İnsan ve Çevre", "Saf Madde ve Karışımlar"], "Sosyal Bilgiler": ["İletişim ve İnsan İlişkileri", "Üretim, Dağıtım ve Tüketim", "Küresel Bağlantılar"], "Din Kültürü": ["Melek ve Ahiret İnancı", "Hac ve Kurban", "Ahlaki Davranışlar"], "İngilizce": ["Appearance and Personality", "Sports", "Biographies", "Environment"] },
+  "8": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiilimsiler", "Cümlenin Ögeleri", "Yazım Kuralları"], "Matematik": ["Çarpanlar ve Katlar", "Üslü İfadeler", "Kareköklü İfadeler", "Cebirsel İfadeler", "Doğrusal Denklemler", "Eşitsizlikler", "Üçgenler"], "Fen Bilimleri": ["Mevsimler ve İklim", "DNA ve Genetik Kod", "Basınç", "Madde ve Endüstri", "Basit Makineler", "Enerji Dönüşümleri"], "T.C. İnkılap Tarihi": ["Bir Kahraman Doğuyor", "Millî Uyanış", "Millî Mücadele", "Atatürkçülük ve İnkılaplar"], "Din Kültürü": ["Kader İnancı", "Zekât ve Sadaka", "Din ve Hayat", "Hz. Muhammed'in Örnekliği"], "İngilizce": ["Friendship", "Teen Life", "In the Kitchen", "On the Phone", "The Internet", "Adventures", "Tourism"] }
 };
 
 const soruHavuzu = {
@@ -523,7 +519,7 @@ function videoUret(konu, sinif) {
 }
 
 /* ============================================================
-   3) SİTE MANTIĞI
+   SİTE MANTIĞI
    ============================================================ */
 let seciliSinif = "8";
 let seciliDers = "Matematik";
@@ -805,7 +801,7 @@ function baslatTimer() {
 function durdurTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
 
 /* ============================================================
-   4) KALEM VE ÇİZİM
+   KALEM VE ÇİZİM
    ============================================================ */
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
