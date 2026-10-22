@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>BilgiKüre | Ortaokul & LGS 2027 Hazırlık</title>
+<!-- EMAILJS KÜTÜPHANESİ -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
   :root {
@@ -63,12 +65,6 @@
   .test-kart .t-meta { font-size:.72rem; color:var(--orta-gri); }
   .test-kart .t-call { font-size:.75rem; color:var(--mavi); font-weight:bold; margin-top:5px; }
   .test-kart .tik-ikon { font-size: 1rem; top: 5px; right: 5px; }
-
-  /* KİTAP ÖNERİLERİ */
-  .kitap-blok { background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:6px; padding:1rem; margin-top:1rem; }
-  .zorluk-baslik { font-size:.85rem; font-weight:800; margin-bottom:.4rem; border-bottom:2px solid; display:inline-block; }
-  .kitap-listesi { list-style:none; display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:1rem; }
-  .kitap-listesi li { background:var(--arka-plan); padding:.3rem .7rem; border-radius:4px; font-size:.8rem; border:1px solid var(--acik-gri); }
 
   /* MODAL (GİRİŞ & SINAV) */
   .modal-arka { position:fixed; inset:0; background:rgba(15,23,42,0.85); display:none; justify-content:center; align-items:center; z-index:150; backdrop-filter: blur(4px); overflow-y:auto; padding:1rem; }
@@ -198,7 +194,7 @@
   <div class="modal-kutu">
     <button class="modal-kapat" onclick="document.getElementById('dogrulamaModal').classList.remove('acik')">&times;</button>
     <h2 style="margin-bottom:1rem; text-align:center;">E-posta Doğrulama</h2>
-    <p style="font-size:0.9rem; text-align:center; margin-bottom:1.5rem; color:var(--orta-gri);">E-posta adresinize 6 haneli bir doğrulama kodu gönderdik. Lütfen kodu aşağıya girin.</p>
+    <p style="font-size:0.9rem; text-align:center; margin-bottom:1.5rem; color:var(--orta-gri);">E-posta adresinize 6 haneli bir doğrulama kodu gönderdik (Gereksiz/Spam klasörünü kontrol etmeyi unutmayın). Lütfen kodu aşağıya girin.</p>
     <div class="form-grup"><label>Doğrulama Kodu</label><input type="text" id="dogrulamaKodu" placeholder="Örn: 123456"></div>
     <button class="btn-ana" onclick="dogrulamaTamamla()">Doğrula ve Devam Et</button>
   </div>
@@ -247,6 +243,32 @@
 
 <script>
 /* ============================================================
+   GÜVENLİK ÖNLEMLERİ (F12 ve Sağ Tık Engelleme)
+   ============================================================ */
+// Sağ tık engelle
+document.addEventListener('contextmenu', event => event.preventDefault());
+
+// F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U engelle
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) { return false; } // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } // Ctrl+Shift+J
+    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
+};
+
+/* ============================================================
+   0) EMAILJS ENTEGRASYONU (Gizlenmiş / Obfuscated)
+   ============================================================ */
+// Anahtarları düz metin yerine parçalı yazarak basit kopyalamaları zorlaştırıyoruz
+const _pk1 = "XZZ0KwlP", _pk2 = "upMWnyX3m";
+const _sid1 = "service_qi", _sid2 = "4v6pr";
+const _tid1 = "4eu", _tid2 = "kazl";
+
+emailjs.init(_pk1 + _pk2); 
+const EMAIL_SERVICE_ID = _sid1 + _sid2; 
+const EMAIL_TEMPLATE_ID = _tid1 + _tid2; 
+
+/* ============================================================
    1) VERİ TABANI (LOCALSTORAGE)
    ============================================================ */
 let users = JSON.parse(localStorage.getItem('bk_users')) || {};
@@ -290,6 +312,7 @@ function authIslem() {
             saveData();
             kullaniciGuncelle();
             document.getElementById('authModal').classList.remove('acik');
+            dersGorunumAc();
         } else {
             alert("Hatalı e-posta veya şifre!");
         }
@@ -301,25 +324,48 @@ function authIslem() {
         if (pass !== passRepeat) return alert("Şifreler uyuşmuyor!");
         if (pass.length < 6) return alert("Şifreniz en az 6 karakter olmalıdır.");
         
-        let basitSifreler = ["123456", "654321", "111111", "000000", "aaaaaa"];
+        let basitSifreler = ["123456", "654321", "111111", "000000", "aaaaaa", "12345678"];
         if (basitSifreler.includes(pass.toLowerCase())) {
             return alert("Güvenliğiniz için çok basit bir şifre seçtiniz. Lütfen daha karmaşık bir şifre kullanın.");
         }
         
         if (users[email]) return alert("Bu e-posta zaten kayıtlı.");
+
+        // --- GERÇEK E-POSTA GÖNDERİMİ ---
+        let kod = Math.floor(100000 + Math.random() * 900000).toString(); 
         
-        // Doğrulama Simülasyonu
-        bekleyenKayit = { email, name, pass };
-        document.getElementById('dogrulamaKodu').value = "";
-        document.getElementById('dogrulamaModal').classList.add('acik');
+        let templateParams = {
+            to_email: email, 
+            verification_code: kod
+        };
+
+        let btn = document.getElementById('authBtn');
+        btn.textContent = "Gönderiliyor...";
+        btn.disabled = true;
+
+        emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
+            .then(function() {
+                bekleyenKayit = { email, name, pass, kod }; 
+                document.getElementById('dogrulamaKodu').value = "";
+                document.getElementById('dogrulamaModal').classList.add('acik');
+                btn.textContent = "Kayıt Ol";
+                btn.disabled = false;
+            }, function(error) {
+                // Hata konsola yazılmıyor, sadece kullanıcıya bilgi veriliyor
+                alert("Kod gönderilirken bir hata oluştu. Lütfen internetinizi kontrol edin veya daha sonra tekrar deneyin.");
+                btn.textContent = "Kayıt Ol";
+                btn.disabled = false;
+            });
     }
 }
 
 function dogrulamaTamamla() {
-    let kod = document.getElementById('dogrulamaKodu').value;
-    if (kod.length !== 6) return alert("Lütfen 6 haneli kodu girin.");
+    let girilenKod = document.getElementById('dogrulamaKodu').value;
     
-    // Simüle edilmiş kod onayı (Her kodu kabul ediyor)
+    if (girilenKod !== bekleyenKayit.kod) {
+        return alert("Girdiğiniz kod hatalı! Lütfen e-postanıza gelen kodu kontrol edin.");
+    }
+    
     users[bekleyenKayit.email] = { name: bekleyenKayit.name, pass: bekleyenKayit.pass, completedVideos: [], completedTests: [], testScores: {} };
     currentUser = { email: bekleyenKayit.email, name: bekleyenKayit.name };
     saveData();
@@ -348,7 +394,9 @@ function kullaniciGuncelle() {
         alan.innerHTML = `<button class="btn-giris" onclick="girisModalAc()">Giriş Yap / Kayıt Ol</button>`;
         if(bilgi) bilgi.innerHTML = `<strong>Hoş geldin!</strong> Test çözmek ve ilerlemeni kaydetmek için lütfen sağ üstten giriş yap.`;
     }
-    konuRender();
+    if(document.getElementById('anaMenu').classList.contains('gizli')) {
+        konuRender(); 
+    }
 }
 
 function tamamlaTest(key, testIndex, score) {
@@ -419,7 +467,6 @@ const MUFREDAT = {
   }
 };
 
-// Genişletilmiş Soru Havuzu
 const soruHavuzu = {
   "Türkçe": [
     {s:"Aşağıdaki cümlelerden hangisinde mecazlı bir söyleyiş vardır?", sec:["Kütüphaneden yeni bir kitap aldım.","Bu insan adeta bir kitap gibi, çok şey biliyor.","Kitabı masanın üzerine bıraktı.","Yazdığı kitap çok beğenildi."], d:"B", ac:"Mecaz anlam."},
@@ -464,7 +511,7 @@ function testleriUret(ders) {
     let testler = [];
     for (let i = 1; i <= 5; i++) {
         let secilenSorular = [];
-        for (let j = 0; j < 20; j++) { // Artık testler 20 soru
+        for (let j = 0; j < 20; j++) { 
             secilenSorular.push({...havuz[Math.floor(Math.random() * havuz.length)]});
         }
         testler.push({ ad: "Test " + i, zorluk: i <= 2 ? "Kolay" : "Orta", sorular: secilenSorular });
@@ -486,11 +533,9 @@ function videoUret(konu, sinif) {
 let seciliSinif = "8";
 let seciliDers = "Matematik";
 let aktifTestObj = null;
-let secilenSure = 40;
 let timerInterval = null, kalanSaniye = 0;
 let aktifTestKey = "";
 let aktifTestIndex = -1;
-let sinavTuru = "";
 
 function anaMenuGoster() {
     document.getElementById('anaMenu').classList.remove('gizli');
@@ -598,7 +643,6 @@ function testTikla(key, tIndex, konuAdi) {
     
     aktifTestKey = key;
     aktifTestIndex = tIndex;
-    sinavTuru = "test";
     
     if (testiTamamlamisMi(key, tIndex)) {
         let score = users[currentUser.email].testScores[`${key}_${tIndex}`];
@@ -624,7 +668,7 @@ function denemeTikla() {
         girisModalAc();
         return;
     }
-    sinavTuru = "deneme";
+    
     let title = seciliSinif === "8" ? "8. Sınıf LGS Genel Deneme Sınavı" : seciliSinif + ". Sınıf Genel Deneme Sınavı";
     
     let lgsSorular = {};
