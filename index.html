@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>BilgiKüre | Ortaokul & LGS 2027 Hazırlık</title>
-<!-- EMAILJS KÜTÜPHANESİ -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -15,7 +14,6 @@
   body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--arka-plan); color:var(--siyah); line-height:1.55; overflow-x: hidden; }
   a { color:var(--koyu-gri); text-decoration:none; font-weight: 600; } a:hover { text-decoration:underline; }
 
-  /* ÜST BAR & HEADER */
   .ust-bar { background:var(--siyah); color:var(--beyaz); padding:.55rem 1.2rem; font-size:.78rem; display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid var(--orta-gri); }
   header { background:var(--beyaz); border-bottom:1px solid var(--acik-gri); padding:1rem 1.2rem; display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; }
   .logo h1 { font-size:1.35rem; color:var(--siyah); font-weight:800; cursor:pointer;}
@@ -38,7 +36,6 @@
   .ders-sekme button { padding:.45rem .85rem; border:1.5px solid var(--acik-gri); background:var(--beyaz); color:var(--koyu-gri); border-radius:4px; font-weight:600; font-size:.82rem; cursor:pointer; }
   .ders-sekme button.aktif { background:var(--koyu-gri); color:var(--beyaz); border-color:var(--koyu-gri); }
 
-  /* KONU KARTLARI */
   .konu-listesi { display:flex; flex-direction:column; gap:.8rem; }
   .konu-kart { background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:6px; overflow:hidden; }
   .konu-baslik { display:flex; justify-content:space-between; align-items:center; padding:.75rem 1rem; background:#f8fafc; border-bottom:1px solid var(--acik-gri); cursor:pointer; user-select:none; }
@@ -46,7 +43,6 @@
   .konu-kart.acik .konu-baslik .ok { transform:rotate(90deg); }
   .konu-icerik { display:none; } .konu-kart.acik .konu-icerik { display:block; }
 
-  /* VİDEO & TAMAMLANDI */
   .video-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:.7rem; padding:.8rem; }
   .video-kart { border:1px solid var(--acik-gri); border-radius:5px; padding:.7rem; background:#f8fafc; position:relative; }
   .video-kart .hoca { font-size:.68rem; font-weight:800; color:var(--orta-gri); }
@@ -54,7 +50,6 @@
   .video-kart .izle { margin-top:.5rem; font-size:.72rem; font-weight:700; color:var(--beyaz); background:var(--siyah); padding:.28rem .7rem; border-radius:3px; display:inline-block; }
   .tik-ikon { color: var(--yesil); font-weight: 900; font-size: 1.2rem; position: absolute; top: 10px; right: 10px; }
 
-  /* TEST KATEGORİSİ & TAMAMLANDI */
   .test-kategori { border-top:1px solid var(--acik-gri); }
   .kategori-baslik { background:var(--arka-plan); padding:.6rem 1rem; font-size:.85rem; font-weight:700; cursor:pointer; display:flex; justify-content:space-between; }
   .kategori-icerik { padding:.8rem; }
@@ -66,7 +61,6 @@
   .test-kart .t-call { font-size:.75rem; color:var(--mavi); font-weight:bold; margin-top:5px; }
   .test-kart .tik-ikon { font-size: 1rem; top: 5px; right: 5px; }
 
-  /* MODAL (GİRİŞ & SINAV) */
   .modal-arka { position:fixed; inset:0; background:rgba(15,23,42,0.85); display:none; justify-content:center; align-items:center; z-index:150; backdrop-filter: blur(4px); overflow-y:auto; padding:1rem; }
   .modal-arka.acik { display:flex; }
   .modal-kutu { background:var(--beyaz); padding:2rem; border-radius:12px; max-width:450px; width:100%; position:relative; margin:auto; }
@@ -77,7 +71,6 @@
   .form-grup input { width:100%; padding:.6rem; border:1px solid var(--acik-gri); border-radius:4px; font-size:.9rem; }
   .btn-ana { background:var(--siyah); color:var(--beyaz); padding:.65rem 1.5rem; border:none; border-radius:4px; font-weight:700; cursor:pointer; width:100%; margin-top:.5rem; }
 
-  /* SINAV GÖRÜNÜMÜ (Tam Ekran) */
   #testModal .modal-kutu { max-width:100%; height:100vh; border-radius:0; overflow-y:auto; padding:2rem; touch-action: pan-y; }
   .sorular-wrap { max-width:900px; margin:0 auto; position:relative; z-index:101; padding-bottom:100px; }
   .soru-blok { border:1px solid var(--acik-gri); border-radius:5px; padding:1rem; margin-bottom:1rem; background:#fafbfc; }
@@ -85,14 +78,12 @@
   .sik:hover { background:#e2e8f0; } .sik.secili { background:#e2e8f0; border:1px solid var(--orta-gri); }
   .test-alt { display:flex; gap:.8rem; justify-content:center; position:fixed; bottom:0; left:0; width:100%; background:var(--beyaz); padding:1rem; border-top:1px solid var(--acik-gri); z-index:110; }
 
-  /* ARAÇ ÇUBUĞU (KALEM) */
   .toolbar { position:fixed; right:15px; top:50%; transform:translateY(-50%); background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; z-index:115; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
   .tool-btn { width:42px; height:42px; border-radius:8px; background:var(--arka-plan); border:1px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size: 1.2rem; }
   .tool-btn.aktif { background:var(--siyah); color:var(--beyaz); }
   #drawCanvas { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:105; pointer-events:none; touch-action: pan-y; }
   #drawCanvas.aktif { pointer-events:auto; cursor:crosshair; touch-action: none; }
 
-  /* ANA MENÜ (LANDING) */
   #anaMenu { display: block; }
   .landing-hero { text-align:center; padding: 4rem 1rem; background: var(--beyaz); border-radius: 8px; border: 1px solid var(--acik-gri); margin-bottom: 2rem; }
   .landing-hero h2 { font-size: 2rem; margin-bottom: 1rem; }
@@ -128,7 +119,6 @@
 </header>
 
 <main class="konteyner">
-  <!-- ANA MENÜ -->
   <section id="anaMenu">
     <div class="landing-hero">
       <h2>BilgiKüre'ye Hoş Geldiniz</h2>
@@ -155,7 +145,6 @@
     </div>
   </section>
 
-  <!-- DERS GÖRÜNÜMÜ -->
   <section id="dersGorunum" class="gizli">
     <div class="bilgi" id="bilgiKutu">
       <strong>Hoş geldin!</strong> Test çözmek ve ilerlemeni kaydetmek için lütfen sağ üstten giriş yap.
@@ -171,7 +160,6 @@
   </section>
 </main>
 
-<!-- GİRİŞ MODAL -->
 <div class="modal-arka" id="authModal">
   <div class="modal-kutu">
     <button class="modal-kapat" onclick="document.getElementById('authModal').classList.remove('acik')">&times;</button>
@@ -189,7 +177,6 @@
   </div>
 </div>
 
-<!-- E-POSTA DOĞRULAMA MODAL -->
 <div class="modal-arka" id="dogrulamaModal">
   <div class="modal-kutu">
     <button class="modal-kapat" onclick="document.getElementById('dogrulamaModal').classList.remove('acik')">&times;</button>
@@ -200,7 +187,6 @@
   </div>
 </div>
 
-<!-- SINAV BAŞLANGIÇ MODAL -->
 <div class="modal-arka" id="startOverlay">
   <div class="modal-kutu" style="max-width:400px;">
     <button class="modal-kapat" onclick="document.getElementById('startOverlay').classList.remove('acik')">&times;</button>
@@ -221,11 +207,9 @@
   </div>
 </div>
 
-<!-- TEST MODAL (Tam Ekran) -->
 <div class="modal-arka" id="testModal" style="background:var(--beyaz); align-items:flex-start; padding:0;">
   <canvas id="drawCanvas"></canvas>
   
-  <!-- KALEM ARAÇLARI -->
   <div class="toolbar">
     <button class="tool-btn aktif" id="toolHareket" onclick="setArac('hareket')" title="Kaydır">✋</button>
     <button class="tool-btn" id="toolKalem" onclick="setArac('kalem')" title="Kalem">✏️</button>
@@ -243,12 +227,12 @@
 
 <script>
 /* ============================================================
-   GÜVENLİK ÖNLEMLERİ (F12 ve Sağ Tık Engelleme)
+   GÜVENLİK ÖNLEMLERİ (Sessiz Korumalar)
    ============================================================ */
-// Sağ tık engelle
+// Sağ Tık Engelle
 document.addEventListener('contextmenu', event => event.preventDefault());
 
-// F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U engelle
+// F12 ve Kısayol Engelle
 document.onkeydown = function(e) {
     if (e.keyCode == 123) { return false; } // F12
     if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } // Ctrl+Shift+I
@@ -256,10 +240,17 @@ document.onkeydown = function(e) {
     if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } // Ctrl+U
 };
 
+// Veri Şifreleme Fonksiyonları (Düz metni gizler)
+function encryptData(data) {
+    try { return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); } catch(e) { return ""; }
+}
+function decryptData(cipher) {
+    try { return JSON.parse(decodeURIComponent(escape(atob(cipher)))); } catch(e) { return null; }
+}
+
 /* ============================================================
    0) EMAILJS ENTEGRASYONU (Gizlenmiş / Obfuscated)
    ============================================================ */
-// Anahtarları düz metin yerine parçalı yazarak basit kopyalamaları zorlaştırıyoruz
 const _pk1 = "XZZ0KwlP", _pk2 = "upMWnyX3m";
 const _sid1 = "service_qi", _sid2 = "4v6pr";
 const _tid1 = "4eu", _tid2 = "kazl";
@@ -269,10 +260,16 @@ const EMAIL_SERVICE_ID = _sid1 + _sid2;
 const EMAIL_TEMPLATE_ID = _tid1 + _tid2; 
 
 /* ============================================================
-   1) VERİ TABANI (LOCALSTORAGE)
+   1) VERİ TABANI (ŞİFRELİ LOCALSTORAGE)
    ============================================================ */
-let users = JSON.parse(localStorage.getItem('bk_users')) || {};
-let currentUser = JSON.parse(localStorage.getItem('bk_currentUser')) || null;
+let rawUsers = localStorage.getItem('bk_users_enc');
+let users = rawUsers ? decryptData(rawUsers) : {};
+
+let rawUser = localStorage.getItem('bk_currentUser_enc');
+let currentUser = rawUser ? decryptData(rawUser) : null;
+
+if (!users) users = {}; 
+
 let isLoginMode = true;
 let bekleyenKayit = null;
 
@@ -283,8 +280,8 @@ if (!users['sbg8b2027']) {
 }
 
 function saveData() {
-    localStorage.setItem('bk_users', JSON.stringify(users));
-    localStorage.setItem('bk_currentUser', JSON.stringify(currentUser));
+    localStorage.setItem('bk_users_enc', encryptData(users));
+    localStorage.setItem('bk_currentUser_enc', encryptData(currentUser));
 }
 
 function girisModalAc() {
@@ -331,7 +328,6 @@ function authIslem() {
         
         if (users[email]) return alert("Bu e-posta zaten kayıtlı.");
 
-        // --- GERÇEK E-POSTA GÖNDERİMİ ---
         let kod = Math.floor(100000 + Math.random() * 900000).toString(); 
         
         let templateParams = {
@@ -351,8 +347,7 @@ function authIslem() {
                 btn.textContent = "Kayıt Ol";
                 btn.disabled = false;
             }, function(error) {
-                // Hata konsola yazılmıyor, sadece kullanıcıya bilgi veriliyor
-                alert("Kod gönderilirken bir hata oluştu. Lütfen internetinizi kontrol edin veya daha sonra tekrar deneyin.");
+                alert("Kod gönderilirken bir hata oluştu. Lütfen internetinizi kontrol edin.");
                 btn.textContent = "Kayıt Ol";
                 btn.disabled = false;
             });
@@ -810,7 +805,7 @@ function baslatTimer() {
 function durdurTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
 
 /* ============================================================
-   4) KALEM VE ÇİZİM (Akıllı Tahta Uyumlu)
+   4) KALEM VE ÇİZİM
    ============================================================ */
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
