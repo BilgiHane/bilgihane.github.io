@@ -89,6 +89,7 @@
   .timer-badge.uyari { background: var(--kirmizi); animation: blink 1s infinite; }
   @keyframes blink { 50% { opacity: 0.5; } }
 
+  /* Çizim ve Toolbar */
   .toolbar { position:fixed; right:15px; top:50%; transform:translateY(-50%); background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; z-index:115; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
   .tool-btn { width:42px; height:42px; border-radius:8px; background:var(--arka-plan); border:1px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size: 1.2rem; color: var(--koyu-gri); transition: 0.1s; }
   .tool-btn.aktif { background:var(--siyah); color:var(--beyaz); }
@@ -111,7 +112,7 @@
   .yesil { color: var(--yesil); } .kirmizi { color: var(--kirmizi); }
   .gizli { display: none !important; }
 
-  /* Özel Bildirim Modalı (Ortadan çıkan, oval köşeli) */
+  /* Özel Bildirim Modalı */
   #customAlertOverlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
     background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px);
@@ -313,7 +314,7 @@ function showMessage(title, text) {
 }
 window.alert = function(msg) { showMessage("Bilgi", msg); };
 
-// Ultra Güvenlik Önlemleri
+// Ultra Güvenlik
 document.addEventListener('contextmenu', event => event.preventDefault());
 document.addEventListener('copy', event => event.preventDefault());
 document.addEventListener('cut', event => event.preventDefault());
@@ -327,13 +328,11 @@ document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) { e.preventDefault(); return false; }
 });
 
-// DPI (Retina/Ekran Kalitesi) Uyumlu Çizim ve Donmayı Önleyen Yapı
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
 let isDrawing = false, aktifArac = 'hareket', cizimRengi = '#ef4444';
-let cizimKuyrugu = [];
-let animasyonID = null;
 
+// Cihaz Piksel Oranı (Retina) Uyumu
 function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
@@ -346,48 +345,53 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas); 
 setTimeout(resizeCanvas, 100);
 
+function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+    };
+}
+
 canvas.addEventListener('pointerdown', (e) => { 
     if (aktifArac === 'hareket') return; 
-    isDrawing = true; 
-    e.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    let x = e.clientX - rect.left, y = e.clientY - rect.top;
-    cizimKuyrugu.push({x, y, lineWidth: aktifArac === 'silgi' ? 20 : 3});
-    loopCizim();
-});
-canvas.addEventListener('pointerup', () => { isDrawing = false; cizimKuyrugu = []; });
-canvas.addEventListener('pointerout', () => { isDrawing = false; cizimKuyrugu = []; });
-canvas.addEventListener('pointermove', (e) => { 
-    if (!isDrawing || aktifArac === 'hareket') return; 
-    const rect = canvas.getBoundingClientRect();
-    let x = e.clientX - rect.left, y = e.clientY - rect.top;
-    cizimKuyrugu.push({x, y, lineWidth: aktifArac === 'silgi' ? 20 : 3});
+    isDrawing = true;
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
 });
 
-function loopCizim() {
-    if (cizimKuyrugu.length === 0) {
-        animasyonID = null;
-        return;
+canvas.addEventListener('pointermove', (e) => { 
+    if (!isDrawing || aktifArac === 'hareket') return; 
+    const pos = getPos(e);
+    ctx.lineWidth = aktifArac === 'silgi' ? 20 : 3;
+    if (aktifArac === 'silgi') {
+        ctx.globalCompositeOperation = 'destination-out';
+    } else {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.strokeStyle = cizimRengi;
     }
-    for (let i = 0; i < cizimKuyrugu.length; i++) {
-        const pt = cizimKuyrugu[i];
-        ctx.lineWidth = pt.lineWidth;
-        if (aktifArac === 'silgi') { ctx.globalCompositeOperation = 'destination-out'; }
-        else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = cizimRengi; }
-        if (i === 0) { ctx.beginPath(); ctx.moveTo(pt.x, pt.y); }
-        else { ctx.lineTo(pt.x, pt.y); ctx.stroke(); ctx.beginPath(); ctx.moveTo(pt.x, pt.y); }
-    }
-    cizimKuyrugu = [];
-    animasyonID = requestAnimationFrame(loopCizim);
-}
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+});
+
+canvas.addEventListener('pointerup', () => { isDrawing = false; });
+canvas.addEventListener('pointerout', () => { isDrawing = false; });
 
 function setArac(arac) {
     aktifArac = arac;
     document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('aktif'));
-    if (arac === 'hareket') { document.getElementById('toolHareket').classList.add('aktif'); canvas.classList.remove('aktif'); }
-    else { if (arac === 'kalem') document.getElementById('toolKalem').classList.add('aktif'); if (arac === 'silgi') document.getElementById('toolSilgi').classList.add('aktif'); canvas.classList.add('aktif'); }
+    if (arac === 'hareket') { 
+        document.getElementById('toolHareket').classList.add('aktif'); 
+        canvas.classList.remove('aktif'); 
+    }
+    else { 
+        if (arac === 'kalem') document.getElementById('toolKalem').classList.add('aktif'); 
+        if (arac === 'silgi') document.getElementById('toolSilgi').classList.add('aktif'); 
+        canvas.classList.add('aktif'); 
+    }
 }
-function temizleCanvas() { ctx.clearRect(0, 0, canvas.width / (window.devicePixelRatio||1), canvas.height / (window.devicePixelRatio||1)); }
+function temizleCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 function zoomYap(degisim) {
     let el = document.getElementById("testIcerik");
     let mevcut = parseFloat(el.style.transform.replace("scale(","").replace(")","")) || 1;
@@ -395,7 +399,7 @@ function zoomYap(degisim) {
     el.style.transform = `scale(${yeni})`;
 }
 
-// Veri Fonksiyonları
+// Veri İşlemleri
 function encryptData(data) { try { return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); } catch(e) { return ""; } }
 function decryptData(cipher) { try { return JSON.parse(decodeURIComponent(escape(atob(cipher)))); } catch(e) { return null; } }
 
@@ -549,61 +553,84 @@ const KITAPLAR = {
   }
 };
 
+// Genişletilmiş Soru Havuzları (Tekrarsızlık İçin)
 const soruBankasi = {
   "5": {
     "Matematik": [
       {s:"Bir sınıfta 24 kız ve 18 erkek öğrenci vardır. Öğrenciler eşit sayıda gruplara ayrılacaktır. En az kaç grup oluşur?", sec:["6","8","12","18"], d:"A", kaynak:"MEB Örnek Soru"},
       {s:"3/4 + 1/2 işleminin sonucu kaçtır?", sec:["1","5/4","3/2","7/4"], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"0,25 ondalık kesrinin okunuşu nedir?", sec:["Sıfır virgül yirmi beş","Yirmi beş","İki virgül beş","Sıfır virgül iki beş"], d:"A", kaynak:"MEB Örnek Soru"},
-      {s:"Bir ürünün etiket fiyatı 200 TL'dir. %20 indirim yapılırsa yeni fiyatı kaç TL olur?", sec:["140","150","160","180"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"125 sayısının 4 katı kaçtır?", sec:["400","450","500","550"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"Aşağıdakilerden hangisi bir düzgün çokgendir?", sec:["Dikdörtgen","Eşkenar üçgen","Paralelkenar","Yamuk"], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"Bir bütünün 2/5'i 40 ise tamamı kaçtır?", sec:["60","80","100","120"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"2,5 + 1,75 işleminin sonucu nedir?", sec:["3,25","4,25","4,5","3,75"], d:"B", kaynak:"MEB Örnek Soru"}
+      {s:"0,25 ondalık kesrinin okunuşu nedir?", sec:["Sıfır virgül yirmi beş","Yirmi beş","İki virgül beş","Sıfır virgül iki beş"], d:"A"},
+      {s:"Bir ürünün etiket fiyatı 200 TL'dir. %20 indirim yapılırsa yeni fiyatı kaç TL olur?", sec:["140","150","160","180"], d:"C"},
+      {s:"125 sayısının 4 katı kaçtır?", sec:["400","450","500","550"], d:"C"},
+      {s:"Aşağıdakilerden hangisi bir düzgün çokgendir?", sec:["Dikdörtgen","Eşkenar üçgen","Paralelkenar","Yamuk"], d:"B"},
+      {s:"Bir bütünün 2/5'i 40 ise tamamı kaçtır?", sec:["60","80","100","120"], d:"C"},
+      {s:"2,5 + 1,75 işleminin sonucu nedir?", sec:["3,25","4,25","4,5","3,75"], d:"B"},
+      {s:"Saat 15:45'te akrep ile yelkovan arasındaki açı kaç derecedir?", sec:["90","112.5","120","135"], d:"B"},
+      {s:"Bir kenarı 6 cm olan karenin alanı kaç cm²'dir?", sec:["12","24","36","48"], d:"C"},
+      {s:"450 sayısının 3/5'i kaçtır?", sec:["180","270","300","350"], d:"B"},
+      {s:"0,4 ondalık gösteriminin kesir karşılığı nedir?", sec:["1/4","2/5","3/4","4/5"], d:"B"}
     ],
     "Türkçe": [
-      {s:"'Gül' kelimesi hangi cümlede mecaz anlamıyla kullanılmıştır?", sec:["Bahçeden bir gül kopardım.","Yüzünde bir gül açtı.","Gül kokusu her yeri sardı.","Gülü çok severim."], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"Aşağıdaki cümlelerden hangisinde neden-sonuç ilişkisi vardır?", sec:["Yağmur yağdı, yerler ıslandı.","Sınava çalıştığı için kazandı.","Kitabı okudu ama anlamadı.","Geldi ve oturdu."], d:"B", kaynak:"MEB Örnek Soru"}
+      {s:"'Gül' kelimesi hangi cümlede mecaz anlamıyla kullanılmıştır?", sec:["Bahçeden bir gül kopardım.","Yüzünde bir gül açtı.","Gül kokusu her yeri sardı.","Gülü çok severim."], d:"B"},
+      {s:"Aşağıdaki cümlelerden hangisinde neden-sonuç ilişkisi vardır?", sec:["Yağmur yağdı, yerler ıslandı.","Sınava çalıştığı için kazandı.","Kitabı okudu ama anlamadı.","Geldi ve oturdu."], d:"B"},
+      {s:"'Mavi' kelimesi hangi cümlede sıfat görevindedir?", sec:["Mavi çok güzel bir renktir.","Gökyüzü bugün çok mavi.","Mavi elbiseyi çok beğendim.","Denizin rengi mavidir."], d:"C"},
+      {s:"Aşağıdaki sözcüklerden hangisi eş seslidir?", sec:["Kalem","Kitap","Yüz","Defter"], d:"C"},
+      {s:"'Öğrenciler bahçede oynuyor.' cümlesinde eylemi yapan kimdir?", sec:["Bahçe","Oynuyor","Öğrenciler","Öğrenciler bahçede"], d:"C"}
     ],
     "Fen Bilimleri": [
-      {s:"Dünya'nın uydusu nedir?", sec:["Güneş","Mars","Ay","Venüs"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"Aşağıdakilerden hangisi canlıların ortak özelliği değildir?", sec:["Solunum","Boşaltım","Hareket","Fotosentez"], d:"D", kaynak:"MEB Örnek Soru"}
+      {s:"Dünya'nın uydusu nedir?", sec:["Güneş","Mars","Ay","Venüs"], d:"C"},
+      {s:"Aşağıdakilerden hangisi canlıların ortak özelliği değildir?", sec:["Solunum","Boşaltım","Hareket","Fotosentez"], d:"D"},
+      {s:"Kuvvetin birimi nedir?", sec:["Newton","Joule","Pascal","Watt"], d:"A"},
+      {s:"Güneş tutulması hangi sıralamada olur?", sec:["Güneş-Dünya-Ay","Güneş-Ay-Dünya","Ay-Güneş-Dünya","Dünya-Ay-Güneş"], d:"B"},
+      {s:"Aşağıdakilerden hangisi bir sıvıdır?", sec:["Taş","Su","Hava","Demir"], d:"B"}
     ]
   },
   "6": {
     "Matematik": [
-      {s:"36 sayısının kaç tane pozitif tam sayı çarpanı vardır?", sec:["6","8","9","12"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"12 ve 18 sayılarının EBOB'u kaçtır?", sec:["2","3","6","12"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"1/2 : 1/4 işleminin sonucu kaçtır?", sec:["1/8","2","1/2","4"], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"-5 + (-3) işleminin sonucu kaçtır?", sec:["-8","-2","2","8"], d:"A", kaynak:"MEB Örnek Soru"},
-      {s:"Bir üçgenin iç açılarından ikisi 50 ve 60 derece ise üçüncüsü kaçtır?", sec:["60","70","80","90"], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"2³ + 3² işleminin sonucu kaçtır?", sec:["12","15","17","18"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"(-4) x (-5) işleminin sonucu kaçtır?", sec:["-20","-9","9","20"], d:"D", kaynak:"MEB Örnek Soru"},
-      {s:"3x = 18 ise x kaçtır?", sec:["3","4","5","6"], d:"D", kaynak:"MEB Örnek Soru"}
+      {s:"36 sayısının kaç tane pozitif tam sayı çarpanı vardır?", sec:["6","8","9","12"], d:"C"},
+      {s:"12 ve 18 sayılarının EBOB'u kaçtır?", sec:["2","3","6","12"], d:"C"},
+      {s:"1/2 : 1/4 işleminin sonucu kaçtır?", sec:["1/8","2","1/2","4"], d:"B"},
+      {s:"-5 + (-3) işleminin sonucu kaçtır?", sec:["-8","-2","2","8"], d:"A"},
+      {s:"Bir üçgenin iç açılarından ikisi 50 ve 60 derece ise üçüncüsü kaçtır?", sec:["60","70","80","90"], d:"B"},
+      {s:"2³ + 3² işleminin sonucu kaçtır?", sec:["12","15","17","18"], d:"C"},
+      {s:"(-4) x (-5) işleminin sonucu kaçtır?", sec:["-20","-9","9","20"], d:"D"},
+      {s:"3x = 18 ise x kaçtır?", sec:["3","4","5","6"], d:"D"},
+      {s:"24 sayısının 1/3'ü kaçtır?", sec:["6","8","12","18"], d:"B"},
+      {s:"5/8 kesrinin ondalık gösterimi nedir?", sec:["0,625","0,58","0,85","0,5"], d:"A"}
     ],
     "Türkçe": [
-      {s:"'Kitap' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Kütüphaneden kitap aldım.","Bu konu matematik kitabında var.","Kitap okumayı severim.","Yeni bir kitap yazdı."], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"Aşağıdakilerden hangisi fiilimsidir?", sec:["Koştu","Koşarak","Koşucu","Koşu"], d:"B", kaynak:"MEB Örnek Soru"}
+      {s:"'Kitap' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Kütüphaneden kitap aldım.","Bu konu matematik kitabında var.","Kitap okumayı severim.","Yeni bir kitap yazdı."], d:"B"},
+      {s:"Aşağıdakilerden hangisi fiilimsidir?", sec:["Koştu","Koşarak","Koşucu","Koşu"], d:"B"},
+      {s:"'Güzel' kelimesi hangi cümlede zarf görevindedir?", sec:["Güzel bir ev aldı.","Güzeli herkes sever.","Güzel konuştu.","Güzel yazı yazdı."], d:"C"},
+      {s:"'Sen de bizimle gelsene.' cümlesinde hangi duygu vardır?", sec:["Pişmanlık","Özlem","İstek","Korku"], d:"C"}
     ],
     "Fen Bilimleri": [
-      {s:"Güneş sistemindeki en büyük gezegen hangisidir?", sec:["Dünya","Mars","Jüpiter","Satürn"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"Aşağıdakilerden hangisi vücudumuzdaki sistemlerden biri değildir?", sec:["Sindirim","Solunum","Fotosentez","Boşaltım"], d:"C", kaynak:"MEB Örnek Soru"}
+      {s:"Güneş sistemindeki en büyük gezegen hangisidir?", sec:["Dünya","Mars","Jüpiter","Satürn"], d:"C"},
+      {s:"Aşağıdakilerden hangisi vücudumuzdaki sistemlerden biri değildir?", sec:["Sindirim","Solunum","Fotosentez","Boşaltım"], d:"C"},
+      {s:"Basınç birimi nedir?", sec:["Newton","Joule","Pascal","Watt"], d:"C"},
+      {s:"Bir cismin ağırlığı hangi aletle ölçülür?", sec:["Eşit kollu terazi","Dinamometre","Hacim ölçer","Termometre"], d:"B"}
     ]
   },
   "7": {
     "Matematik": [
-      {s:"(-7) + (+4) işleminin sonucu kaçtır?", sec:["-11","-3","3","11"], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"2/3 + 1/6 işleminin sonucu kaçtır?", sec:["3/9","1/2","5/6","3/6"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"4x - 7 = 13 denkleminde x kaçtır?", sec:["3","4","5","6"], d:"C", kaynak:"MEB Örnek Soru"},
-      {s:"Bir sayının 3 katının 5 fazlası 20 ise bu sayı kaçtır?", sec:["3","4","5","6"], d:"C", kaynak:"MEB Örnek Soru"}
+      {s:"(-7) + (+4) işleminin sonucu kaçtır?", sec:["-11","-3","3","11"], d:"B"},
+      {s:"2/3 + 1/6 işleminin sonucu kaçtır?", sec:["3/9","1/2","5/6","3/6"], d:"C"},
+      {s:"4x - 7 = 13 denkleminde x kaçtır?", sec:["3","4","5","6"], d:"C"},
+      {s:"Bir sayının 3 katının 5 fazlası 20 ise bu sayı kaçtır?", sec:["3","4","5","6"], d:"C"},
+      {s:"3 kişinin boy ortalaması 160 cm'dir. 4. kişi katılırsa ortalama 165 oluyor. 4. kişinin boyu kaçtır?", sec:["170","175","180","185"], d:"C"},
+      {s:"2⁴ kaçtır?", sec:["8","16","32","64"], d:"B"},
+      {s:"5'in 3 katının 2 eksiği kaçtır?", sec:["13","15","17","19"], d:"A"},
+      {s:"(-3)² işleminin sonucu kaçtır?", sec:["-9","-6","6","9"], d:"D"}
     ],
     "Türkçe": [
-      {s:"'Göz' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Gözlerin çok güzel.","İğnenin gözüne ip geçirdi.","Kitabın gözüne bak.","Ağacın gözü var."], d:"B", kaynak:"MEB Örnek Soru"},
-      {s:"'Dün akşam sinemaya gittik.' cümlesinde zarf tümleci nedir?", sec:["Dün akşam","Sinemaya","Gittik","Biz"], d:"A", kaynak:"MEB Örnek Soru"}
+      {s:"'Göz' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Gözlerin çok güzel.","İğnenin gözüne ip geçirdi.","Kitabın gözüne bak.","Ağacın gözü var."], d:"B"},
+      {s:"'Dün akşam sinemaya gittik.' cümlesinde zarf tümleci nedir?", sec:["Dün akşam","Sinemaya","Gittik","Biz"], d:"A"},
+      {s:"Aşağıdaki cümlelerin hangisinde neden-sonuç ilişkisi vardır?", sec:["Sınava çalıştığı için başarılı oldu.","Sınava çalıştı ama başarılı olamadı.","Sınava çalışırsa başarılı olur.","Sınava çalışmak istiyor."], d:"A"}
     ],
     "Fen Bilimleri": [
-      {s:"Işık hangi ortamda en hızlı yayılır?", sec:["Su","Hava","Cam","Boşluk"], d:"D", kaynak:"MEB Örnek Soru"},
-      {s:"Aşağıdakilerden hangisi yenilenebilir enerji kaynağıdır?", sec:["Kömür","Petrol","Güneş","Doğal gaz"], d:"C", kaynak:"MEB Örnek Soru"}
+      {s:"Işık hangi ortamda en hızlı yayılır?", sec:["Su","Hava","Cam","Boşluk"], d:"D"},
+      {s:"Aşağıdakilerden hangisi yenilenebilir enerji kaynağıdır?", sec:["Kömür","Petrol","Güneş","Doğal gaz"], d:"C"},
+      {s:"Saf maddelerin erime ve kaynama noktaları için hangisi doğrudur?", sec:["Değişkendir","Sabittir","Sadece erime sabittir","Sadece kaynama sabittir"], d:"B"}
     ]
   },
   "8": {
@@ -612,27 +639,42 @@ const soruBankasi = {
       {s:"2⁵·2³ işleminin sonucu kaçtır?", sec:["2⁸","2¹⁵","4⁸","4¹⁵"], d:"A", kaynak:"LGS 2022 Sorusu"},
       {s:"√144 + √81 işleminin sonucu kaçtır?", sec:["15","18","21","24"], d:"C", kaynak:"LGS 2024 Sorusu"},
       {s:"Bir sayının 4 katının 7 eksiği, aynı sayının 2 katının 3 fazlasına eşittir. Bu sayı kaçtır?", sec:["3","4","5","6"], d:"C", kaynak:"LGS 2025 Sorusu"},
-      {s:"x ve y pozitif tam sayılardır. 2x + 3y = 25 ise x'in alabileceği en büyük değer kaçtır?", sec:["8","9","10","11"], d:"D", kaynak:"MEB Örnek Soru"}
+      {s:"x ve y pozitif tam sayılardır. 2x + 3y = 25 ise x'in alabileceği en büyük değer kaçtır?", sec:["8","9","10","11"], d:"D"},
+      {s:"3x - 4y + 12 = 0 denkleminin x eksenini kestiği nokta hangisidir?", sec:["(4,0)","(-4,0)","(0,3)","(0,-3)"], d:"B"},
+      {s:"10³ + 10² + 10¹ + 10⁰ işleminin sonucu kaçtır?", sec:["1111","1110","1100","1011"], d:"A"},
+      {s:"P(x) = 2x + 1 fonksiyonu için P(3) kaçtır?", sec:["5","6","7","8"], d:"C"},
+      {s:"Kareköklü sayılardan √75 sayısı hangisine eşittir?", sec:["3√5","5√3","15√5","25√3"], d:"B"},
+      {s:"Bir sepetteki bilyelerin 1/3'ü kırmızı, 1/4'ü mavidir. Kalanı 15 ise sepette toplam kaç bilye vardır?", sec:["36","40","45","48"], d:"A"}
     ],
     "Türkçe": [
       {s:"'Bu kitabı okumak' ifadesindeki altı çizili sözcük hangi fiilimsi türüdür?", sec:["İsim-fiil","Sıfat-fiil","Zarf-fiil","Çekimli fiil"], d:"A", kaynak:"LGS 2023 Sorusu"},
       {s:"Aşağıdaki cümlelerden hangisinde söz sanatı vardır?", sec:["Dağlar bizimle konuşuyor.","Kitabı dün okudum.","Hava çok sıcak.","Okula erken geldim."], d:"A", kaynak:"LGS 2022 Sorusu"},
-      {s:"'Gözlerindeki fırtına dinmişti.' cümlesinde hangi söz sanatı vardır?", sec:["Teşhis","Teşbih","İstiare","Kinaye"], d:"D", kaynak:"MEB Örnek Soru"}
+      {s:"'Öğretmen, öğrencilere kitap okumayı tavsiye etti.' cümlesinde kaç fiilimsi vardır?", sec:["1","2","3","4"], d:"A"},
+      {s:"'Gözlerindeki fırtına dinmişti.' cümlesinde hangi söz sanatı vardır?", sec:["Teşhis","Teşbih","İstiare","Kinaye"], d:"D"},
+      {s:"Paragrafta anlatım biçimleri ile ilgili hangisi yanlıştır?", sec:["Açıklama öğreticidir.","Tartışma kanıtlayıcıdır.","Betimleme öyküleyicidir.","Öyküleme olay anlatır."], d:"C"},
+      {s:"Aşağıdakilerden hangisinde yazım yanlışı yapılmıştır?", sec:["Yarın sabah erkenden yola çıkacağız.","Hiçbir şey göründüğü gibi değil.","Herşey yolunda gidiyor.","Birkaç gün sonra tekrar gel."], d:"C"}
     ],
     "Fen Bilimleri": [
       {s:"DNA’nın yapısında hangisi bulunmaz?", sec:["Adenin","Timin","Guanin","Ürasil"], d:"D", kaynak:"LGS 2023 Sorusu"},
       {s:"Kalıtsal bir hastalık hangisidir?", sec:["Grip","Renk körlüğü","Kolera","Zatürre"], d:"B", kaynak:"LGS 2022 Sorusu"},
-      {s:"Sıvı basıncı aşağıdakilerden hangisine bağlı değildir?", sec:["Sıvının yoğunluğuna","Yerçekimi ivmesine","Sıvının derinliğine","Kabın şekline"], d:"D", kaynak:"LGS 2024 Sorusu"}
+      {s:"Sıvı basıncı aşağıdakilerden hangisine bağlı değildir?", sec:["Sıvının yoğunluğuna","Yerçekimi ivmesine","Sıvının derinliğine","Kabın şekline"], d:"D"},
+      {s:"Basit makinelerde kuvvetten kazanç sağlarken yoldan kayıp veren araç hangisidir?", sec:["Sabit makara","Hareketli makara","Eğik düzlem","Kaldıraç"], d:"B"},
+      {s:"Mevsimlerin oluşmasının temel nedeni nedir?", sec:["Dünya’nın kendi etrafında dönmesi","Dünya’nın Güneş etrafında dönmesi ve eksen eğikliği","Ay’ın Dünya etrafında dönmesi","Güneş’in kendi etrafında dönmesi"], d:"B"},
+      {s:"Bir cismin ağırlığı Dünya'da 60 N'dir. Bu cismin kütlesi kaç kg'dır? (g=10 m/s²)", sec:["6","60","600","0.6"], d:"A"}
     ],
     "T.C. İnkılap Tarihi": [
       {s:"Atatürk ilkelerinden hangisi 'egemenliğin millete ait olması' ilkesidir?", sec:["Cumhuriyetçilik","Milliyetçilik","Halkçılık","Laiklik"], d:"A", kaynak:"LGS 2023 Sorusu"},
-      {s:"Kurtuluş Savaşı’nda Doğu Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Yunanistan","Ermenistan","Fransa","İtalya"], d:"B", kaynak:"LGS 2022 Sorusu"}
+      {s:"Kurtuluş Savaşı’nda Doğu Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Yunanistan","Ermenistan","Fransa","İtalya"], d:"B", kaynak:"LGS 2022 Sorusu"},
+      {s:"Lozan Antlaşması hangi yıl imzalanmıştır?", sec:["1920","1921","1923","1924"], d:"C"},
+      {s:"TBMM hangi tarihte açılmıştır?", sec:["19 Mayıs 1919","23 Nisan 1920","29 Ekim 1923","30 Ağustos 1922"], d:"B"}
     ],
     "Din Kültürü": [
-      {s:"Kader ve kaza ile ilgili hangisi doğrudur?", sec:["Kader, insanın iradesini yok sayar.","Kaza, kaderin gerçekleşmesidir.","İnsanın hiçbir sorumluluğu yoktur.","Ecel değiştirilebilir."], d:"B", kaynak:"LGS 2023 Sorusu"}
+      {s:"Kader ve kaza ile ilgili hangisi doğrudur?", sec:["Kader, insanın iradesini yok sayar.","Kaza, kaderin gerçekleşmesidir.","İnsanın hiçbir sorumluluğu yoktur.","Ecel değiştirilebilir."], d:"B", kaynak:"LGS 2023 Sorusu"},
+      {s:"Zekât ile ilgili hangisi doğrudur?", sec:["Zekât herkese farzdır.","Zekât malın belirli bir kısmının verilmesidir.","Zekât sadece Ramazan’da verilir.","Zekât sadece parayla olur."], d:"B"}
     ],
     "İngilizce": [
-      {s:"'I get on well with my friends.' cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B", kaynak:"LGS 2023 Sorusu"}
+      {s:"'I get on well with my friends.' cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B", kaynak:"LGS 2023 Sorusu"},
+      {s:"'Teen life' ne demektir?", sec:["Gençlik hayatı","Çocukluk","Yaşlılık","Okul hayatı"], d:"A"}
     ]
   }
 };
@@ -645,29 +687,34 @@ const lgsSoruBankasi = {
     {s:"Bir kenarı 4√2 cm olan karenin köşegen uzunluğu kaç cm'dir?", sec:["4","6","8","10"], d:"C", kaynak:"LGS 2022 Sorusu"},
     {s:"(x-3)² özdeşliğinin açılımı aşağıdakilerden hangisidir?", sec:["x²-9","x²+6x+9","x²-6x+9","x²-3x+9"], d:"C", kaynak:"MEB Örnek Soru"},
     {s:"Grafiği (0,3) ve (2,0) noktalarından geçen doğrusal denklem nedir?", sec:["y = 2x + 3","y = -3/2x + 3","y = 3/2x + 2","y = -2/3x + 3"], d:"B", kaynak:"LGS 2026 Sorusu"},
-    {s:"Bir işçi bir işi 12 günde, diğeri 18 günde bitiriyor. İkisi birlikte aynı işi kaç günde bitirir?", sec:["6","7.2","8","9"], d:"B", kaynak:"MEB Örnek Soru"},
-    {s:"A(2, -3) noktasının x eksenine göre yansıması hangisidir?", sec:["(-2, -3)","(-2, 3)","(2, 3)","(3, -2)"], d:"C", kaynak:"LGS 2025 Sorusu"}
+    {s:"Bir işçi bir işi 12 günde, diğeri 18 günde bitiriyor. İkisi birlikte aynı işi kaç günde bitirir?", sec:["6","7.2","8","9"], d:"B"},
+    {s:"A(2, -3) noktasının x eksenine göre yansıması hangisidir?", sec:["(-2, -3)","(-2, 3)","(2, 3)","(3, -2)"], d:"C"}
   ],
   "Türkçe": [
     {s:"'Başarılı olmak' sadece çok çalışmakla değil, aynı zamanda doğru stratejiler belirlemekle de ilgilidir. Bu cümlede altı çizili fiilimsinin türü nedir?", sec:["Sıfat-fiil","Zarf-fiil","İsim-fiil","Çekimli fiil"], d:"C", kaynak:"LGS 2023 Sorusu"},
     {s:"Aşağıdaki cümlelerin hangisinde 'üstü kapalı' bir eleştiri vardır?", sec:["Bu kadar çalışmayla sınavı kazanman çok zor.","Sınavın çok iyi geçtiğini duydum.","Bugün hava çok güzel.","Hafta sonu sinemaya gideceğiz."], d:"A", kaynak:"LGS 2024 Sorusu"},
-    {s:"Aşağıdakilerden hangisinde yazım yanlışı yapılmıştır?", sec:["Yarın sabah erkenden yola çıkacağız.","Hiçbir şey göründüğü gibi değil.","Herşey yolunda gidiyor.","Birkaç gün sonra tekrar gel."], d:"C", kaynak:"MEB Örnek Soru"},
-    {s:"'Çalışmadan kazanmak, ekmeden biçmeye benzer.' cümlesinde hangi söz sanatı vardır?", sec:["Kişileştirme","Karşıtlık (Tezat)","Abartma","Konuşturma"], d:"B", kaynak:"LGS 2022 Sorusu"}
+    {s:"Aşağıdakilerden hangisinde yazım yanlışı yapılmıştır?", sec:["Yarın sabah erkenden yola çıkacağız.","Hiçbir şey göründüğü gibi değil.","Herşey yolunda gidiyor.","Birkaç gün sonra tekrar gel."], d:"C"},
+    {s:"'Çalışmadan kazanmak, ekmeden biçmeye benzer.' cümlesinde hangi söz sanatı vardır?", sec:["Kişileştirme","Karşıtlık (Tezat)","Abartma","Konuşturma"], d:"B", kaynak:"LGS 2022 Sorusu"},
+    {s:"Aşağıdaki cümlelerden hangisi kanıtlanabilir bir yargıdır?", sec:["Türkiye'nin en güzel şehri İzmir'dir.","Bu film çok sıkıcıydı.","Su 100 derecede kaynar.","Müzik dinlemek rahatlatıcıdır."], d:"C"}
   ],
   "Fen Bilimleri": [
-    {s:"Bir cismin ağırlığı Dünya'da 60 N'dir. Bu cismin kütlesi kaç kg'dır? (g=10 m/s²)", sec:["6","60","600","0.6"], d:"A", kaynak:"LGS 2023 Sorusu"},
-    {s:"Özdeş dirençlerden oluşan bir devrede dirençler seri bağlanırsa eşdeğer direnç nasıl değişir?", sec:["Azalır","Artar","Değişmez","Sıfır olur"], d:"B", kaynak:"MEB Örnek Soru"},
-    {s:"Bitkiler fotosentez yaparken hangi gazı kullanır?", sec:["Oksijen","Karbondioksit","Azot","Hidrojen"], d:"B", kaynak:"LGS 2024 Sorusu"}
+    {s:"Özdeş dirençlerden oluşan bir devrede dirençler seri bağlanırsa eşdeğer direnç nasıl değişir?", sec:["Azalır","Artar","Değişmez","Sıfır olur"], d:"B"},
+    {s:"Bitkiler fotosentez yaparken hangi gazı kullanır?", sec:["Oksijen","Karbondioksit","Azot","Hidrojen"], d:"B", kaynak:"LGS 2024 Sorusu"},
+    {s:"Kimyasal bir değişime örnek hangisidir?", sec:["Buzun erimesi","Kağıdın yırtılması","Demirin paslanması","Suyun buharlaşması"], d:"C"},
+    {s:"Periyodik tabloda 1A grubunda yer alan elementlerin genel özelliği nedir?", sec:["Soygazlar","Halojenler","Alkali metaller","Toprak alkali metaller"], d:"C"}
   ],
   "T.C. İnkılap Tarihi": [
     {s:"Amasya Genelgesi'nde 'Milletin bağımsızlığını yine milletin azim ve kararı kurtaracaktır.' denilerek ne vurgulanmıştır?", sec:["İstanbul Hükümeti'nin gücü","Ulusal egemenlik ve halkın iradesi","Manda ve himaye","Saltanatın devamı"], d:"B", kaynak:"LGS 2022 Sorusu"},
-    {s:"Tekalif-i Milliye Emirleri hangi savaş sırasında yayımlanmıştır?", sec:["I. İnönü","Sakarya Meydan Muharebesi","Büyük Taarruz","Çanakkale"], d:"B", kaynak:"LGS 2023 Sorusu"}
+    {s:"Tekalif-i Milliye Emirleri hangi savaş sırasında yayımlanmıştır?", sec:["I. İnönü","Sakarya Meydan Muharebesi","Büyük Taarruz","Çanakkale"], d:"B", kaynak:"LGS 2023 Sorusu"},
+    {s:"Cumhuriyet döneminde hukuk alanında yapılan inkılaplardan biri hangisidir?", sec:["Türk Medeni Kanunu'nun kabulü","Tevhid-i Tedrisat Kanunu","Harf İnkılabı","Soyadı Kanunu"], d:"A"}
   ],
   "Din Kültürü": [
-    {s:"İslam dininde 'tevekkül' kavramı neyi ifade eder?", sec:["Çalışmadan beklemek","Üzerine düşeni yapıp sonucu Allah'a bırakmak","Kadere isyan etmek","Sadece dua etmek"], d:"B", kaynak:"LGS 2025 Sorusu"}
+    {s:"İslam dininde 'tevekkül' kavramı neyi ifade eder?", sec:["Çalışmadan beklemek","Üzerine düşeni yapıp sonucu Allah'a bırakmak","Kadere isyan etmek","Sadece dua etmek"], d:"B", kaynak:"LGS 2025 Sorusu"},
+    {s:"Aşağıdakilerden hangisi İslam'ın şartlarından biri değildir?", sec:["Namaz kılmak","Oruç tutmak","Hacca gitmek","Kurban kesmek"], d:"D"}
   ],
   "İngilizce": [
-    {s:"Choose the correct option: If it ______ tomorrow, we will stay at home.", sec:["rains","rained","will rain","is raining"], d:"A", kaynak:"LGS 2024 Sorusu"}
+    {s:"Choose the correct option: If it ______ tomorrow, we will stay at home.", sec:["rains","rained","will rain","is raining"], d:"A", kaynak:"LGS 2024 Sorusu"},
+    {s:"What is the synonym of 'huge'?", sec:["Tiny","Small","Enormous","Short"], d:"C"}
   ]
 };
 
@@ -683,28 +730,36 @@ function shuffle(array) {
 
 function testleriUret(ders, sinif) {
     let havuz = soruBankasi[sinif] && soruBankasi[sinif][ders] ? [...soruBankasi[sinif][ders]] : [];
+    // Havuz çok küçükse 8. sınıf havuzunu da yedek olarak ekle
+    if(havuz.length < 20 && soruBankasi["8"] && soruBankasi["8"][ders]) {
+        havuz = havuz.concat(soruBankasi["8"][ders]);
+    }
+    
     let lgsHavuz = lgsSoruBankasi[ders] ? [...lgsSoruBankasi[ders]] : [];
     let testler = [];
     
     for (let i = 1; i <= 5; i++) {
         let secilenSorular = [];
-        let kopyaLgs = shuffle([...lgsHavuz]).slice(0, 3);
+        // Her testte 2 tane LGS sorusu olsun (tekrarsız)
+        if(lgsHavuz.length > 0){
+             let lgsSec = shuffle([...lgsHavuz]).slice(0, 2);
+             secilenSorular.push(...lgsSec);
+        }
+        
+        // Karıştırılmış standart havuzdan tekrarsız seçim yap
         let kopyaStandart = shuffle([...havuz]);
-        
-        // LGS sorularını ekle
-        secilenSorular.push(...kopyaLgs);
-        
-        // Standart soruları ekle (tekrarsız)
         let k = 0;
         while(secilenSorular.length < 20) {
             if (k < kopyaStandart.length) {
                 secilenSorular.push(kopyaStandart[k]);
             } else {
-                let yedekHavuz = soruBankasi["8"] && soruBankasi["8"][ders] ? shuffle([...soruBankasi["8"][ders]]) : [];
-                secilenSorular.push(yedekHavuz[k % yedekHavuz.length]);
+                secilenSorular.push(kopyaStandart[k % kopyaStandart.length]); // havuz bittiyse mecburen dön
             }
             k++;
         }
+        
+        // Testteki soruların yerini karıştır
+        secilenSorular = shuffle(secilenSorular);
         
         testler.push({ ad: "Test " + i, zorluk: i <= 2 ? "Orta" : "Zor", sorular: secilenSorular });
     }
