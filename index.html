@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BilgiKüre | Ortaokul & LGS 2027 Hazırlık</title>
+<title>BilgiHane | Ortaokul & LGS 2027 Hazırlık</title>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -20,32 +20,14 @@
   .logo h1 span { color:var(--orta-gri); font-weight: 400;}
   .logo p { font-size:.75rem; color:var(--orta-gri); }
   
-  /* KULLANICI ALANI */
   .kullanici-alani { display:flex; align-items:center; gap:1rem; }
   .btn-giris { background:var(--siyah); color:var(--beyaz); padding:.5rem 1rem; border:none; border-radius:4px; font-weight:700; cursor:pointer; }
   .kullanici-bilgi { 
-    font-weight:700; 
-    font-size:0.95rem; 
-    color:var(--beyaz); 
-    background:var(--mavi); 
-    padding:0.4rem 0.8rem; 
-    border-radius:20px; 
-    display:flex; 
-    align-items:center; 
-    gap:0.6rem; 
+    font-weight:700; font-size:0.95rem; color:var(--beyaz); background:var(--mavi); 
+    padding:0.4rem 0.8rem; border-radius:20px; display:flex; align-items:center; gap:0.6rem; 
     box-shadow:0 2px 5px rgba(0,0,0,0.15);
   }
-  .btn-cikis { 
-    background:var(--beyaz); 
-    color:var(--kirmizi); 
-    border:none; 
-    padding:0.2rem 0.6rem; 
-    border-radius:12px; 
-    font-size:0.75rem; 
-    font-weight:bold; 
-    cursor:pointer; 
-    transition: 0.2s;
-  }
+  .btn-cikis { background:var(--beyaz); color:var(--kirmizi); border:none; padding:0.2rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:bold; cursor:pointer; }
   .btn-cikis:hover { background: var(--arka-plan); }
 
   .sekme-grubu { display:flex; flex-wrap:wrap; gap:.4rem; }
@@ -99,7 +81,11 @@
   .soru-blok { border:1px solid var(--acik-gri); border-radius:5px; padding:1rem; margin-bottom:1rem; background:#fafbfc; }
   .sik { display:flex; gap:.6rem; padding:.4rem .6rem; cursor:pointer; border-radius:4px; touch-action: manipulation; }
   .sik:hover { background:#e2e8f0; } .sik.secili { background:#e2e8f0; border:1px solid var(--orta-gri); }
-  .test-alt { display:flex; gap:.8rem; justify-content:center; position:fixed; bottom:0; left:0; width:100%; background:var(--beyaz); padding:1rem; border-top:1px solid var(--acik-gri); z-index:110; }
+  
+  .test-alt { display:flex; gap:.8rem; justify-content:center; align-items:center; position:fixed; bottom:0; left:0; width:100%; background:var(--beyaz); padding:1rem; border-top:1px solid var(--acik-gri); z-index:110; }
+  .timer-badge { background: var(--siyah); color: var(--beyaz); padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-family: monospace; font-size: 1.1rem; position: fixed; top: 15px; right: 70px; z-index: 120; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .timer-badge.uyari { background: var(--kirmizi); animation: blink 1s infinite; }
+  @keyframes blink { 50% { opacity: 0.5; } }
 
   .toolbar { position:fixed; right:15px; top:50%; transform:translateY(-50%); background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; z-index:115; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
   .tool-btn { width:42px; height:42px; border-radius:8px; background:var(--arka-plan); border:1px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size: 1.2rem; }
@@ -130,7 +116,7 @@
 
 <header>
   <div class="logo" onclick="anaMenuGoster()">
-    <h1>Bilgi<span>Küre</span></h1>
+    <h1>Bilgi<span>Hane</span></h1>
     <p>5–8. Sınıf • Konu Anlatımı • Test • Deneme • Kitap Rehberi</p>
   </div>
   <nav class="sekme-grubu" id="sinifSekme" style="display: none;">
@@ -144,7 +130,7 @@
 <main class="konteyner">
   <section id="anaMenu">
     <div class="landing-hero">
-      <h2>BilgiKüre'ye Hoş Geldiniz</h2>
+      <h2>BilgiHane'ye Hoş Geldiniz</h2>
       <p>LGS 2027 ve okul sınavlarına hazırlık için ihtiyacınız olan her şey tek bir yerde. İlerlemenizi kaydetmek için lütfen giriş yapın.</p>
       <button class="btn-ana" style="max-width: 250px; margin: 0 auto;" onclick="dersGorunumAc()">Derslere Göz At</button>
     </div>
@@ -159,7 +145,7 @@
       </div>
       <div class="ozellik-kart">
         <h3>📝 Özel Testler</h3>
-        <p>Her konu için 20'şer soruluk özenle seçilmiş testler.</p>
+        <p>Her konu için 20'şer soruluk özenle seçilmiş, orta ve zor seviye testler.</p>
       </div>
       <div class="ozellik-kart">
         <h3>✏️ Akıllı Kalem</h3>
@@ -204,27 +190,23 @@
   <div class="modal-kutu">
     <button class="modal-kapat" onclick="document.getElementById('dogrulamaModal').classList.remove('acik')">&times;</button>
     <h2 style="margin-bottom:1rem; text-align:center;">E-posta Doğrulama</h2>
-    <p style="font-size:0.9rem; text-align:center; margin-bottom:1.5rem; color:var(--orta-gri);">E-posta adresinize 6 haneli bir doğrulama kodu gönderdik (Gereksiz/Spam klasörünü kontrol etmeyi unutmayın). Lütfen kodu aşağıya girin.</p>
+    <p style="font-size:0.9rem; text-align:center; margin-bottom:1.5rem; color:var(--orta-gri);">E-posta adresinize 6 haneli bir doğrulama kodu gönderdik. Lütfen kodu aşağıya girin.</p>
     <div class="form-grup"><label>Doğrulama Kodu</label><input type="text" id="dogrulamaKodu" placeholder="Örn: 123456"></div>
     <button class="btn-ana" onclick="dogrulamaTamamla()">Doğrula ve Devam Et</button>
   </div>
 </div>
 
 <div class="modal-arka" id="startOverlay">
-  <div class="modal-kutu" style="max-width:400px;">
+  <div class="modal-kutu" style="max-width:450px;">
     <button class="modal-kapat" onclick="document.getElementById('startOverlay').classList.remove('acik')">&times;</button>
-    <h2 id="sinavBaslik" style="margin-bottom:1rem;">Sınavınız Başlıyor</h2>
-    <p style="margin:1rem 0; color:var(--orta-gri); font-size:0.9rem;">Hazır mısınız? Lütfen sınav süresini seçin.</p>
-    <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:1rem;" id="sureSecim">
-      <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" data-sure="40" onclick="sureSec(this, 40)">40 Dk</button>
-      <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" data-sure="60" onclick="sureSec(this, 60)">60 Dk</button>
-      <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" data-sure="90" onclick="sureSec(this, 90)">90 Dk</button>
-      <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" data-sure="155" onclick="sureSec(this, 155)">155 Dk</button>
-      <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" data-sure="0" onclick="sureSec(this, 0)">Süresiz</button>
-    </div>
+    <h2 id="sinavBaslik" style="margin-bottom:0.5rem;">Sınavınız Başlıyor</h2>
+    <p style="margin-bottom:1rem; color:var(--orta-gri); font-size:0.9rem;" id="sinavAciklama">Hazır mısınız? Lütfen sınav süresini seçin.</p>
+    
+    <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:1rem;" id="sureSecim"></div>
+    
     <div class="form-grup">
       <label>Özel Süre (Dakika)</label>
-      <input type="number" id="ozelSureInput" placeholder="Örn: 25" min="1" oninput="ozelSureGir(this)">
+      <input type="number" id="ozelSureInput" min="1" oninput="ozelSureGir(this)">
     </div>
     <button class="btn-ana" onclick="baslatSinav()">Sınavı Başlat</button>
   </div>
@@ -233,6 +215,8 @@
 <div class="modal-arka" id="testModal" style="background:var(--beyaz); align-items:flex-start; padding:0;">
   <canvas id="drawCanvas"></canvas>
   
+  <div id="canliSayac" class="timer-badge gizli">00:00</div>
+
   <div class="toolbar">
     <button class="tool-btn aktif" id="toolHareket" onclick="setArac('hareket')" title="Kaydır">✋</button>
     <button class="tool-btn" id="toolKalem" onclick="setArac('kalem')" title="Kalem">✏️</button>
@@ -243,29 +227,46 @@
   </div>
 
   <div class="modal-kutu" style="background:transparent; padding: 1.5rem;">
-    <button class="modal-kapat" style="z-index:120; right: 20px; top: 20px;" onclick="kapatSinav()">&times;</button>
+    <button class="modal-kapat" style="z-index:120; right: 15px; top: 15px;" onclick="kapatSinav()">&times;</button>
     <div id="testIcerik" class="zoom-alani" style="transition:transform 0.2s; transform-origin: top center;"></div>
   </div>
 </div>
 
 <script>
 /* ============================================================
-   GÜVENLİK ÖNLEMLERİ
+   ULTRA GÜVENLİK KORUMASI (F12 / Fn+F12 / Inspect Engelleme)
    ============================================================ */
+// 1. Sağ Tık Engelle
 document.addEventListener('contextmenu', event => event.preventDefault());
-document.onkeydown = function(e) {
-    if (e.keyCode == 123) { return false; } 
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; } 
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; } 
-    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; } 
-};
 
-function encryptData(data) {
-    try { return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); } catch(e) { return ""; }
-}
-function decryptData(cipher) {
-    try { return JSON.parse(decodeURIComponent(escape(atob(cipher)))); } catch(e) { return null; }
-}
+// 2. Metin Kopyalamayı ve Kesmeyi Engelle
+document.addEventListener('copy', event => event.preventDefault());
+document.addEventListener('cut', event => event.preventDefault());
+
+// 3. Tüm Geliştirici Araçları Kısayollarını Engelle
+document.addEventListener('keydown', function(e) {
+    // F12, Fn+F12 (Klavyeden F12 olarak gelir)
+    if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); debugger; return false; }
+    // Ctrl+F12
+    if (e.ctrlKey && (e.key === 'F12' || e.keyCode === 123)) { e.preventDefault(); debugger; return false; }
+    // Ctrl+Shift+I (Inspect)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) { e.preventDefault(); debugger; return false; }
+    // Ctrl+Shift+J (Console)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) { e.preventDefault(); debugger; return false; }
+    // Ctrl+Shift+C (Inspect Element)
+    if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) { e.preventDefault(); debugger; return false; }
+    // Ctrl+U (Kaynak Kodu Görüntüle)
+    if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) { e.preventDefault(); debugger; return false; }
+    // Ctrl+S (Sayfayı Kaydet)
+    if (e.ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) { e.preventDefault(); return false; }
+});
+
+// 4. Konsolu Sürekli Temizle
+setInterval(function() { console.clear(); }, 1000);
+
+// 5. Şifreleme Fonksiyonları
+function encryptData(data) { try { return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); } catch(e) { return ""; } }
+function decryptData(cipher) { try { return JSON.parse(decodeURIComponent(escape(atob(cipher)))); } catch(e) { return null; } }
 
 /* ============================================================
    EMAILJS ENTEGRASYONU
@@ -273,7 +274,6 @@ function decryptData(cipher) {
 const _pk1 = "XZZ0KwlP", _pk2 = "upMWnyX3m";
 const _sid1 = "service_qi", _sid2 = "4v6pr";
 const _tid1 = "4eu", _tid2 = "kazl";
-
 emailjs.init(_pk1 + _pk2); 
 const EMAIL_SERVICE_ID = _sid1 + _sid2; 
 const EMAIL_TEMPLATE_ID = _tid1 + _tid2; 
@@ -281,32 +281,25 @@ const EMAIL_TEMPLATE_ID = _tid1 + _tid2;
 /* ============================================================
    VERİ TABANI
    ============================================================ */
-let rawUsers = localStorage.getItem('bk_users_enc');
+let rawUsers = localStorage.getItem('bh_users_enc');
 let users = rawUsers ? decryptData(rawUsers) : {};
-
-let rawUser = localStorage.getItem('bk_currentUser_enc');
+let rawUser = localStorage.getItem('bh_currentUser_enc');
 let currentUser = rawUser ? decryptData(rawUser) : null;
-
 if (!users) users = {}; 
+let isLoginMode = true, bekleyenKayit = null;
 
-let isLoginMode = true;
-let bekleyenKayit = null;
-
-// Özel Hoca Hesabı
+// Özel Hoca Hesabı (ŞBG 8B Sınıfı)
 if (!users['sbg8b2027'] || users['sbg8b2027'].name === "Hoca") {
     users['sbg8b2027'] = { name: "ŞBG 8B Sınıfı", pass: "ruhi1234", completedVideos: [], completedTests: [], testScores: {} };
     saveData();
 }
 
 function saveData() {
-    localStorage.setItem('bk_users_enc', encryptData(users));
-    localStorage.setItem('bk_currentUser_enc', encryptData(currentUser));
+    localStorage.setItem('bh_users_enc', encryptData(users));
+    localStorage.setItem('bh_currentUser_enc', encryptData(currentUser));
 }
 
-function girisModalAc() {
-    document.getElementById('authModal').classList.add('acik');
-}
-
+function girisModalAc() { document.getElementById('authModal').classList.add('acik'); }
 function toggleAuthMode() {
     isLoginMode = !isLoginMode;
     document.getElementById('authTitle').textContent = isLoginMode ? 'Giriş Yap' : 'Kayıt Ol';
@@ -317,139 +310,93 @@ function toggleAuthMode() {
 }
 
 function authIslem() {
-    // .toLowerCase() ekleyerek büyük/küçük harf duyarsızlığı sağladık (SBG8B2027 de çalışır)
     let email = document.getElementById('authEmail').value.trim().toLowerCase();
     let pass = document.getElementById('authPass').value;
-    
     if (!email || !pass) return alert("Lütfen tüm alanları doldurun.");
     
     if (isLoginMode) {
         if (users[email] && users[email].pass === pass) {
             currentUser = { email: email, name: users[email].name };
-            saveData();
-            kullaniciGuncelle();
-            document.getElementById('authModal').classList.remove('acik');
-            dersGorunumAc();
-        } else {
-            alert("Hatalı e-posta veya şifre!");
-        }
+            saveData(); kullaniciGuncelle();
+            document.getElementById('authModal').classList.remove('acik'); dersGorunumAc();
+        } else { alert("Hatalı e-posta veya şifre!"); }
     } else {
         let name = document.getElementById('regName').value.trim();
         let passRepeat = document.getElementById('authPassRepeat').value;
-        
         if (!name) return alert("İsim gerekli.");
         if (pass !== passRepeat) return alert("Şifreler uyuşmuyor!");
         if (pass.length < 6) return alert("Şifreniz en az 6 karakter olmalıdır.");
-        
-        let basitSifreler = ["123456", "654321", "111111", "000000", "aaaaaa", "12345678"];
-        if (basitSifreler.includes(pass.toLowerCase())) {
-            return alert("Güvenliğiniz için çok basit bir şifre seçtiniz. Lütfen daha karmaşık bir şifre kullanın.");
-        }
-        
         if (users[email]) return alert("Bu e-posta zaten kayıtlı.");
 
         let kod = Math.floor(100000 + Math.random() * 900000).toString(); 
-        
-        let templateParams = {
-            to_email: email, 
-            verification_code: kod
-        };
-
+        let templateParams = { to_email: email, verification_code: kod };
         let btn = document.getElementById('authBtn');
-        btn.textContent = "Gönderiliyor...";
-        btn.disabled = true;
+        btn.textContent = "Gönderiliyor..."; btn.disabled = true;
 
         emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
             .then(function() {
                 bekleyenKayit = { email, name, pass, kod }; 
                 document.getElementById('dogrulamaKodu').value = "";
                 document.getElementById('dogrulamaModal').classList.add('acik');
-                btn.textContent = "Kayıt Ol";
-                btn.disabled = false;
+                btn.textContent = "Kayıt Ol"; btn.disabled = false;
             }, function(error) {
-                alert("Kod gönderilirken bir hata oluştu. Lütfen internetinizi kontrol edin.");
-                btn.textContent = "Kayıt Ol";
-                btn.disabled = false;
+                alert("Kod gönderilemedi. Lütfen internetinizi kontrol edin.");
+                btn.textContent = "Kayıt Ol"; btn.disabled = false;
             });
     }
 }
 
 function dogrulamaTamamla() {
     let girilenKod = document.getElementById('dogrulamaKodu').value;
-    
-    if (girilenKod !== bekleyenKayit.kod) {
-        return alert("Girdiğiniz kod hatalı! Lütfen e-postanıza gelen kodu kontrol edin.");
-    }
+    if (girilenKod !== bekleyenKayit.kod) return alert("Girdiğiniz kod hatalı!");
     
     users[bekleyenKayit.email] = { name: bekleyenKayit.name, pass: bekleyenKayit.pass, completedVideos: [], completedTests: [], testScores: {} };
     currentUser = { email: bekleyenKayit.email, name: bekleyenKayit.name };
     saveData();
-    
     document.getElementById('dogrulamaModal').classList.remove('acik');
     document.getElementById('authModal').classList.remove('acik');
-    kullaniciGuncelle();
-    dersGorunumAc();
-    alert("Hesabınız başarıyla oluşturuldu ve doğrulandı!");
+    kullaniciGuncelle(); dersGorunumAc();
+    alert("Hesabınız başarıyla oluşturuldu!");
 }
 
-function cikisYap() {
-    currentUser = null;
-    saveData();
-    kullaniciGuncelle();
-    anaMenuGoster();
-}
+function cikisYap() { currentUser = null; saveData(); kullaniciGuncelle(); anaMenuGoster(); }
 
 function kullaniciGuncelle() {
     let alan = document.getElementById('kullaniciAlani');
     let bilgi = document.getElementById('bilgiKutu');
     if (currentUser) {
-        alan.innerHTML = `
-            <div class="kullanici-bilgi">
-                <span>👤 ${currentUser.name}</span>
-                <button class="btn-cikis" onclick="cikisYap()">Çıkış</button>
-            </div>`;
+        alan.innerHTML = `<div class="kullanici-bilgi"><span>👤 ${currentUser.name}</span><button class="btn-cikis" onclick="cikisYap()">Çıkış</button></div>`;
         if(bilgi) bilgi.innerHTML = `<strong>Hoş geldin, ${currentUser.name}!</strong> Çözdüğün testler ve izlediğin videolar otomatik olarak kaydedilir.`;
     } else {
         alan.innerHTML = `<button class="btn-giris" onclick="girisModalAc()">Giriş Yap / Kayıt Ol</button>`;
         if(bilgi) bilgi.innerHTML = `<strong>Hoş geldin!</strong> Test çözmek ve ilerlemeni kaydetmek için lütfen sağ üstten giriş yap.`;
     }
-    if(document.getElementById('anaMenu').classList.contains('gizli')) {
-        konuRender(); 
-    }
+    if(document.getElementById('anaMenu').classList.contains('gizli')) konuRender(); 
 }
 
 function tamamlaTest(key, testIndex, score) {
     if(!currentUser) return;
-    let u = users[currentUser.email];
-    let testId = `${key}_${testIndex}`;
-    
+    let u = users[currentUser.email], testId = `${key}_${testIndex}`;
     if(!u.completedTests.includes(testId)) u.completedTests.push(testId);
-    u.testScores[testId] = score;
-    saveData();
+    u.testScores[testId] = score; saveData();
 }
-
 function tamamlaVideo(key, videoIndex) {
     if(!currentUser) return;
-    let u = users[currentUser.email];
-    let vidId = `${key}_${videoIndex}`;
-    
+    let u = users[currentUser.email], vidId = `${key}_${videoIndex}`;
     if(!u.completedVideos.includes(vidId)) u.completedVideos.push(vidId);
-    saveData();
-    konuRender();
+    saveData(); konuRender();
 }
-
 function testiTamamlamisMi(key, testIndex) {
     if(!currentUser) return false;
     return users[currentUser.email].completedTests.includes(`${key}_${testIndex}`);
 }
-
 function videoTamamlamisMi(key, videoIndex) {
     if(!currentUser) return false;
     return users[currentUser.email].completedVideos.includes(`${key}_${videoIndex}`);
 }
 
 /* ============================================================
-   MÜFREDAT VE SORULAR
+   MÜFREDAT
    ============================================================ */
 const MUFREDAT = {
   "5": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Yazım Kuralları"], "Matematik": ["Doğal Sayılar", "Kesirler", "Ondalık Gösterim", "Yüzdeler"], "Fen Bilimleri": ["Güneş, Dünya ve Ay", "Canlılar Dünyası", "Kuvvetin Ölçülmesi"], "Sosyal Bilgiler": ["Birey ve Toplum", "Kültür ve Miras", "İnsanlar, Yerler ve Çevreler"], "Din Kültürü": ["Allah İnancı", "Ramazan ve Oruç", "Adap ve Nezaket"], "İngilizce": ["Hello", "My Town", "Games and Hobbies", "My Daily Routine"] },
@@ -458,38 +405,64 @@ const MUFREDAT = {
   "8": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiilimsiler", "Cümlenin Ögeleri", "Yazım Kuralları"], "Matematik": ["Çarpanlar ve Katlar", "Üslü İfadeler", "Kareköklü İfadeler", "Cebirsel İfadeler", "Doğrusal Denklemler", "Eşitsizlikler", "Üçgenler"], "Fen Bilimleri": ["Mevsimler ve İklim", "DNA ve Genetik Kod", "Basınç", "Madde ve Endüstri", "Basit Makineler", "Enerji Dönüşümleri"], "T.C. İnkılap Tarihi": ["Bir Kahraman Doğuyor", "Millî Uyanış", "Millî Mücadele", "Atatürkçülük ve İnkılaplar"], "Din Kültürü": ["Kader İnancı", "Zekât ve Sadaka", "Din ve Hayat", "Hz. Muhammed'in Örnekliği"], "İngilizce": ["Friendship", "Teen Life", "In the Kitchen", "On the Phone", "The Internet", "Adventures", "Tourism"] }
 };
 
+/* ============================================================
+   SORU HAVUZLARI (Orta ve Zor Seviye)
+   ============================================================ */
 const soruHavuzu = {
   "Türkçe": [
     {s:"Aşağıdaki cümlelerden hangisinde mecazlı bir söyleyiş vardır?", sec:["Kütüphaneden yeni bir kitap aldım.","Bu insan adeta bir kitap gibi, çok şey biliyor.","Kitabı masanın üzerine bıraktı.","Yazdığı kitap çok beğenildi."], d:"B", ac:"Mecaz anlam."},
     {s:"'Güzel' kelimesi hangi cümlede isim görevindedir?", sec:["Güzel bir ev aldı.","Güzeli herkes sever.","Güzel konuştu.","Güzel yazı yazdı."], d:"B", ac:"İsim görevinde."},
-    {s:"Aşağıdakilerden hangisi fiilimsidir?", sec:["Koştu","Koşarak","Koşucu","Koşu"], d:"B", ac:"Zarf fiil."},
     {s:"'Yağmur yağdığı için maç iptal edildi.' cümlesinde hangi anlam ilişkisi vardır?", sec:["Amaç-sonuç","Neden-sonuç","Koşul-sonuç","Karşıtlık"], d:"B", ac:"Neden-sonuç."},
-    {s:"Aşağıdaki cümlelerden hangisi öznel bir yargı içerir?", sec:["Su 100 derecede kaynar.","Dünya yuvarlaktır.","Bu yemek çok lezzetli.","Ankara başkenttir."], d:"C", ac:"Öznel."}
+    {s:"Aşağıdaki cümlelerden hangisi öznel bir yargı içerir?", sec:["Su 100 derecede kaynar.","Dünya yuvarlaktır.","Bu yemek çok lezzetli.","Ankara başkenttir."], d:"C", ac:"Öznel."},
+    {s:"'Kitap okumak insanı geliştirir.' cümlesinde 'okumak' hangi görevdedir?", sec:["İsim","Fiil","İsim-fiil","Sıfat"], d:"C", ac:"İsim-fiil."},
+    {s:"'Sen de bizimle gelsene.' cümlesinde hangi duygu vardır?", sec:["Pişmanlık","Özlem","İstek","Korku"], d:"C","ac":"İstek."},
+    {s:"Cümlede eylemi yapan ögeye ne denir?", sec:["Yüklem","Özne","Nesne","Tümleç"], d:"B","ac":"Özne."},
+    {s:"'Dün akşam sinemaya gittik.' cümlesinde zarf tümleci nedir?", sec:["Dün akşam","Sinemaya","Gittik","Biz"], d:"A","ac":"Zaman zarfı."},
+    {s:"Aşağıdaki cümlelerin hangisinde neden-sonuç ilişkisi vardır?", sec:["Sınava çalıştığı için başarılı oldu.","Sınava çalıştı ama başarılı olamadı.","Sınava çalışırsa başarılı olur.","Sınava çalışmak istiyor."], d:"A", ac:"-dığı için neden-sonuç."},
+    {s:"'Göz' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Gözlerin çok güzel.","İğnenin gözüne ip geçirdi.","Kitabın gözüne bak.","Ağacın gözü var."], d:"B", ac:"İğnenin gözü terimdir."}
   ],
   "Matematik": [
-    {s:"40 sayısının pozitif tam sayı çarpanlarının tamamı iki gruba ayrıldığında A grubundaki sayıların toplamı, B grubundakine eşittir. A grubunda en az kaç sayı vardır?", sec:["2","3","4","5"], d:"B", ac:"LGS 2023 Sorusu.", kaynak:"LGS 2023 Sorusu"},
     {s:"24 sayısının pozitif tam sayı çarpanlarının sayısı kaçtır?", sec:["6","8","10","12"], d:"B", ac:"8."},
     {s:"12 ve 18 sayılarının EBOB’u kaçtır?", sec:["2","3","6","12"], d:"C", ac:"6."},
     {s:"2³ kaçtır?", sec:["6","8","9","12"], d:"B", ac:"8."},
-    {s:"(-5) + (+3) işleminin sonucu kaçtır?", sec:["-8","-2","2","8"], d:"B", ac:"-2."}
+    {s:"(-5) + (+3) işleminin sonucu kaçtır?", sec:["-8","-2","2","8"], d:"B", ac:"-2."},
+    {s:"2⁵·2³ işleminin sonucu kaçtır?", sec:["2⁸","2¹⁵","4⁸","4¹⁵"], d:"A", ac:"Üsler toplanır."},
+    {s:"√144 + √81 işleminin sonucu kaçtır?", sec:["15","18","21","24"], d:"C", ac:"12+9=21."},
+    {s:"3x - 5 = 10 denkleminde x kaçtır?", sec:["3","4","5","6"], d:"C", ac:"3x=15, x=5."},
+    {s:"Aşağıdakilerden hangisi asal sayıdır?", sec:["21","27","29","33"], d:"C", ac:"29."},
+    {s:"Bir üçgenin iç açıları toplamı kaçtır?", sec:["90","180","270","360"], d:"B", ac:"180."},
+    {s:"15 ve 20 sayılarının EKOK’u kaçtır?", sec:["30","45","60","75"], d:"C", ac:"60."},
+    {s:"f(x) = 2x + 3 fonksiyonunda f(4) kaçtır?", sec:["9","10","11","12"], d:"C", ac:"2(4)+3=11."},
+    {s:"Bir sayının 3 katının 5 fazlası 20 ise bu sayı kaçtır?", sec:["3","4","5","6"], d:"C", ac:"3x+5=20 -> 3x=15 -> x=5."}
   ],
   "Fen Bilimleri": [
     {s:"DNA’nın yapı birimine ne ad verilir?", sec:["Gen","Nükleotid","Kromozom","Protein"], d:"B", ac:"Nükleotid."},
-    {s:"Aşağıdakilerden hangisi DNA’daki bazlardan biri değildir?", sec:["Adenin","Timin","Guanin","Ürasil"], d:"D", ac:"Ürasil RNA'da."},
     {s:"Basınç birimi nedir?", sec:["Newton","Joule","Pascal","Watt"], d:"C", ac:"Pascal."},
-    {s:"Mevsimlerin oluşmasının temel nedeni nedir?", sec:["Dünya’nın kendi etrafında dönmesi","Dünya’nın Güneş etrafında dönmesi ve eksen eğikliği","Ay’ın Dünya etrafında dönmesi","Güneş’in kendi etrafında dönmesi"], d:"B", ac:"Eksen eğikliği."}
+    {s:"Mevsimlerin oluşmasının temel nedeni nedir?", sec:["Dünya’nın kendi etrafında dönmesi","Dünya’nın Güneş etrafında dönmesi ve eksen eğikliği","Ay’ın Dünya etrafında dönmesi","Güneş’in kendi etrafında dönmesi"], d:"B", ac:"Eksen eğikliği."},
+    {s:"Aşağıdakilerden hangisi vücudumuzdaki sistemlerden biri değildir?", sec:["Sindirim","Solunum","Fotosentez","Boşaltım"], d:"C", ac:"Fotosentez."},
+    {s:"Kuvvet birimi nedir?", sec:["Joule","Newton","Pascal","Kalori"], d:"B", ac:"Newton."},
+    {s:"Işık hangi ortamda en hızlı yayılır?", sec:["Su","Hava","Cam","Boşluk"], d:"D", ac:"Boşluk."},
+    {s:"Aşağıdakilerden hangisi yenilenebilir enerji kaynağıdır?", sec:["Kömür","Petrol","Güneş","Doğal gaz"], d:"C", ac:"Güneş."},
+    {s:"Saf maddelerin erime ve kaynama noktaları için hangisi doğrudur?", sec:["Değişkendir","Sabittir","Sadece erime sabittir","Sadece kaynama sabittir"], d:"B", ac:"Sabittir."},
+    {s:"Bir cismin ağırlığı hangi aletle ölçülür?", sec:["Eşit kollu terazi","Dinamometre","Hacim ölçer","Termometre"], d:"B", ac:"Dinamometre."},
+    {s:"Canlıların kalıtsal özelliklerini taşıyan yapı hangisidir?", sec:["Gen","Nükleotid","Kromozom","Protein"], d:"A", ac:"Gen."}
   ],
   "T.C. İnkılap Tarihi": [
-    {s:"Kurtuluş Savaşı’nda Doğu Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Yunanistan","Ermenistan","Fransa","İtalya"], d:"B", ac:"Ermenistan."},
-    {s:"Lozan Antlaşması hangi yıl imzalanmıştır?", sec:["1920","1921","1923","1924"], d:"C", ac:"1923."}
+    {s:"Kurtuluş Savaşı’nda Batı Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Ermenistan","Yunanistan","Fransa","İtalya"], d:"B", ac:"Yunanistan."},
+    {s:"Lozan Antlaşması hangi yıl imzalanmıştır?", sec:["1920","1921","1923","1924"], d:"C", ac:"1923."},
+    {s:"Atatürk ilkelerinden hangisi “egemenliğin millete ait olması” ilkesidir?", sec:["Cumhuriyetçilik","Milliyetçilik","Halkçılık","Laiklik"], d:"A", ac:"Cumhuriyetçilik."},
+    {s:"TBMM hangi tarihte açılmıştır?", sec:["19 Mayıs 1919","23 Nisan 1920","29 Ekim 1923","30 Ağustos 1922"], d:"B", ac:"23 Nisan 1920."},
+    {s:"Saltanat hangi tarihte kaldırılmıştır?", sec:["1 Kasım 1922","29 Ekim 1923","3 Mart 1924","24 Temmuz 1923"], d:"A", ac:"1 Kasım 1922."}
   ],
   "Din Kültürü": [
-    {s:"Kader ne demektir?", sec:["Allah’ın her şeyi bilmesi","İnsanın özgür iradesi","Evrenin yasaları","Meleklerin görevi"], d:"A", ac:"Kader."},
-    {s:"Ramazan ayında oruç tutmak hangi ibadettir?", sec:["Namaz","Oruç","Zekât","Hac"], d:"B", ac:"Oruç."}
+    {s:"Kader ne demektir?", sec:["Allah’ın her şeyi bilmesi ve takdir etmesi","İnsanın özgür iradesi","Evrenin yasaları","Meleklerin görevi"], d:"A", ac:"Kader."},
+    {s:"Ramazan ayında oruç tutmak hangi ibadettir?", sec:["Namaz","Oruç","Zekât","Hac"], d:"B", ac:"Oruç."},
+    {s:"İlahi kitaplar hangi peygamberlere verilmiştir?", sec:["Sadece Hz. Muhammed’e","Sadece Hz. Musa’ya","Çeşitli peygamberlere","Sadece Hz. İsa’ya"], d:"C", ac:"Çeşitli peygamberlere."}
   ],
   "İngilizce": [
     {s:"'Best friend' ne demektir?", sec:["Sınıf arkadaşı","En iyi arkadaş","Komşu","Öğretmen"], d:"B", ac:"En iyi arkadaş."},
-    {s:"'I get on well with my friends.' cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B", ac:"İyi geçinirim."}
+    {s:"'I get on well with my friends.' cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B", ac:"İyi geçinirim."},
+    {s:"'Weather' ne demektir?", sec:["Hava durumu","Haber","Spor","Yemek"], d:"A", ac:"Hava durumu."}
   ],
   "Sosyal Bilgiler": [
     {s:"İletişimde 'ben dili' kullanmak neyi sağlar?", sec:["Çatışmayı artırır","Empatiyi güçlendirir","Konuşmayı engeller","Dinlemeyi azaltır"], d:"B", ac:"Empati."},
@@ -497,15 +470,70 @@ const soruHavuzu = {
   ]
 };
 
+// LGS Zor Sorular (Denemeler İçin)
+const lgsSoruHavuzu = {
+  "Türkçe": [
+    {s:"2023 LGS: 'Bu kitabı okumak' ifadesindeki altı çizili sözcük hangi fiilimsi türüdür?", sec:["İsim-fiil","Sıfat-fiil","Zarf-fiil","Çekimli fiil"], d:"A", ac:"-mak eki isim-fiil.", kaynak:"2023 LGS"},
+    {s:"2022 LGS: Aşağıdaki cümlelerden hangisinde söz sanatı vardır?", sec:["Dağlar bizimle konuşuyor.","Kitabı dün okudum.","Hava çok sıcak.","Okula erken geldim."], d:"A", ac:"Kişileştirme.", kaynak:"2022 LGS"},
+    {s:"2024 LGS: 'Öğretmen, öğrencilere kitap okumayı tavsiye etti.' cümlesinde kaç fiilimsi vardır?", sec:["1","2","3","4"], d:"A", ac:"'okumayı' isim-fiil.", kaynak:"2024 LGS"},
+    {s:"2025 LGS: Paragrafta anlatım biçimleri ile ilgili hangisi yanlıştır?", sec:["Açıklama öğreticidir.","Tartışma kanıtlayıcıdır.","Betimleme öyküleyicidir.","Öyküleme olay anlatır."], d:"C", ac:"Betimleme görselleştirir.", kaynak:"2025 LGS"},
+    {s:"2026 LGS (Örnek): 'Gözlerindeki fırtına dinmişti.' cümlesinde hangi söz sanatı vardır?", sec:["Teşhis","Teşbih","İstiare","Kinaye"], d:"D", ac:"Kinaye.", kaynak:"2026 LGS"},
+    {s:"Zor Soru: Aşağıdaki cümlelerin hangisinde yazım yanlışı vardır?", sec:["Her şey yolunda gidiyor.","Bir çok insan geldi.","Hiçbir şey söylemedi.","Birkaç kişi bekliyor."], d:"B", ac:"'Birçok' bitişik yazılır.", kaynak:"Zor Seviye"}
+  ],
+  "Matematik": [
+    {s:"2023 LGS: 40 sayısının pozitif tam sayı çarpanlarının tamamı iki gruba ayrıldığında A grubundaki sayıların toplamı, B grubundakine eşittir. A grubunda en az kaç sayı vardır?", sec:["2","3","4","5"], d:"B", ac:"40’ın çarpanları: 1,2,4,5,8,10,20,40. Toplam 90; yarısı 45. En az elemanla 45: 40+5 → 2 sayı.", kaynak:"2023 LGS"},
+    {s:"2022 LGS: Aşağıdaki sayılardan hangisi 3 ile tam bölünür?", sec:["124","231","344","451"], d:"B", ac:"231 rakamları toplamı 6.", kaynak:"2022 LGS"},
+    {s:"2024 LGS: 2⁵·2³ işleminin sonucu kaçtır?", sec:["2⁸","2¹⁵","4⁸","4¹⁵"], d:"A", ac:"Üsler toplanır.", kaynak:"2024 LGS"},
+    {s:"2025 LGS: √144 + √81 işleminin sonucu kaçtır?", sec:["15","18","21","24"], d:"C", ac:"12+9=21.", kaynak:"2025 LGS"},
+    {s:"2026 LGS (Örnek): Eşitsizliklerde x'in alabileceği en büyük tam sayı değeri nedir? (2x-3 < 7)", sec:["3","4","5","6"], d:"B", ac:"2x<10, x<5. En büyük tam sayı 4.", kaynak:"2026 LGS"},
+    {s:"Zor Soru: Bir sayının 4 katının 7 eksiği, aynı sayının 2 katının 3 fazlasına eşittir. Bu sayı kaçtır?", sec:["3","4","5","6"], d:"C", ac:"4x-7 = 2x+3 -> 2x=10 -> x=5.", kaynak:"Zor Seviye"}
+  ],
+  "Fen Bilimleri": [
+    {s:"2023 LGS: DNA’nın yapısında hangisi bulunmaz?", sec:["Adenin","Timin","Guanin","Ürasil"], d:"D", ac:"Ürasil RNA’da.", kaynak:"2023 LGS"},
+    {s:"2022 LGS: Kalıtsal bir hastalık hangisidir?", sec:["Grip","Renk körlüğü","Kolera","Zatürre"], d:"B", ac:"Renk körlüğü.", kaynak:"2022 LGS"},
+    {s:"2024 LGS: Basınç ile ilgili hangisi yanlıştır?", sec:["Katı basıncı ağırlıkla doğru orantılıdır.","Sıvı basıncı derinlikle artar.","Gaz basıncı her yöne etki eder.","Basınç birimi Newton’dur."], d:"D", ac:"Basınç birimi Pascal.", kaynak:"2024 LGS"},
+    {s:"2025 LGS: Mevsimlerin oluşmasının temel nedeni nedir?", sec:["Dünya’nın kendi etrafında dönmesi","Dünya’nın Güneş etrafında dönmesi ve eksen eğikliği","Ay’ın Dünya etrafında dönmesi","Güneş’in kendi etrafında dönmesi"], d:"B", ac:"Eksen eğikliği ve Güneş çevresindeki hareket.", kaynak:"2025 LGS"},
+    {s:"2026 LGS (Örnek): Basit makinelerde kuvvetten kazanç sağlarken yoldan kayıp veren araç hangisidir?", sec:["Sabit makara","Hareketli makara","Eğik düzlem","Kaldıraç"], d:"B", ac:"Hareketli makara.", kaynak:"2026 LGS"},
+    {s:"Zor Soru: Sıvı basıncı aşağıdakilerden hangisine bağlı değildir?", sec:["Sıvının yoğunluğuna","Yerçekimi ivmesine","Sıvının derinliğine","Kabın şekline"], d:"D", ac:"Kabın şekline bağlı değildir.", kaynak:"Zor Seviye"}
+  ],
+  "T.C. İnkılap Tarihi": [
+    {s:"2023 LGS: Atatürk ilkelerinden hangisi 'egemenliğin millete ait olması' ilkesidir?", sec:["Cumhuriyetçilik","Milliyetçilik","Halkçılık","Laiklik"], d:"A", ac:"Cumhuriyetçilik.", kaynak:"2023 LGS"},
+    {s:"2022 LGS: Kurtuluş Savaşı’nda Doğu Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Yunanistan","Ermenistan","Fransa","İtalya"], d:"B", ac:"Ermenistan.", kaynak:"2022 LGS"},
+    {s:"2024 LGS: Lozan Antlaşması hangi yıl imzalanmıştır?", sec:["1920","1921","1923","1924"], d:"C", ac:"1923.", kaynak:"2024 LGS"}
+  ],
+  "Din Kültürü": [
+    {s:"2023 LGS: Kader ve kaza ile ilgili hangisi doğrudur?", sec:["Kader, insanın iradesini yok sayar.","Kaza, kaderin gerçekleşmesidir.","İnsanın hiçbir sorumluluğu yoktur.","Ecel değiştirilebilir."], d:"B", ac:"Kaza, kaderin gerçekleşmesidir.", kaynak:"2023 LGS"},
+    {s:"2024 LGS: Zekât ile ilgili hangisi doğrudur?", sec:["Zekât herkese farzdır.","Zekât malın belirli bir kısmının verilmesidir.","Zekât sadece Ramazan’da verilir.","Zekât sadece parayla olur."], d:"B", ac:"Malın belirli kısmı.", kaynak:"2024 LGS"}
+  ],
+  "İngilizce": [
+    {s:"2023 LGS: 'I get on well with my friends.' cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B", ac:"İyi geçinmek.", kaynak:"2023 LGS"},
+    {s:"2025 LGS: 'Teen life' ne demektir?", sec:["Gençlik hayatı","Çocukluk","Yaşlılık","Okul hayatı"], d:"A", ac:"Gençlik hayatı.", kaynak:"2025 LGS"}
+  ]
+};
+
+// 20 Soruluk Test Üretimi (LGS soruları testlerde az, denemede çok)
 function testleriUret(ders) {
-    let havuz = soruHavuzu[ders] || soruHavuzu["Matematik"]; 
+    let standartHavuz = soruHavuzu[ders] || soruHavuzu["Matematik"]; 
+    let lgsHavuz = lgsSoruHavuzu[ders] || [];
     let testler = [];
+    
     for (let i = 1; i <= 5; i++) {
         let secilenSorular = [];
-        for (let j = 0; j < 20; j++) { 
-            secilenSorular.push({...havuz[Math.floor(Math.random() * havuz.length)]});
+        // Testlerde LGS sorusu az olsun (2 tane) geri kalanı orta/zor seviye özel havuz
+        let kopyaLgs = [...lgsHavuz].sort(() => 0.5 - Math.random()).slice(0, 2);
+        let kopyaStandart = [...standartHavuz].sort(() => 0.5 - Math.random());
+        
+        // Ekle LGS sorularını
+        secilenSorular.push(...kopyaLgs);
+        
+        // Kalanı standart havuzdan tamamla
+        let j = 0;
+        while(secilenSorular.length < 20) {
+            secilenSorular.push(kopyaStandart[j % kopyaStandart.length]);
+            j++;
         }
-        testler.push({ ad: "Test " + i, zorluk: i <= 2 ? "Kolay" : "Orta", sorular: secilenSorular });
+        
+        testler.push({ ad: "Test " + i, zorluk: i <= 2 ? "Orta" : "Zor", sorular: secilenSorular });
     }
     return testler;
 }
@@ -525,15 +553,13 @@ let seciliSinif = "8";
 let seciliDers = "Matematik";
 let aktifTestObj = null;
 let timerInterval = null, kalanSaniye = 0;
-let aktifTestKey = "";
-let aktifTestIndex = -1;
+let aktifTestKey = "", aktifTestIndex = -1;
 
 function anaMenuGoster() {
     document.getElementById('anaMenu').classList.remove('gizli');
     document.getElementById('dersGorunum').classList.add('gizli');
     document.getElementById('sinifSekme').style.display = 'none';
 }
-
 function dersGorunumAc() {
     document.getElementById('anaMenu').classList.add('gizli');
     document.getElementById('dersGorunum').classList.remove('gizli');
@@ -541,7 +567,6 @@ function dersGorunumAc() {
     dersSekmeOlustur(); konuRender();
     document.getElementById("denemeBtnYazi").textContent = seciliSinif === "8" ? "8. Sınıf LGS" : seciliSinif + ". Sınıf";
 }
-
 function sinifSec(sinif, btn) {
     seciliSinif = sinif;
     document.querySelectorAll('#sinifSekme button').forEach(b => b.classList.remove('aktif'));
@@ -551,24 +576,15 @@ function sinifSec(sinif, btn) {
     dersSekmeOlustur(); konuRender();
     document.getElementById("denemeBtnYazi").textContent = seciliSinif === "8" ? "8. Sınıf LGS" : seciliSinif + ". Sınıf";
 }
-
 function dersSekmeOlustur() {
-  const dersSekme = document.getElementById("dersSekme");
-  dersSekme.innerHTML = "";
+  const dersSekme = document.getElementById("dersSekme"); dersSekme.innerHTML = "";
   Object.keys(MUFREDAT[seciliSinif]).forEach(ders => {
-    const btn = document.createElement("button");
-    btn.textContent = ders;
+    const btn = document.createElement("button"); btn.textContent = ders;
     btn.classList.toggle("aktif", ders === seciliDers);
-    btn.onclick = () => {
-      seciliDers = ders;
-      dersSekme.querySelectorAll("button").forEach(b => b.classList.remove("aktif"));
-      btn.classList.add("aktif");
-      konuRender();
-    };
+    btn.onclick = () => { seciliDers = ders; dersSekme.querySelectorAll("button").forEach(b => b.classList.remove("aktif")); btn.classList.add("aktif"); konuRender(); };
     dersSekme.appendChild(btn);
   });
 }
-
 function konuRender() {
   const konuAlani = document.getElementById("konuAlani");
   const konular = MUFREDAT[seciliSinif][seciliDers] || [];
@@ -580,34 +596,26 @@ function konuRender() {
     const videolar = videoUret(konu, seciliSinif); 
     
     html += `<div class="konu-kart">
-      <div class="konu-baslik" onclick="this.parentElement.classList.toggle('acik')">
-        <h3>${konu}</h3><span class="ok">▶</span>
-      </div>
-      <div class="konu-icerik">
-        <div class="video-grid">`;
+      <div class="konu-baslik" onclick="this.parentElement.classList.toggle('acik')"><h3>${konu}</h3><span class="ok">▶</span></div>
+      <div class="konu-icerik"><div class="video-grid">`;
         
     videolar.forEach((v, vIndex) => {
         let isDone = videoTamamlamisMi(key, vIndex);
         html += `<div class="video-kart">
           ${isDone ? '<span class="tik-ikon">✔</span>' : ''}
-          <div class="hoca">${v.hoca}</div>
-          <div class="v-ad">${v.baslik}</div>
+          <div class="hoca">${v.hoca}</div><div class="v-ad">${v.baslik}</div>
           <a class="izle" href="#" onclick="event.preventDefault(); izleVideo('${key}', ${vIndex})">İzle →</a>
         </div>`;
     });
     
-    html += `</div>
-        <div class="test-kategori">
-          <div class="kategori-baslik">📝 BilgiKüre Özel Testleri</div>
-          <div class="kategori-icerik">
-            <div class="test-grid">`;
+    html += `</div><div class="test-kategori"><div class="kategori-baslik">📝 BilgiHane Özel Testleri</div>
+          <div class="kategori-icerik"><div class="test-grid">`;
             
     testler.forEach((t, tIndex) => {
       let isDone = testiTamamlamisMi(key, tIndex);
       html += `<div class="test-kart ${isDone ? 'tamamlandi' : ''}" onclick="testTikla('${key}', ${tIndex}, '${konu}')">
         ${isDone ? '<span class="tik-ikon">✔</span>' : ''}
-        <div class="t-ad">${t.ad}</div>
-        <div class="t-meta">${t.sorular.length} soru</div>
+        <div class="t-ad">${t.ad}</div><div class="t-meta">${t.sorular.length} soru</div>
         <div class="t-call">${isDone ? 'Sonucu Gör' : 'Tıkla ve Çözmeye Başla'}</div>
       </div>`;
     });
@@ -617,87 +625,87 @@ function konuRender() {
 }
 
 function izleVideo(key, vIndex) {
-    if (currentUser) {
-        tamamlaVideo(key, vIndex);
-    } else {
-        alert("İlerlemenizi kaydetmek için lütfen giriş yapın. Video yeni sekmede açılacak.");
-    }
+    if (currentUser) tamamlaVideo(key, vIndex);
+    else alert("İlerlemenizi kaydetmek için lütfen giriş yapın. Video yeni sekmede açılacak.");
     window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(key.split('|')[2]), "_blank");
 }
 
 function testTikla(key, tIndex, konuAdi) {
-    if (!currentUser) {
-        alert("Testleri çözebilmek için lütfen giriş yapın.");
-        girisModalAc();
-        return;
-    }
+    if (!currentUser) { alert("Testleri çözebilmek için lütfen giriş yapın."); girisModalAc(); return; }
     
-    aktifTestKey = key;
-    aktifTestIndex = tIndex;
+    aktifTestKey = key; aktifTestIndex = tIndex;
+    document.getElementById("sinavBaslik").textContent = "Testiniz Başlıyor";
+    document.getElementById("sinavAciklama").textContent = "Hazır mısınız? Lütfen test süresini seçin.";
+    
+    // TEST SÜRELERİ
+    document.getElementById('sureSecim').innerHTML = `
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 30)">30 Dk</button>
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 50)">50 Dk</button>
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 70)">70 Dk</button>
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 0)">Süresiz</button>
+    `;
+    document.getElementById('ozelSureInput').value = "";
+    document.getElementById('ozelSureInput').placeholder = "Örn: 40";
     
     if (testiTamamlamisMi(key, tIndex)) {
         let score = users[currentUser.email].testScores[`${key}_${tIndex}`];
         if (confirm(`Bu testi daha önce çözdün!\n\nDoğru: ${score.d}\nYanlış: ${score.y}\nBoş: ${score.b}\nNet: ${score.net}\n\nYeniden çözmek ister misin?`)) {
             let testler = testleriUret(seciliDers);
-            aktifTestObj = testler[tIndex];
-            aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
-            document.getElementById("sinavBaslik").textContent = "Testiniz Başlıyor";
+            aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
             document.getElementById("startOverlay").classList.add("acik");
         }
     } else {
         let testler = testleriUret(seciliDers);
-        aktifTestObj = testler[tIndex];
-        aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
-        document.getElementById("sinavBaslik").textContent = "Testiniz Başlıyor";
+        aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
         document.getElementById("startOverlay").classList.add("acik");
     }
 }
 
 function denemeTikla() {
-    if (!currentUser) {
-        alert("Deneme sınavlarına girebilmek için lütfen giriş yapın.");
-        girisModalAc();
-        return;
-    }
+    if (!currentUser) { alert("Deneme sınavlarına girebilmek için lütfen giriş yapın."); girisModalAc(); return; }
     
     let title = seciliSinif === "8" ? "8. Sınıf LGS Genel Deneme Sınavı" : seciliSinif + ". Sınıf Genel Deneme Sınavı";
+    document.getElementById("sinavBaslik").textContent = "Deneme Sınavı Başlıyor";
+    document.getElementById("sinavAciklama").textContent = "Gerçek LGS formatında. Lütfen sınav süresini seçin.";
+    
+    // DENEME SÜRELERİ
+    document.getElementById('sureSecim').innerHTML = `
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 40)">40 Dk</button>
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 60)">60 Dk</button>
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 80)">80 Dk</button>
+        <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 0)">Süresiz</button>
+    `;
+    document.getElementById('ozelSureInput').value = "";
+    document.getElementById('ozelSureInput').placeholder = "Gerçek LGS Süresi (155)";
     
     let lgsSorular = {};
     if (seciliSinif === "8") {
+        // LGS Soruları yoğunluklu deneme (Zor seviye)
         lgsSorular = {
-            "Türkçe": Array(20).fill().map(() => ({...soruHavuzu["Türkçe"][Math.floor(Math.random() * soruHavuzu["Türkçe"].length)]})),
-            "Matematik": Array(20).fill().map(() => ({...soruHavuzu["Matematik"][Math.floor(Math.random() * soruHavuzu["Matematik"].length)]})),
-            "Fen Bilimleri": Array(20).fill().map(() => ({...soruHavuzu["Fen Bilimleri"][Math.floor(Math.random() * soruHavuzu["Fen Bilimleri"].length)]})),
-            "T.C. İnkılap Tarihi": Array(10).fill().map(() => ({...soruHavuzu["T.C. İnkılap Tarihi"][Math.floor(Math.random() * soruHavuzu["T.C. İnkılap Tarihi"].length)]})),
-            "Din Kültürü": Array(10).fill().map(() => ({...soruHavuzu["Din Kültürü"][Math.floor(Math.random() * soruHavuzu["Din Kültürü"].length)]})),
-            "İngilizce": Array(10).fill().map(() => ({...soruHavuzu["İngilizce"][Math.floor(Math.random() * soruHavuzu["İngilizce"].length)]}))
+            "Türkçe": Array(20).fill().map(() => lgsSoruHavuzu["Türkçe"][Math.floor(Math.random() * lgsSoruHavuzu["Türkçe"].length)]),
+            "Matematik": Array(20).fill().map(() => lgsSoruHavuzu["Matematik"][Math.floor(Math.random() * lgsSoruHavuzu["Matematik"].length)]),
+            "Fen Bilimleri": Array(20).fill().map(() => lgsSoruHavuzu["Fen Bilimleri"][Math.floor(Math.random() * lgsSoruHavuzu["Fen Bilimleri"].length)]),
+            "T.C. İnkılap Tarihi": Array(10).fill().map(() => lgsSoruHavuzu["T.C. İnkılap Tarihi"][Math.floor(Math.random() * lgsSoruHavuzu["T.C. İnkılap Tarihi"].length)]),
+            "Din Kültürü": Array(10).fill().map(() => lgsSoruHavuzu["Din Kültürü"][Math.floor(Math.random() * lgsSoruHavuzu["Din Kültürü"].length)]),
+            "İngilizce": Array(10).fill().map(() => lgsSoruHavuzu["İngilizce"][Math.floor(Math.random() * lgsSoruHavuzu["İngilizce"].length)])
         };
         aktifTestObj = { baslik: title, sorular: lgsSorular, isLgs: true };
     } else {
-        let sorular = Array(20).fill().map(() => ({...soruHavuzu["Matematik"][Math.floor(Math.random() * soruHavuzu["Matematik"].length)]}));
+        let sorular = Array(20).fill().map(() => soruHavuzu["Matematik"][Math.floor(Math.random() * soruHavuzu["Matematik"].length)]);
         aktifTestObj = { baslik: title, sorular: sorular };
     }
     
-    document.getElementById("sinavBaslik").textContent = "Sınavınız Başlıyor";
     document.getElementById("startOverlay").classList.add("acik");
 }
 
 let secilenSureDk = 40;
 function sureSec(btn, sure) {
-    document.querySelectorAll('#sureSecim button').forEach(b => {
-        b.style.background = 'var(--arka-plan)';
-        b.style.color = 'var(--siyah)';
-    });
-    btn.style.background = 'var(--siyah)';
-    btn.style.color = 'var(--beyaz)';
-    secilenSureDk = sure;
-    document.getElementById('ozelSureInput').value = "";
+    document.querySelectorAll('#sureSecim button').forEach(b => { b.style.background = 'var(--arka-plan)'; b.style.color = 'var(--siyah)'; });
+    btn.style.background = 'var(--siyah)'; btn.style.color = 'var(--beyaz)';
+    secilenSureDk = sure; document.getElementById('ozelSureInput').value = "";
 }
 function ozelSureGir(input) {
-    document.querySelectorAll('#sureSecim button').forEach(b => {
-        b.style.background = 'var(--arka-plan)';
-        b.style.color = 'var(--siyah)';
-    });
+    document.querySelectorAll('#sureSecim button').forEach(b => { b.style.background = 'var(--arka-plan)'; b.style.color = 'var(--siyah)'; });
     secilenSureDk = parseInt(input.value) || 0;
 }
 
@@ -705,11 +713,10 @@ function baslatSinav() {
     document.getElementById("startOverlay").classList.remove("acik");
     document.getElementById("testModal").classList.add("acik");
     
-    if (secilenSureDk > 0) kalanSaniye = secilenSureDk * 60;
-    else kalanSaniye = 0;
+    if (secilenSureDk > 0) { kalanSaniye = secilenSureDk * 60; document.getElementById('canliSayac').classList.remove('gizli'); }
+    else { kalanSaniye = 0; document.getElementById('canliSayac').classList.add('gizli'); }
     
-    let html = `<h2 style="text-align:center; margin-bottom:1rem;">${aktifTestObj.baslik}</h2>
-    <div class="sorular-wrap">`;
+    let html = `<h2 style="text-align:center; margin-bottom:1rem;">${aktifTestObj.baslik}</h2><div class="sorular-wrap">`;
     
     if (aktifTestObj.isLgs) {
         for (const ders in aktifTestObj.sorular) {
@@ -720,8 +727,7 @@ function baslatSinav() {
                   <div class="soru-metin">${i+1}. ${soru.s}</div>
                   <div class="siklar">
                     ${soru.sec.map((sec, j) => `<label class="sik" onclick="secTikla(this)"><input type="radio" name="q_${ders}_${i}" value="${["A","B","C","D"][j]}"><span>${["A","B","C","D"][j]}) ${sec}</span></label>`).join('')}
-                  </div>
-                </div>`;
+                  </div></div>`;
             });
         }
     } else {
@@ -731,8 +737,7 @@ function baslatSinav() {
               <div class="soru-metin">${i+1}. ${soru.s}</div>
               <div class="siklar">
                 ${soru.sec.map((sec, j) => `<label class="sik" onclick="secTikla(this)"><input type="radio" name="q_${i}" value="${["A","B","C","D"][j]}"><span>${["A","B","C","D"][j]}) ${sec}</span></label>`).join('')}
-              </div>
-            </div>`;
+              </div></div>`;
         });
     }
     
@@ -772,25 +777,22 @@ function bitirSinav() {
         });
     }
     
-    if (bos > 0) {
-        if(!confirm(`${bos} soru boş. Yine de bitirmek istiyor musunuz?`)) return;
-    }
+    if (bos > 0) { if(!confirm(`${bos} soru boş. Yine de bitirmek istiyor musunuz?`)) return; }
     
     let net = dogru - (yanlis/3);
-    if(currentUser) {
-        tamamlaTest(aktifTestKey, aktifTestIndex, {d:dogru, y:yanlis, b:bos, net:net});
-    }
+    if(currentUser) tamamlaTest(aktifTestKey, aktifTestIndex, {d:dogru, y:yanlis, b:bos, net:net});
     
     alert(`Sonuç: ${dogru} D, ${yanlis} Y, ${bos} B\nNet: ${net.toFixed(2)}`);
     document.getElementById("testModal").classList.remove("acik");
-    durdurTimer();
-    konuRender(); 
+    durdurTimer(); konuRender(); 
 }
 
 function baslatTimer() {
   durdurTimer();
+  guncelleSayac();
   timerInterval = setInterval(() => {
     kalanSaniye--;
+    guncelleSayac();
     if (kalanSaniye <= 0) {
       durdurTimer();
       alert("Süre doldu! Sınav otomatik olarak sonlandırılıyor.");
@@ -798,6 +800,15 @@ function baslatTimer() {
     }
   }, 1000);
 }
+
+function guncelleSayac() {
+    let dk = Math.floor(kalanSaniye / 60);
+    let sn = kalanSaniye % 60;
+    let badge = document.getElementById('canliSayac');
+    badge.textContent = `${dk.toString().padStart(2,'0')}:${sn.toString().padStart(2,'0')}`;
+    if (kalanSaniye <= 60) badge.classList.add('uyari'); else badge.classList.remove('uyari');
+}
+
 function durdurTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
 
 /* ============================================================
