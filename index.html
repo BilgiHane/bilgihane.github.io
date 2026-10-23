@@ -90,7 +90,7 @@
   @keyframes blink { 50% { opacity: 0.5; } }
 
   .toolbar { position:fixed; right:15px; top:50%; transform:translateY(-50%); background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; z-index:115; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
-  .tool-btn { width:42px; height:42px; border-radius:8px; background:var(--arka-plan); border:1px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size: 1.2rem; }
+  .tool-btn { width:42px; height:42px; border-radius:8px; background:var(--arka-plan); border:1px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size: 1.2rem; color: var(--koyu-gri); }
   .tool-btn.aktif { background:var(--siyah); color:var(--beyaz); }
   #drawCanvas { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:105; pointer-events:none; touch-action: pan-y; }
   #drawCanvas.aktif { pointer-events:auto; cursor:crosshair; touch-action: none; }
@@ -99,12 +99,39 @@
   .landing-hero { text-align:center; padding: 4rem 1rem; background: var(--beyaz); border-radius: 8px; border: 1px solid var(--acik-gri); margin-bottom: 2rem; }
   .landing-hero h2 { font-size: 2rem; margin-bottom: 1rem; }
   .landing-hero p { font-size: 1.1rem; color: var(--orta-gri); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
-  .ozellikler { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+  .ozellikler { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;}
   .ozellik-kart { background: var(--beyaz); border: 1px solid var(--acik-gri); border-radius: 8px; padding: 1.5rem; text-align: center; }
   .ozellik-kart h3 { color: var(--mavi); margin-bottom: .5rem; }
+  
+  .kitap-oneri { background: var(--beyaz); border: 1px solid var(--acik-gri); border-radius: 8px; padding: 1.5rem; margin-top: 2rem; }
+  .kitap-oneri h3 { margin-bottom: 1rem; border-bottom: 2px solid var(--acik-gri); padding-bottom: 0.5rem; }
+  .kitap-oneri ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .kitap-oneri li { background: var(--arka-plan); padding: 0.4rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600; border: 1px solid var(--acik-gri); }
 
   .yesil { color: var(--yesil); } .kirmizi { color: var(--kirmizi); }
   .gizli { display: none !important; }
+
+  /* Özel Bildirim Modalı */
+  #customAlertOverlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px);
+    display: none; justify-content: center; align-items: center; z-index: 9999;
+  }
+  #customAlertBox {
+    background: #ffffff; padding: 25px 30px; border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;
+    max-width: 400px; width: 90%; border: 1px solid #cbd5e1;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  #customAlertTitle { margin-bottom: 10px; color: #0f172a; font-size: 1.2rem; font-weight: 800; }
+  #customAlertText { margin-bottom: 20px; color: #475569; font-size: 0.95rem; }
+  #customAlertBtn {
+    background: #0f172a; color: #ffffff; border: none; padding: 10px 25px;
+    border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem;
+    transition: 0.2s;
+  }
+  #customAlertBtn:hover { background: #1e293b; }
 </style>
 </head>
 <body>
@@ -138,10 +165,6 @@
     </div>
     <div class="ozellikler">
       <div class="ozellik-kart">
-        <h3>Kitap Önerileri</h3>
-        <p>Seviyenize uygun, güncel müfredatla uyumlu en iyi kaynak kitaplar.</p>
-      </div>
-      <div class="ozellik-kart">
         <h3>Video Anlatım</h3>
         <p>Tonguç ve diğer uzman hocalardan konu anlatımları ve soru çözümleri.</p>
       </div>
@@ -154,8 +177,22 @@
         <p>Tablet ve akıllı tahtalarda soruların üzerine not alın, işlem yapın.</p>
       </div>
     </div>
+    
+    <div class="kitap-oneri">
+      <h3>2026-2027 LGS Güncel Kitap Önerileri</h3>
+      <ul>
+        <li>Tonguç 8. Sınıf Zoru Bankası</li>
+        <li>Bilfen 8. Sınıf Pro Test</li>
+        <li>Okyanus Classmate Soru Bankası</li>
+        <li>Fenomen 8. Sınıf Matematik</li>
+        <li>Hız ve Renk 8. Sınıf Türkçe</li>
+        <li>Newton 8. Sınıf Fen Bilimleri</li>
+        <li>Karekök 8. Sınıf Tüm Dersler</li>
+      </ul>
+    </div>
+
     <div style="text-align: center; margin-top: 2rem; color: #64748b; font-size: 0.85rem; padding: 1rem; border-top: 1px solid #cbd5e1;">
-      <p>Not: Sitemizde yer alan deneme ve test soruları Milli Eğitim Bakanlığı'nın resmi sınavlarından ve güncel kaynaklardan derlenmiştir.</p>
+      <p>Sitemizde yer alan deneme ve test soruları Milli Eğitim Bakanlığı'nın resmi sınavlarından ve güncel kaynaklardan derlenmiştir.</p>
     </div>
   </section>
 
@@ -223,21 +260,52 @@
   <div id="canliSayac" class="timer-badge gizli">00:00</div>
 
   <div class="toolbar">
-    <button class="tool-btn aktif" id="toolHareket" onclick="setArac('hareket')" title="Kaydır">✋</button>
-    <button class="tool-btn" id="toolKalem" onclick="setArac('kalem')" title="Kalem">✏️</button>
-    <button class="tool-btn" id="toolSilgi" onclick="setArac('silgi')" title="Silgi">🧽</button>
-    <button class="tool-btn" onclick="temizleCanvas()" title="Temizle">🗑️</button>
-    <button class="tool-btn" onclick="zoomYap(0.2)" title="Yakınlaştır">➕</button>
-    <button class="tool-btn" onclick="zoomYap(-0.2)" title="Uzaklaştır">➖</button>
+    <!-- 3. Fotoğraftaki gibi özel SVG İkonlar (Emojisiz) -->
+    <button class="tool-btn aktif" id="toolHareket" onclick="setArac('hareket')" title="Kaydır / Hareket">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
+    </button>
+    <button class="tool-btn" id="toolKalem" onclick="setArac('kalem')" title="Kalem">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+    </button>
+    <button class="tool-btn" id="toolSilgi" onclick="setArac('silgi')" title="Silgi">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16C2.6 15.6 2.6 14.9 3 14.5L13.5 4C13.9 3.6 14.6 3.6 15 4L20 9C20.4 9.4 20.4 10.1 20 10.5L11.5 19"></path></svg>
+    </button>
+    <button class="tool-btn" onclick="temizleCanvas()" title="Temizle">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+    </button>
+    <button class="tool-btn" onclick="zoomYap(0.2)" title="Yakınlaştır">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+    </button>
+    <button class="tool-btn" onclick="zoomYap(-0.2)" title="Uzaklaştır">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+    </button>
   </div>
 
   <div class="modal-kutu" style="background:transparent; padding: 1.5rem;">
     <button class="modal-kapat" style="z-index:120; right: 15px; top: 15px;" onclick="kapatSinav()">&times;</button>
-    <div id="testIcerik" class="zoom-alani" style="transition:transform 0.2s; transform-origin: top center;"></div>
+    <div id="testIcerik" class="zoom-alani" style="transition:transform 0.1s ease-out; transform-origin: top center; will-change: transform;"></div>
+  </div>
+</div>
+
+<!-- ÖZEL BİLDİRİM MODALI -->
+<div id="customAlertOverlay">
+  <div id="customAlertBox">
+    <div id="customAlertTitle">Uyarı</div>
+    <div id="customAlertText">Bildirim metni buraya gelecek.</div>
+    <button id="customAlertBtn" onclick="document.getElementById('customAlertOverlay').style.display='none'">Tamam</button>
   </div>
 </div>
 
 <script>
+// Custom Alert Fonksiyonu
+function showMessage(title, text) {
+    document.getElementById('customAlertTitle').innerText = title;
+    document.getElementById('customAlertText').innerText = text;
+    document.getElementById('customAlertOverlay').style.display = 'flex';
+}
+window.alert = function(msg) { showMessage("Bilgi", msg); };
+
+// Ultra Güvenlik Korumaları
 document.addEventListener('contextmenu', event => event.preventDefault());
 document.addEventListener('copy', event => event.preventDefault());
 document.addEventListener('cut', event => event.preventDefault());
@@ -253,6 +321,7 @@ document.addEventListener('keydown', function(e) {
 });
 
 setInterval(function() { console.clear(); }, 1000);
+setInterval(function() { const t = performance.now(); debugger; if(performance.now() - t > 100) {} }, 1000);
 
 function encryptData(data) { try { return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); } catch(e) { return ""; } }
 function decryptData(cipher) { try { return JSON.parse(decodeURIComponent(escape(atob(cipher)))); } catch(e) { return null; } }
@@ -294,21 +363,21 @@ function toggleAuthMode() {
 function authIslem() {
     let email = document.getElementById('authEmail').value.trim().toLowerCase();
     let pass = document.getElementById('authPass').value;
-    if (!email || !pass) return alert("Lütfen tüm alanları doldurun.");
+    if (!email || !pass) return showMessage("Eksik Bilgi", "Lütfen tüm alanları doldurun.");
     
     if (isLoginMode) {
         if (users[email] && users[email].pass === pass) {
             currentUser = { email: email, name: users[email].name };
             saveData(); kullaniciGuncelle();
             document.getElementById('authModal').classList.remove('acik'); dersGorunumAc();
-        } else { alert("Hatalı e-posta veya şifre!"); }
+        } else { showMessage("Hata", "Hatalı e-posta veya şifre!"); }
     } else {
         let name = document.getElementById('regName').value.trim();
         let passRepeat = document.getElementById('authPassRepeat').value;
-        if (!name) return alert("İsim gerekli.");
-        if (pass !== passRepeat) return alert("Şifreler uyuşmuyor!");
-        if (pass.length < 6) return alert("Şifreniz en az 6 karakter olmalıdır.");
-        if (users[email]) return alert("Bu e-posta zaten kayıtlı.");
+        if (!name) return showMessage("Hata", "İsim gerekli.");
+        if (pass !== passRepeat) return showMessage("Hata", "Şifreler uyuşmuyor!");
+        if (pass.length < 6) return showMessage("Hata", "Şifreniz en az 6 karakter olmalıdır.");
+        if (users[email]) return showMessage("Hata", "Bu e-posta zaten kayıtlı.");
 
         let kod = Math.floor(100000 + Math.random() * 900000).toString(); 
         let templateParams = { to_email: email, verification_code: kod };
@@ -322,7 +391,7 @@ function authIslem() {
                 document.getElementById('dogrulamaModal').classList.add('acik');
                 btn.textContent = "Kayıt Ol"; btn.disabled = false;
             }, function(error) {
-                alert("Kod gönderilemedi. Lütfen internetinizi kontrol edin.");
+                showMessage("Hata", "Kod gönderilemedi. İnternet bağlantınızı kontrol edin veya daha sonra tekrar deneyin.");
                 btn.textContent = "Kayıt Ol"; btn.disabled = false;
             });
     }
@@ -330,7 +399,7 @@ function authIslem() {
 
 function dogrulamaTamamla() {
     let girilenKod = document.getElementById('dogrulamaKodu').value;
-    if (girilenKod !== bekleyenKayit.kod) return alert("Girdiğiniz kod hatalı!");
+    if (girilenKod !== bekleyenKayit.kod) return showMessage("Hata", "Girdiğiniz kod hatalı!");
     
     users[bekleyenKayit.email] = { name: bekleyenKayit.name, pass: bekleyenKayit.pass, completedVideos: [], completedTests: [], testScores: {} };
     currentUser = { email: bekleyenKayit.email, name: bekleyenKayit.name };
@@ -338,7 +407,7 @@ function dogrulamaTamamla() {
     document.getElementById('dogrulamaModal').classList.remove('acik');
     document.getElementById('authModal').classList.remove('acik');
     kullaniciGuncelle(); dersGorunumAc();
-    alert("Hesabınız başarıyla oluşturuldu!");
+    showMessage("Başarılı", "Hesabınız başarıyla oluşturuldu!");
 }
 
 function cikisYap() { currentUser = null; saveData(); kullaniciGuncelle(); anaMenuGoster(); }
@@ -384,129 +453,191 @@ const MUFREDAT = {
   "8": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiilimsiler", "Cümlenin Ögeleri", "Yazım Kuralları"], "Matematik": ["Çarpanlar ve Katlar", "Üslü İfadeler", "Kareköklü İfadeler", "Cebirsel İfadeler", "Doğrusal Denklemler", "Eşitsizlikler", "Üçgenler"], "Fen Bilimleri": ["Mevsimler ve İklim", "DNA ve Genetik Kod", "Basınç", "Madde ve Endüstri", "Basit Makineler", "Enerji Dönüşümleri"], "T.C. İnkılap Tarihi": ["Bir Kahraman Doğuyor", "Millî Uyanış", "Millî Mücadele", "Atatürkçülük ve İnkılaplar"], "Din Kültürü": ["Kader İnancı", "Zekât ve Sadaka", "Din ve Hayat", "Hz. Muhammed'in Örnekliği"], "İngilizce": ["Friendship", "Teen Life", "In the Kitchen", "On the Phone", "The Internet", "Adventures", "Tourism"] }
 };
 
-const soruHavuzu = {
-  "Türkçe": [
-    {s:"Aşağıdaki cümlelerden hangisinde mecazlı bir söyleyiş vardır?", sec:["Kütüphaneden yeni bir kitap aldım.","Bu insan adeta bir kitap gibi, çok şey biliyor.","Kitabı masanın üzerine bıraktı.","Yazdığı kitap çok beğenildi."], d:"B"},
-    {s:"'Güzel' kelimesi hangi cümlede isim görevindedir?", sec:["Güzel bir ev aldı.","Güzeli herkes sever.","Güzel konuştu.","Güzel yazı yazdı."], d:"B"},
-    {s:"'Yağmur yağdığı için maç iptal edildi.' cümlesinde hangi anlam ilişkisi vardır?", sec:["Amaç-sonuç","Neden-sonuç","Koşul-sonuç","Karşıtlık"], d:"B"},
-    {s:"Aşağıdaki cümlelerden hangisi öznel bir yargı içerir?", sec:["Su 100 derecede kaynar.","Dünya yuvarlaktır.","Bu yemek çok lezzetli.","Ankara başkenttir."], d:"C"},
-    {s:"'Kitap okumak insanı geliştirir.' cümlesinde 'okumak' hangi görevdedir?", sec:["İsim","Fiil","İsim-fiil","Sıfat"], d:"C"},
-    {s:"'Sen de bizimle gelsene.' cümlesinde hangi duygu vardır?", sec:["Pişmanlık","Özlem","İstek","Korku"], d:"C"},
-    {s:"Cümlede eylemi yapan ögeye ne denir?", sec:["Yüklem","Özne","Nesne","Tümleç"], d:"B"},
-    {s:"'Dün akşam sinemaya gittik.' cümlesinde zarf tümleci nedir?", sec:["Dün akşam","Sinemaya","Gittik","Biz"], d:"A"},
-    {s:"Aşağıdaki cümlelerin hangisinde neden-sonuç ilişkisi vardır?", sec:["Sınava çalıştığı için başarılı oldu.","Sınava çalıştı ama başarılı olamadı.","Sınava çalışırsa başarılı olur.","Sınava çalışmak istiyor."], d:"A"},
-    {s:"'Göz' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Gözlerin çok güzel.","İğnenin gözüne ip geçirdi.","Kitabın gözüne bak.","Ağacın gözü var."], d:"B"},
-    {s:"Aşağıdakilerden hangisi fiilimsidir?", sec:["Koştu","Koşarak","Koşucu","Koşu"], d:"B"}
-  ],
+const soruBankasi = {
+  "5": {
+    "Matematik": [
+      {s:"Bir sınıfta 24 kız ve 18 erkek öğrenci vardır. Öğrenciler eşit sayıda gruplara ayrılacaktır. En az kaç grup oluşur?", sec:["6","8","12","18"], d:"A"},
+      {s:"3/4 + 1/2 işleminin sonucu kaçtır?", sec:["1","5/4","3/2","7/4"], d:"B"},
+      {s:"0,25 ondalık kesrinin okunuşu nedir?", sec:["Sıfır virgül yirmi beş","Yirmi beş","İki virgül beş","Sıfır virgül iki beş"], d:"A"},
+      {s:"Bir ürünün etiket fiyatı 200 TL'dir. %20 indirim yapılırsa yeni fiyatı kaç TL olur?", sec:["140","150","160","180"], d:"C"},
+      {s:"125 sayısının 4 katı kaçtır?", sec:["400","450","500","550"], d:"C"},
+      {s:"Aşağıdakilerden hangisi bir düzgün çokgendir?", sec:["Dikdörtgen","Eşkenar üçgen","Paralelkenar","Yamuk"], d:"B"},
+      {s:"Bir bütünün 2/5'i 40 ise tamamı kaçtır?", sec:["60","80","100","120"], d:"C"},
+      {s:"2,5 + 1,75 işleminin sonucu nedir?", sec:["3,25","4,25","4,5","3,75"], d:"B"},
+      {s:"Saat 15:45'te akrep ile yelkovan arasındaki açı kaç derecedir?", sec:["90","112.5","120","135"], d:"B"},
+      {s:"Bir kenarı 6 cm olan karenin alanı kaç cm²'dir?", sec:["12","24","36","48"], d:"C"}
+    ],
+    "Türkçe": [
+      {s:"'Gül' kelimesi hangi cümlede mecaz anlamıyla kullanılmıştır?", sec:["Bahçeden bir gül kopardım.","Yüzünde bir gül açtı.","Gül kokusu her yeri sardı.","Gülü çok severim."], d:"B"},
+      {s:"Aşağıdaki cümlelerden hangisinde neden-sonuç ilişkisi vardır?", sec:["Yağmur yağdı, yerler ıslandı.","Sınava çalıştığı için kazandı.","Kitabı okudu ama anlamadı.","Geldi ve oturdu."], d:"B"},
+      {s:"'Mavi' kelimesi hangi cümlede sıfat görevindedir?", sec:["Mavi çok güzel bir renktir.","Gökyüzü bugün çok mavi.","Mavi elbiseyi çok beğendim.","Denizin rengi mavidir."], d:"C"},
+      {s:"Aşağıdaki sözcüklerden hangisi eş seslidir?", sec:["Kalem","Kitap","Yüz","Defter"], d:"C"},
+      {s:"'Öğrenciler bahçede oynuyor.' cümlesinde eylemi yapan kimdir?", sec:["Bahçe","Oynuyor","Öğrenciler","Öğrenciler bahçede"], d:"C"}
+    ],
+    "Fen Bilimleri": [
+      {s:"Dünya'nın uydusu nedir?", sec:["Güneş","Mars","Ay","Venüs"], d:"C"},
+      {s:"Aşağıdakilerden hangisi canlıların ortak özelliği değildir?", sec:["Solunum","Boşaltım","Hareket","Fotosentez"], d:"D"},
+      {s:"Kuvvetin birimi nedir?", sec:["Newton","Joule","Pascal","Watt"], d:"A"},
+      {s:"Güneş tutulması hangi sıralamada olur?", sec:["Güneş-Dünya-Ay","Güneş-Ay-Dünya","Ay-Güneş-Dünya","Dünya-Ay-Güneş"], d:"B"},
+      {s:"Aşağıdakilerden hangisi bir sıvıdır?", sec:["Taş","Su","Hava","Demir"], d:"B"}
+    ]
+  },
+  "6": {
+    "Matematik": [
+      {s:"36 sayısının kaç tane pozitif tam sayı çarpanı vardır?", sec:["6","8","9","12"], d:"C"},
+      {s:"12 ve 18 sayılarının EBOB'u kaçtır?", sec:["2","3","6","12"], d:"C"},
+      {s:"1/2 : 1/4 işleminin sonucu kaçtır?", sec:["1/8","2","1/2","4"], d:"B"},
+      {s:"-5 + (-3) işleminin sonucu kaçtır?", sec:["-8","-2","2","8"], d:"A"},
+      {s:"Bir üçgenin iç açılarından ikisi 50 ve 60 derece ise üçüncüsü kaçtır?", sec:["60","70","80","90"], d:"B"},
+      {s:"2³ + 3² işleminin sonucu kaçtır?", sec:["12","15","17","18"], d:"C"},
+      {s:"(-4) x (-5) işleminin sonucu kaçtır?", sec:["-20","-9","9","20"], d:"D"},
+      {s:"3x = 18 ise x kaçtır?", sec:["3","4","5","6"], d:"D"}
+    ],
+    "Türkçe": [
+      {s:"'Kitap' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Kütüphaneden kitap aldım.","Bu konu matematik kitabında var.","Kitap okumayı severim.","Yeni bir kitap yazdı."], d:"B"},
+      {s:"Aşağıdakilerden hangisi fiilimsidir?", sec:["Koştu","Koşarak","Koşucu","Koşu"], d:"B"},
+      {s:"'Güzel' kelimesi hangi cümlede zarf görevindedir?", sec:["Güzel bir ev aldı.","Güzeli herkes sever.","Güzel konuştu.","Güzel yazı yazdı."], d:"C"},
+      {s:"'Sen de bizimle gelsene.' cümlesinde hangi duygu vardır?", sec:["Pişmanlık","Özlem","İstek","Korku"], d:"C"}
+    ],
+    "Fen Bilimleri": [
+      {s:"Güneş sistemindeki en büyük gezegen hangisidir?", sec:["Dünya","Mars","Jüpiter","Satürn"], d:"C"},
+      {s:"Aşağıdakilerden hangisi vücudumuzdaki sistemlerden biri değildir?", sec:["Sindirim","Solunum","Fotosentez","Boşaltım"], d:"C"},
+      {s:"Basınç birimi nedir?", sec:["Newton","Joule","Pascal","Watt"], d:"C"},
+      {s:"Bir cismin ağırlığı hangi aletle ölçülür?", sec:["Eşit kollu terazi","Dinamometre","Hacim ölçer","Termometre"], d:"B"}
+    ]
+  },
+  "7": {
+    "Matematik": [
+      {s:"(-7) + (+4) işleminin sonucu kaçtır?", sec:["-11","-3","3","11"], d:"B"},
+      {s:"2/3 + 1/6 işleminin sonucu kaçtır?", sec:["3/9","1/2","5/6","3/6"], d:"C"},
+      {s:"4x - 7 = 13 denkleminde x kaçtır?", sec:["3","4","5","6"], d:"C"},
+      {s:"Bir sayının 3 katının 5 fazlası 20 ise bu sayı kaçtır?", sec:["3","4","5","6"], d:"C"},
+      {s:"3 kişinin boy ortalaması 160 cm'dir. 4. kişi katılırsa ortalama 165 oluyor. 4. kişinin boyu kaçtır?", sec:["170","175","180","185"], d:"C"},
+      {s:"2⁴ kaçtır?", sec:["8","16","32","64"], d:"B"}
+    ],
+    "Türkçe": [
+      {s:"'Göz' kelimesi hangi cümlede terim anlamıyla kullanılmıştır?", sec:["Gözlerin çok güzel.","İğnenin gözüne ip geçirdi.","Kitabın gözüne bak.","Ağacın gözü var."], d:"B"},
+      {s:"'Dün akşam sinemaya gittik.' cümlesinde zarf tümleci nedir?", sec:["Dün akşam","Sinemaya","Gittik","Biz"], d:"A"},
+      {s:"Aşağıdaki cümlelerin hangisinde neden-sonuç ilişkisi vardır?", sec:["Sınava çalıştığı için başarılı oldu.","Sınava çalıştı ama başarılı olamadı.","Sınava çalışırsa başarılı olur.","Sınava çalışmak istiyor."], d:"A"}
+    ],
+    "Fen Bilimleri": [
+      {s:"Işık hangi ortamda en hızlı yayılır?", sec:["Su","Hava","Cam","Boşluk"], d:"D"},
+      {s:"Aşağıdakilerden hangisi yenilenebilir enerji kaynağıdır?", sec:["Kömür","Petrol","Güneş","Doğal gaz"], d:"C"},
+      {s:"Saf maddelerin erime ve kaynama noktaları için hangisi doğrudur?", sec:["Değişkendir","Sabittir","Sadece erime sabittir","Sadece kaynama sabittir"], d:"B"}
+    ]
+  },
+  "8": {
+    "Matematik": [
+      {s:"40 sayısının pozitif tam sayı çarpanlarının tamamı iki gruba ayrıldığında A grubundaki sayıların toplamı, B grubundakine eşittir. A grubunda en az kaç sayı vardır?", sec:["2","3","4","5"], d:"B"},
+      {s:"2⁵·2³ işleminin sonucu kaçtır?", sec:["2⁸","2¹⁵","4⁸","4¹⁵"], d:"A"},
+      {s:"√144 + √81 işleminin sonucu kaçtır?", sec:["15","18","21","24"], d:"C"},
+      {s:"Bir sayının 4 katının 7 eksiği, aynı sayının 2 katının 3 fazlasına eşittir. Bu sayı kaçtır?", sec:["3","4","5","6"], d:"C"},
+      {s:"x ve y pozitif tam sayılardır. 2x + 3y = 25 ise x'in alabileceği en büyük değer kaçtır?", sec:["8","9","10","11"], d:"D"},
+      {s:"Eşitsizliklerde x'in alabileceği en büyük tam sayı değeri nedir? (2x-3 < 7)", sec:["3","4","5","6"], d:"B"},
+      {s:"Bir sepetteki bilyelerin 1/3'ü kırmızı, 1/4'ü mavidir. Kalanı 15 ise sepette toplam kaç bilye vardır?", sec:["36","40","45","48"], d:"A"}
+    ],
+    "Türkçe": [
+      {s:"'Bu kitabı okumak' ifadesindeki altı çizili sözcük hangi fiilimsi türüdür?", sec:["İsim-fiil","Sıfat-fiil","Zarf-fiil","Çekimli fiil"], d:"A"},
+      {s:"Aşağıdaki cümlelerden hangisinde söz sanatı vardır?", sec:["Dağlar bizimle konuşuyor.","Kitabı dün okudum.","Hava çok sıcak.","Okula erken geldim."], d:"A"},
+      {s:"'Öğretmen, öğrencilere kitap okumayı tavsiye etti.' cümlesinde kaç fiilimsi vardır?", sec:["1","2","3","4"], d:"A"},
+      {s:"'Gözlerindeki fırtına dinmişti.' cümlesinde hangi söz sanatı vardır?", sec:["Teşhis","Teşbih","İstiare","Kinaye"], d:"D"},
+      {s:"Paragrafta anlatım biçimleri ile ilgili hangisi yanlıştır?", sec:["Açıklama öğreticidir.","Tartışma kanıtlayıcıdır.","Betimleme öyküleyicidir.","Öyküleme olay anlatır."], d:"C"}
+    ],
+    "Fen Bilimleri": [
+      {s:"DNA’nın yapısında hangisi bulunmaz?", sec:["Adenin","Timin","Guanin","Ürasil"], d:"D"},
+      {s:"Kalıtsal bir hastalık hangisidir?", sec:["Grip","Renk körlüğü","Kolera","Zatürre"], d:"B"},
+      {s:"Sıvı basıncı aşağıdakilerden hangisine bağlı değildir?", sec:["Sıvının yoğunluğuna","Yerçekimi ivmesine","Sıvının derinliğine","Kabın şekline"], d:"D"},
+      {s:"Basit makinelerde kuvvetten kazanç sağlarken yoldan kayıp veren araç hangisidir?", sec:["Sabit makara","Hareketli makara","Eğik düzlem","Kaldıraç"], d:"B"},
+      {s:"Mevsimlerin oluşmasının temel nedeni nedir?", sec:["Dünya’nın kendi etrafında dönmesi","Dünya’nın Güneş etrafında dönmesi ve eksen eğikliği","Ay’ın Dünya etrafında dönmesi","Güneş’in kendi etrafında dönmesi"], d:"B"}
+    ],
+    "T.C. İnkılap Tarihi": [
+      {s:"Atatürk ilkelerinden hangisi 'egemenliğin millete ait olması' ilkesidir?", sec:["Cumhuriyetçilik","Milliyetçilik","Halkçılık","Laiklik"], d:"A"},
+      {s:"Kurtuluş Savaşı’nda Doğu Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Yunanistan","Ermenistan","Fransa","İtalya"], d:"B"},
+      {s:"Lozan Antlaşması hangi yıl imzalanmıştır?", sec:["1920","1921","1923","1924"], d:"C"}
+    ],
+    "Din Kültürü": [
+      {s:"Kader ve kaza ile ilgili hangisi doğrudur?", sec:["Kader, insanın iradesini yok sayar.","Kaza, kaderin gerçekleşmesidir.","İnsanın hiçbir sorumluluğu yoktur.","Ecel değiştirilebilir."], d:"B"},
+      {s:"Zekât ile ilgili hangisi doğrudur?", sec:["Zekât herkese farzdır.","Zekât malın belirli bir kısmının verilmesidir.","Zekât sadece Ramazan’da verilir.","Zekât sadece parayla olur."], d:"B"}
+    ],
+    "İngilizce": [
+      {s:"'I get on well with my friends.' cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B"},
+      {s:"'Teen life' ne demektir?", sec:["Gençlik hayatı","Çocukluk","Yaşlılık","Okul hayatı"], d:"A"}
+    ]
+  }
+};
+
+const lgsSoruBankasi = {
   "Matematik": [
-    {s:"24 sayısının pozitif tam sayı çarpanlarının sayısı kaçtır?", sec:["6","8","10","12"], d:"B"},
-    {s:"12 ve 18 sayılarının EBOB’u kaçtır?", sec:["2","3","6","12"], d:"C"},
-    {s:"2³ kaçtır?", sec:["6","8","9","12"], d:"B"},
-    {s:"(-5) + (+3) işleminin sonucu kaçtır?", sec:["-8","-2","2","8"], d:"B"},
-    {s:"2⁵·2³ işleminin sonucu kaçtır?", sec:["2⁸","2¹⁵","4⁸","4¹⁵"], d:"A"},
-    {s:"√144 + √81 işleminin sonucu kaçtır?", sec:["15","18","21","24"], d:"C"},
-    {s:"3x - 5 = 10 denkleminde x kaçtır?", sec:["3","4","5","6"], d:"C"},
-    {s:"Aşağıdakilerden hangisi asal sayıdır?", sec:["21","27","29","33"], d:"C"},
-    {s:"Bir üçgenin iç açıları toplamı kaçtır?", sec:["90","180","270","360"], d:"B"},
-    {s:"15 ve 20 sayılarının EKOK’u kaçtır?", sec:["30","45","60","75"], d:"C"},
-    {s:"f(x) = 2x + 3 fonksiyonunda f(4) kaçtır?", sec:["9","10","11","12"], d:"C"},
-    {s:"Bir sayının 3 katının 5 fazlası 20 ise bu sayı kaçtır?", sec:["3","4","5","6"], d:"C"},
-    {s:"Aşağıdaki sayılardan hangisi 3 ile tam bölünür?", sec:["124","231","344","451"], d:"B"},
-    {s:"Bir sayının 4 katının 7 eksiği, aynı sayının 2 katının 3 fazlasına eşittir. Bu sayı kaçtır?", sec:["3","4","5","6"], d:"C"},
-    {s:"x ve y pozitif tam sayılardır. 2x + 3y = 25 ise x'in alabileceği en büyük değer kaçtır?", sec:["8","9","10","11"], d:"D"}
+    {s:"Alanı 108 cm² olan bir dikdörtgenin kenar uzunlukları santimetre cinsinden birer tam sayıdır. Bu dikdörtgenin çevresi en az kaç santimetredir?", sec:["24","36","42","48"], d:"C"},
+    {s:"Bir torbada 3 kırmızı, 4 mavi, 5 yeşil bilye vardır. Rastgele çekilen bir bilyenin yeşil olma olasılığı kaçtır?", sec:["1/3","1/4","5/12","1/2"], d:"C"},
+    {s:"x < y < z olmak üzere, x, y, z ardışık çift sayılardır. x+y+z = 54 ise y kaçtır?", sec:["16","18","20","22"], d:"B"},
+    {s:"Bir kenarı 4√2 cm olan karenin köşegen uzunluğu kaç cm'dir?", sec:["4","6","8","10"], d:"C"},
+    {s:"(x-3)² özdeşliğinin açılımı aşağıdakilerden hangisidir?", sec:["x²-9","x²+6x+9","x²-6x+9","x²-3x+9"], d:"C"},
+    {s:"Grafiği (0,3) ve (2,0) noktalarından geçen doğrusal denklem nedir?", sec:["y = 2x + 3","y = -3/2x + 3","y = 3/2x + 2","y = -2/3x + 3"], d:"B"},
+    {s:"Bir işçi bir işi 12 günde, diğeri 18 günde bitiriyor. İkisi birlikte aynı işi kaç günde bitirir?", sec:["6","7.2","8","9"], d:"B"},
+    {s:"A(2, -3) noktasının x eksenine göre yansıması hangisidir?", sec:["(-2, -3)","(-2, 3)","(2, 3)","(3, -2)"], d:"C"},
+    {s:"Kareköklü sayılardan √75 sayısı hangisine eşittir?", sec:["3√5","5√3","15√5","25√3"], d:"B"},
+    {s:"3x - 4y + 12 = 0 denkleminin x eksenini kestiği nokta hangisidir?", sec:["(4,0)","(-4,0)","(0,3)","(0,-3)"], d:"B"},
+    {s:"10³ + 10² + 10¹ + 10⁰ işleminin sonucu kaçtır?", sec:["1111","1110","1100","1011"], d:"A"},
+    {s:"P(x) = 2x + 1 fonksiyonu için P(3) kaçtır?", sec:["5","6","7","8"], d:"C"}
+  ],
+  "Türkçe": [
+    {s:"'Başarılı olmak' sadece çok çalışmakla değil, aynı zamanda doğru stratejiler belirlemekle de ilgilidir. Bu cümlede altı çizili fiilimsinin türü nedir?", sec:["Sıfat-fiil","Zarf-fiil","İsim-fiil","Çekimli fiil"], d:"C"},
+    {s:"Aşağıdaki cümlelerin hangisinde 'üstü kapalı' bir eleştiri vardır?", sec:["Bu kadar çalışmayla sınavı kazanman çok zor.","Sınavın çok iyi geçtiğini duydum.","Bugün hava çok güzel.","Hafta sonu sinemaya gideceğiz."], d:"A"},
+    {s:"Aşağıdakilerden hangisinde yazım yanlışı yapılmıştır?", sec:["Yarın sabah erkenden yola çıkacağız.","Hiçbir şey göründüğü gibi değil.","Herşey yolunda gidiyor.","Birkaç gün sonra tekrar gel."], d:"C"},
+    {s:"'Çalışmadan kazanmak, ekmeden biçmeye benzer.' cümlesinde hangi söz sanatı vardır?", sec:["Kişileştirme","Karşıtlık (Tezat)","Abartma","Konuşturma"], d:"B"},
+    {s:"Paragrafın ana fikri genellikle nerede bulunur?", sec:["Giriş cümlesinde","Sonuç cümlesinde","Gelişme bölümünde","Başlıkta"], d:"B"},
+    {s:"Aşağıdaki cümlelerden hangisi kanıtlanabilir bir yargıdır?", sec:["Türkiye'nin en güzel şehri İzmir'dir.","Bu film çok sıkıcıydı.","Su 100 derecede kaynar.","Müzik dinlemek rahatlatıcıdır."], d:"C"}
   ],
   "Fen Bilimleri": [
-    {s:"DNA’nın yapı birimine ne ad verilir?", sec:["Gen","Nükleotid","Kromozom","Protein"], d:"B"},
-    {s:"Basınç birimi nedir?", sec:["Newton","Joule","Pascal","Watt"], d:"C"},
-    {s:"Mevsimlerin oluşmasının temel nedeni nedir?", sec:["Dünya’nın kendi etrafında dönmesi","Dünya’nın Güneş etrafında dönmesi ve eksen eğikliği","Ay’ın Dünya etrafında dönmesi","Güneş’in kendi etrafında dönmesi"], d:"B"},
-    {s:"Aşağıdakilerden hangisi vücudumuzdaki sistemlerden biri değildir?", sec:["Sindirim","Solunum","Fotosentez","Boşaltım"], d:"C"},
-    {s:"Kuvvet birimi nedir?", sec:["Joule","Newton","Pascal","Kalori"], d:"B"},
-    {s:"Işık hangi ortamda en hızlı yayılır?", sec:["Su","Hava","Cam","Boşluk"], d:"D"},
-    {s:"Aşağıdakilerden hangisi yenilenebilir enerji kaynağıdır?", sec:["Kömür","Petrol","Güneş","Doğal gaz"], d:"C"},
-    {s:"Saf maddelerin erime ve kaynama noktaları için hangisi doğrudur?", sec:["Değişkendir","Sabittir","Sadece erime sabittir","Sadece kaynama sabittir"], d:"B"},
-    {s:"Bir cismin ağırlığı hangi aletle ölçülür?", sec:["Eşit kollu terazi","Dinamometre","Hacim ölçer","Termometre"], d:"B"},
-    {s:"Canlıların kalıtsal özelliklerini taşıyan yapı hangisidir?", sec:["Gen","Nükleotid","Kromozom","Protein"], d:"A"}
+    {s:"Bir cismin ağırlığı Dünya'da 60 N'dir. Bu cismin kütlesi kaç kg'dır? (g=10 m/s²)", sec:["6","60","600","0.6"], d:"A"},
+    {s:"Özdeş dirençlerden oluşan bir devrede dirençler seri bağlanırsa eşdeğer direnç nasıl değişir?", sec:["Azalır","Artar","Değişmez","Sıfır olur"], d:"B"},
+    {s:"Bitkiler fotosentez yaparken hangi gazı kullanır?", sec:["Oksijen","Karbondioksit","Azot","Hidrojen"], d:"B"},
+    {s:"Kimyasal bir değişime örnek hangisidir?", sec:["Buzun erimesi","Kağıdın yırtılması","Demirin paslanması","Suyun buharlaşması"], d:"C"},
+    {s:"Periyodik tabloda 1A grubunda yer alan elementlerin genel özelliği nedir?", sec:["Soygazlar","Halojenler","Alkali metaller","Toprak alkali metaller"], d:"C"}
   ],
   "T.C. İnkılap Tarihi": [
-    {s:"Kurtuluş Savaşı’nda Batı Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Ermenistan","Yunanistan","Fransa","İtalya"], d:"B"},
-    {s:"Lozan Antlaşması hangi yıl imzalanmıştır?", sec:["1920","1921","1923","1924"], d:"C"},
-    {s:"Atatürk ilkelerinden hangisi “egemenliğin millete ait olması” ilkesidir?", sec:["Cumhuriyetçilik","Milliyetçilik","Halkçılık","Laiklik"], d:"A"},
-    {s:"TBMM hangi tarihte açılmıştır?", sec:["19 Mayıs 1919","23 Nisan 1920","29 Ekim 1923","30 Ağustos 1922"], d:"B"},
-    {s:"Saltanat hangi tarihte kaldırılmıştır?", sec:["1 Kasım 1922","29 Ekim 1923","3 Mart 1924","24 Temmuz 1923"], d:"A"}
+    {s:"Amasya Genelgesi'nde 'Milletin bağımsızlığını yine milletin azim ve kararı kurtaracaktır.' denilerek ne vurgulanmıştır?", sec:["İstanbul Hükümeti'nin gücü","Ulusal egemenlik ve halkın iradesi","Manda ve himaye","Saltanatın devamı"], d:"B"},
+    {s:"Tekalif-i Milliye Emirleri hangi savaş sırasında yayımlanmıştır?", sec:["I. İnönü","Sakarya Meydan Muharebesi","Büyük Taarruz","Çanakkale"], d:"B"},
+    {s:"Cumhuriyet döneminde hukuk alanında yapılan inkılaplardan biri hangisidir?", sec:["Türk Medeni Kanunu'nun kabulü","Tevhid-i Tedrisat Kanunu","Harf İnkılabı","Soyadı Kanunu"], d:"A"}
   ],
   "Din Kültürü": [
-    {s:"Kader ne demektir?", sec:["Allah’ın her şeyi bilmesi ve takdir etmesi","İnsanın özgür iradesi","Evrenin yasaları","Meleklerin görevi"], d:"A"},
-    {s:"Ramazan ayında oruç tutmak hangi ibadettir?", sec:["Namaz","Oruç","Zekât","Hac"], d:"B"},
-    {s:"İlahi kitaplar hangi peygamberlere verilmiştir?", sec:["Sadece Hz. Muhammed’e","Sadece Hz. Musa’ya","Çeşitli peygamberlere","Sadece Hz. İsa’ya"], d:"C"}
+    {s:"İslam dininde 'tevekkül' kavramı neyi ifade eder?", sec:["Çalışmadan beklemek","Üzerine düşeni yapıp sonucu Allah'a bırakmak","Kadere isyan etmek","Sadece dua etmek"], d:"B"},
+    {s:"Aşağıdakilerden hangisi İslam'ın şartlarından biri değildir?", sec:["Namaz kılmak","Oruç tutmak","Hacca gitmek","Kurban kesmek"], d:"D"}
   ],
   "İngilizce": [
-    {s:"'Best friend' ne demektir?", sec:["Sınıf arkadaşı","En iyi arkadaş","Komşu","Öğretmen"], d:"B"},
-    {s:"'I get on well with my friends.' cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B"},
-    {s:"'Weather' ne demektir?", sec:["Hava durumu","Haber","Spor","Yemek"], d:"A"}
-  ],
-  "Sosyal Bilgiler": [
-    {s:"İletişimde 'ben dili' kullanmak neyi sağlar?", sec:["Çatışmayı artırır","Empatiyi güçlendirir","Konuşmayı engeller","Dinlemeyi azaltır"], d:"B"},
-    {s:"Kültür ve miras ile ilgili hangisi doğrudur?", sec:["Kültür sadece yemeklerden oluşur.","Miras yalnızca maddi varlıklardır.","Kültür kuşaktan kuşağa aktarılır.","Miras sadece binalardır."], d:"C"}
+    {s:"Choose the correct option: If it ______ tomorrow, we will stay at home.", sec:["rains","rained","will rain","is raining"], d:"A"},
+    {s:"What is the synonym of 'huge'?", sec:["Tiny","Small","Enormous","Short"], d:"C"}
   ]
 };
 
-const lgsSoruHavuzu = {
-  "Türkçe": [
-    {s:"Bu kitabı okumak ifadesindeki altı çizili sözcük hangi fiilimsi türüdür?", sec:["İsim-fiil","Sıfat-fiil","Zarf-fiil","Çekimli fiil"], d:"A", kaynak:"LGS 2023 Sorusu"},
-    {s:"Aşağıdaki cümlelerden hangisinde söz sanatı vardır?", sec:["Dağlar bizimle konuşuyor.","Kitabı dün okudum.","Hava çok sıcak.","Okula erken geldim."], d:"A", kaynak:"LGS 2022 Sorusu"},
-    {s:"Öğretmen, öğrencilere kitap okumayı tavsiye etti. cümlesinde kaç fiilimsi vardır?", sec:["1","2","3","4"], d:"A", kaynak:"MEB Örnek Soru"},
-    {s:"Gözlerindeki fırtına dinmişti. cümlesinde hangi söz sanatı vardır?", sec:["Teşhis","Teşbih","İstiare","Kinaye"], d:"D", kaynak:"LGS 2025 Sorusu"}
-  ],
-  "Matematik": [
-    {s:"40 sayısının pozitif tam sayı çarpanlarının tamamı iki gruba ayrıldığında A grubundaki sayıların toplamı, B grubundakine eşittir. A grubunda en az kaç sayı vardır?", sec:["2","3","4","5"], d:"B", kaynak:"LGS 2023 Sorusu"},
-    {s:"Aşağıdaki sayılardan hangisi 3 ile tam bölünür?", sec:["124","231","344","451"], d:"B", kaynak:"LGS 2022 Sorusu"},
-    {s:"2⁵·2³ işleminin sonucu kaçtır?", sec:["2⁸","2¹⁵","4⁸","4¹⁵"], d:"A", kaynak:"LGS 2024 Sorusu"},
-    {s:"Eşitsizliklerde x'in alabileceği en büyük tam sayı değeri nedir? (2x-3 < 7)", sec:["3","4","5","6"], d:"B", kaynak:"LGS 2025 Sorusu"},
-    {s:"Bir sepetteki bilyelerin 1/3'ü kırmızı, 1/4'ü mavidir. Kalanı 15 ise sepette toplam kaç bilye vardır?", sec:["36","40","45","48"], d:"A", kaynak:"LGS 2026 Sorusu"}
-  ],
-  "Fen Bilimleri": [
-    {s:"DNA’nın yapısında hangisi bulunmaz?", sec:["Adenin","Timin","Guanin","Ürasil"], d:"D", kaynak:"LGS 2023 Sorusu"},
-    {s:"Kalıtsal bir hastalık hangisidir?", sec:["Grip","Renk körlüğü","Kolera","Zatürre"], d:"B", kaynak:"LGS 2022 Sorusu"},
-    {s:"Basit makinelerde kuvvetten kazanç sağlarken yoldan kayıp veren araç hangisidir?", sec:["Sabit makara","Hareketli makara","Eğik düzlem","Kaldıraç"], d:"B", kaynak:"LGS 2024 Sorusu"},
-    {s:"Sıvı basıncı aşağıdakilerden hangisine bağlı değildir?", sec:["Sıvının yoğunluğuna","Yerçekimi ivmesine","Sıvının derinliğine","Kabın şekline"], d:"D", kaynak:"MEB Örnek Soru"}
-  ],
-  "T.C. İnkılap Tarihi": [
-    {s:"Atatürk ilkelerinden hangisi 'egemenliğin millete ait olması' ilkesidir?", sec:["Cumhuriyetçilik","Milliyetçilik","Halkçılık","Laiklik"], d:"A", kaynak:"LGS 2023 Sorusu"},
-    {s:"Kurtuluş Savaşı’nda Doğu Cephesi’nde hangi ülkeyle savaşılmıştır?", sec:["Yunanistan","Ermenistan","Fransa","İtalya"], d:"B", kaynak:"LGS 2022 Sorusu"},
-    {s:"Lozan Antlaşması hangi yıl imzalanmıştır?", sec:["1920","1921","1923","1924"], d:"C", kaynak:"LGS 2024 Sorusu"}
-  ],
-  "Din Kültürü": [
-    {s:"Kader ve kaza ile ilgili hangisi doğrudur?", sec:["Kader, insanın iradesini yok sayar.","Kaza, kaderin gerçekleşmesidir.","İnsanın hiçbir sorumluluğu yoktur.","Ecel değiştirilebilir."], d:"B", kaynak:"LGS 2023 Sorusu"},
-    {s:"Zekât ile ilgili hangisi doğrudur?", sec:["Zekât herkese farzdır.","Zekât malın belirli bir kısmının verilmesidir.","Zekât sadece Ramazan’da verilir.","Zekât sadece parayla olur."], d:"B", kaynak:"LGS 2024 Sorusu"}
-  ],
-  "İngilizce": [
-    {s:"I get on well with my friends. cümlesinin anlamı nedir?", sec:["Arkadaşlarımı özlerim.","Arkadaşlarımla iyi geçinirim.","Arkadaşlarımla tartışırım.","Arkadaşlarıma güvenirim."], d:"B", kaynak:"LGS 2023 Sorusu"},
-    {s:"Teen life ne demektir?", sec:["Gençlik hayatı","Çocukluk","Yaşlılık","Okul hayatı"], d:"A", kaynak:"LGS 2025 Sorusu"}
-  ]
-};
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+  return array;
+}
 
-function testleriUret(ders) {
-    let havuz = soruHavuzu[ders] || soruHavuzu["Matematik"]; 
-    let lgsHavuz = lgsSoruHavuzu[ders] || [];
+function testleriUret(ders, sinif) {
+    let havuz = soruBankasi[sinif] && soruBankasi[sinif][ders] ? [...soruBankasi[sinif][ders]] : [];
     let testler = [];
     
     for (let i = 1; i <= 5; i++) {
+        let karisikHavuz = shuffle([...havuz]);
         let secilenSorular = [];
         
-        let kopyaLgs = [...lgsHavuz].sort(() => 0.5 - Math.random());
-        for(let j=0; j<4 && j<kopyaLgs.length; j++) {
-            secilenSorular.push(kopyaLgs[j]);
+        // Tekrarsız seçim
+        for (let j = 0; j < 20; j++) {
+            if (j < karisikHavuz.length) {
+                secilenSorular.push(karisikHavuz[j]);
+            } else {
+                let yedekHavuz = soruBankasi["8"] && soruBankasi["8"][ders] ? shuffle([...soruBankasi["8"][ders]]) : [];
+                secilenSorular.push(yedekHavuz[j % yedekHavuz.length]);
+            }
         }
-
-        let kopyaStandart = [...havuz].sort(() => 0.5 - Math.random());
-        let k = 0;
-        while(secilenSorular.length < 20) {
-            secilenSorular.push(kopyaStandart[k % kopyaStandart.length]);
-            k++;
-        }
-        
-        secilenSorular.sort(() => 0.5 - Math.random());
-
         testler.push({ ad: "Test " + i, zorluk: i <= 2 ? "Orta" : "Zor", sorular: secilenSorular });
     }
     return testler;
@@ -563,7 +694,7 @@ function konuRender() {
   
   konular.forEach((konu, kIndex) => {
     const key = `${seciliSinif}|${seciliDers}|${konu}`;
-    const testler = testleriUret(seciliDers); 
+    const testler = testleriUret(seciliDers, seciliSinif); 
     const videolar = videoUret(konu, seciliSinif); 
     
     html += `<div class="konu-kart">
@@ -597,12 +728,12 @@ function konuRender() {
 
 function izleVideo(key, vIndex) {
     if (currentUser) tamamlaVideo(key, vIndex);
-    else alert("İlerlemenizi kaydetmek için lütfen giriş yapın. Video yeni sekmede açılacak.");
+    else showMessage("Uyarı", "İlerlemenizi kaydetmek için lütfen giriş yapın. Video yeni sekmede açılacak.");
     window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(key.split('|')[2]), "_blank");
 }
 
 function testTikla(key, tIndex, konuAdi) {
-    if (!currentUser) { alert("Testleri çözebilmek için lütfen giriş yapın."); girisModalAc(); return; }
+    if (!currentUser) { showMessage("Giriş Gerekli", "Testleri çözebilmek için lütfen giriş yapın."); girisModalAc(); return; }
     
     aktifTestKey = key; aktifTestIndex = tIndex;
     document.getElementById("sinavBaslik").textContent = "Testiniz Başlıyor";
@@ -619,24 +750,23 @@ function testTikla(key, tIndex, konuAdi) {
     
     if (testiTamamlamisMi(key, tIndex)) {
         let score = users[currentUser.email].testScores[`${key}_${tIndex}`];
-        if (confirm(`Bu testi daha önce çözdün!\n\nDoğru: ${score.d}\nYanlış: ${score.y}\nBoş: ${score.b}\nNet: ${score.net}\n\nYeniden çözmek ister misin?`)) {
-            let testler = testleriUret(seciliDers);
-            aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
-            document.getElementById("startOverlay").classList.add("acik");
-        }
+        showMessage("Daha Önce Çözüldü", `Bu testi daha önce çözdün!\n\nDoğru: ${score.d}\nYanlış: ${score.y}\nBoş: ${score.b}\nNet: ${score.net}\n\nYeniden çözmek için Tamam'a bas.`);
+        let testler = testleriUret(seciliDers, seciliSinif);
+        aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
+        document.getElementById("startOverlay").classList.add("acik");
     } else {
-        let testler = testleriUret(seciliDers);
+        let testler = testleriUret(seciliDers, seciliSinif);
         aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
         document.getElementById("startOverlay").classList.add("acik");
     }
 }
 
 function denemeTikla() {
-    if (!currentUser) { alert("Deneme sınavlarına girebilmek için lütfen giriş yapın."); girisModalAc(); return; }
+    if (!currentUser) { showMessage("Giriş Gerekli", "Deneme sınavlarına girebilmek için lütfen giriş yapın."); girisModalAc(); return; }
     
     let title = seciliSinif === "8" ? "8. Sınıf LGS Genel Deneme Sınavı" : seciliSinif + ". Sınıf Genel Deneme Sınavı";
     document.getElementById("sinavBaslik").textContent = "Deneme Sınavı Başlıyor";
-    document.getElementById("sinavAciklama").textContent = "Gerçek LGS formatında. Lütfen sınav süresini seçin.";
+    document.getElementById("sinavAciklama").textContent = "Gerçek sınav formatında. Lütfen sınav süresini seçin.";
     
     document.getElementById('sureSecim').innerHTML = `
         <button class="btn-giris" style="background:var(--arka-plan); color:var(--siyah); border:1px solid var(--acik-gri);" onclick="sureSec(this, 40)">40 Dk</button>
@@ -647,19 +777,19 @@ function denemeTikla() {
     document.getElementById('ozelSureInput').value = "";
     document.getElementById('ozelSureInput').placeholder = "Gerçek LGS Süresi (155)";
     
-    let lgsSorular = {};
+    let sinavSorular = {};
     if (seciliSinif === "8") {
-        lgsSorular = {
-            "Türkçe": Array(20).fill().map(() => lgsSoruHavuzu["Türkçe"][Math.floor(Math.random() * lgsSoruHavuzu["Türkçe"].length)]),
-            "Matematik": Array(20).fill().map(() => lgsSoruHavuzu["Matematik"][Math.floor(Math.random() * lgsSoruHavuzu["Matematik"].length)]),
-            "Fen Bilimleri": Array(20).fill().map(() => lgsSoruHavuzu["Fen Bilimleri"][Math.floor(Math.random() * lgsSoruHavuzu["Fen Bilimleri"].length)]),
-            "T.C. İnkılap Tarihi": Array(10).fill().map(() => lgsSoruHavuzu["T.C. İnkılap Tarihi"][Math.floor(Math.random() * lgsSoruHavuzu["T.C. İnkılap Tarihi"].length)]),
-            "Din Kültürü": Array(10).fill().map(() => lgsSoruHavuzu["Din Kültürü"][Math.floor(Math.random() * lgsSoruHavuzu["Din Kültürü"].length)]),
-            "İngilizce": Array(10).fill().map(() => lgsSoruHavuzu["İngilizce"][Math.floor(Math.random() * lgsSoruHavuzu["İngilizce"].length)])
+        sinavSorular = {
+            "Türkçe": shuffle([...lgsSoruBankasi["Türkçe"]]).slice(0, 20),
+            "Matematik": shuffle([...lgsSoruBankasi["Matematik"]]).slice(0, 20),
+            "Fen Bilimleri": shuffle([...lgsSoruBankasi["Fen Bilimleri"]]).slice(0, 20),
+            "T.C. İnkılap Tarihi": shuffle([...lgsSoruBankasi["T.C. İnkılap Tarihi"]]).slice(0, 10),
+            "Din Kültürü": shuffle([...lgsSoruBankasi["Din Kültürü"]]).slice(0, 10),
+            "İngilizce": shuffle([...lgsSoruBankasi["İngilizce"]]).slice(0, 10)
         };
-        aktifTestObj = { baslik: title, sorular: lgsSorular, isLgs: true };
+        aktifTestObj = { baslik: title, sorular: sinavSorular, isLgs: true };
     } else {
-        let sorular = Array(20).fill().map(() => soruHavuzu["Matematik"][Math.floor(Math.random() * soruHavuzu["Matematik"].length)]);
+        let sorular = shuffle([...soruBankasi[seciliSinif]["Matematik"]]).slice(0, 20);
         aktifTestObj = { baslik: title, sorular: sorular };
     }
     
@@ -723,10 +853,12 @@ function secTikla(label) {
 }
 
 function kapatSinav() {
-    if(confirm("Sınavdan çıkmak istediğinize emin misiniz?")) {
+    showMessage("Onay", "Sınavdan çıkmak istediğinize emin misiniz?");
+    document.getElementById('customAlertBtn').onclick = function() {
+        document.getElementById('customAlertOverlay').style.display = 'none';
         document.getElementById("testModal").classList.remove("acik");
         durdurTimer();
-    }
+    };
 }
 
 function bitirSinav() {
@@ -745,12 +877,22 @@ function bitirSinav() {
         });
     }
     
-    if (bos > 0) { if(!confirm(`${bos} soru boş. Yine de bitirmek istiyor musunuz?`)) return; }
-    
+    if (bos > 0) { 
+        showMessage("Eksik Cevaplar", `${bos} soru boş bıraktınız. Yine de bitirmek istiyor musunuz?`);
+        document.getElementById('customAlertBtn').onclick = function() {
+            document.getElementById('customAlertOverlay').style.display = 'none';
+            finalizeSinav(dogru, yanlis, bos);
+        };
+    } else {
+        finalizeSinav(dogru, yanlis, bos);
+    }
+}
+
+function finalizeSinav(dogru, yanlis, bos) {
     let net = dogru - (yanlis/3);
     if(currentUser) tamamlaTest(aktifTestKey, aktifTestIndex, {d:dogru, y:yanlis, b:bos, net:net});
     
-    alert(`Sonuç: ${dogru} D, ${yanlis} Y, ${bos} B\nNet: ${net.toFixed(2)}`);
+    showMessage("Sınav Sonucu", `Doğru: ${dogru}\nYanlış: ${yanlis}\nBoş: ${bos}\nNet: ${net.toFixed(2)}`);
     document.getElementById("testModal").classList.remove("acik");
     durdurTimer(); konuRender(); 
 }
@@ -763,7 +905,7 @@ function baslatTimer() {
     guncelleSayac();
     if (kalanSaniye <= 0) {
       durdurTimer();
-      alert("Süre doldu! Sınav otomatik olarak sonlandırılıyor.");
+      showMessage("Süre Doldu", "Süre doldu! Sınav otomatik olarak sonlandırılıyor.");
       bitirSinav();
     }
   }, 1000);
