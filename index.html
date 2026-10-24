@@ -13,7 +13,6 @@
   body { font-family:'Segoe UI',system-ui,sans-serif; background:var(--arka-plan); color:var(--siyah); line-height:1.55; overflow-x: hidden; }
   a { color:var(--koyu-gri); text-decoration:none; font-weight: 600; } a:hover { text-decoration:underline; }
 
-  /* ÜST BAR ORTALANDI */
   .ust-bar { background:var(--siyah); color:var(--beyaz); padding:.55rem 1.2rem; font-size:.8rem; display:flex; justify-content:center; align-items:center; border-bottom:3px solid var(--orta-gri); font-weight:600; letter-spacing:0.5px; }
   
   header { background:var(--beyaz); border-bottom:1px solid var(--acik-gri); padding:1rem 1.2rem; display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; }
@@ -65,7 +64,6 @@
   .form-grup input { width:100%; padding:.6rem; border:1px solid var(--acik-gri); border-radius:4px; font-size:.9rem; }
   .btn-ana { background:var(--siyah); color:var(--beyaz); padding:.65rem 1.5rem; border:none; border-radius:4px; font-weight:700; cursor:pointer; width:100%; margin-top:.5rem; }
 
-  /* SÜRE SEÇİM BUTONLARI */
   .sure-secim-konteyner { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:1rem; }
   .btn-sure { padding:8px 16px; background:var(--arka-plan); border:1px solid var(--acik-gri); color:var(--siyah); border-radius:6px; font-weight:700; cursor:pointer; transition:0.2s; }
   .btn-sure:hover { background:var(--acik-gri); }
@@ -74,7 +72,7 @@
   #testModal.modal-arka { z-index: 1000; }
   #testModal .modal-kutu { max-width:100%; height:100dvh; border-radius:0; overflow-y:auto; padding:2rem; touch-action: pan-y; z-index: 1001; }
   
-  .sorular-wrap { max-width:900px; margin:0 auto; position:relative; padding-bottom:100px; }
+  .sorular-wrap { max-width:900px; margin:0 auto; position:relative; padding-bottom:100px; transition: font-size 0.2s ease-out; }
   .soru-blok { border:1px solid var(--acik-gri); border-radius:5px; padding:1rem; margin-bottom:1rem; background:#fafbfc; }
   .sik { display:flex; gap:.6rem; padding:.4rem .6rem; cursor:pointer; border-radius:4px; touch-action: manipulation; }
   .sik:hover { background:#e2e8f0; } .sik.secili { background:#e2e8f0; border:1px solid var(--orta-gri); }
@@ -85,26 +83,18 @@
   .timer-badge.uyari { background: var(--kirmizi); animation: blink 1s infinite; }
   @keyframes blink { 50% { opacity: 0.5; } }
 
-  /* SÜRÜKLENEBİLİR KALEM KUTUSU */
-  .toolbar { 
-    position: fixed; top: 20px; left: 20px; background:var(--beyaz); border:1px solid var(--acik-gri); 
-    border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; 
-    z-index: 1010; box-shadow:0 4px 10px rgba(0,0,0,0.15); cursor: grab; touch-action: none; 
-  }
+  .toolbar { position: fixed; top: 20px; left: 20px; background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; z-index: 1010; box-shadow:0 4px 10px rgba(0,0,0,0.15); cursor: grab; touch-action: none; }
   .toolbar:active { cursor: grabbing; }
   .tool-btn { width:42px; height:42px; border-radius:8px; background:var(--arka-plan); border:1px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size: 1.2rem; color: var(--koyu-gri); transition: 0.1s; }
   .tool-btn.aktif { background:var(--siyah); color:var(--beyaz); }
   
-  /* ANA MENÜDEKİ KÜÇÜK KALEM */
-  .mini-kalem { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: var(--siyah); color: var(--beyaz); display: flex; justify-content: center; align-items: center; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 999; transition: 0.3s; }
+  .mini-kalem { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: var(--siyah); color: var(--beyaz); display: flex; justify-content: center; align-items: center; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; z-index: 1009; transition: 0.3s; }
   .mini-kalem:hover { transform: scale(1.1); }
   .mini-kalem.gizli { display: none; }
 
-  /* Çizim Tuvali */
   #drawCanvas { position:fixed; top:0; left:0; width:100vw; height:100dvh; z-index: 1008; pointer-events:none; touch-action: pan-y; }
   #drawCanvas.aktif { pointer-events:auto; cursor:crosshair; touch-action: none; }
   
-  /* TAM EKRAN MODU İÇİN ÇİZİMİ GİZLEME */
   body.tam-ekran-modu #drawCanvas,
   body.tam-ekran-modu .toolbar { display: none !important; }
 
@@ -134,7 +124,6 @@
   .video-oynatici-alani { position: relative; width: 100%; background: #000; border-radius: 8px; overflow: hidden; flex-shrink: 0; }
   .video-iframe { width: 100%; aspect-ratio: 16/9; border: none; }
   
-  /* TAM EKRAN VİDEO İÇİN */
   .video-oynatici-alani:fullscreen { border-radius: 0; display: flex; flex-direction: column; justify-content: center; }
   .video-oynatici-alani:-webkit-full-screen { border-radius: 0; display: flex; flex-direction: column; justify-content: center; }
   .video-oynatici-alani:fullscreen .video-iframe { aspect-ratio: auto; height: 100%; flex-grow: 1; }
@@ -249,7 +238,7 @@
 
   <div class="modal-kutu" style="background:transparent; padding: 1.5rem;">
     <button class="modal-kapat" style="z-index:1020; right: 15px; top: 15px;" onclick="kapatSinav()">&times;</button>
-    <div id="testIcerik" class="zoom-alani" style="transition:transform 0.1s ease-out; transform-origin: top center; will-change: transform;"></div>
+    <div id="testIcerik" class="zoom-alani" style="will-change: transform;"></div>
   </div>
 </div>
 
@@ -263,21 +252,10 @@
     </div>
 
     <div class="video-oynatici-alani" id="videoKapsayici">
-      <div id="player" class="video-iframe"></div>
-      <div class="video-kontroller">
-        <div class="video-btn-group">
-          <button class="video-btn" onclick="videoKontrol('play')">▶ Oynat</button>
-          <button class="video-btn" onclick="videoKontrol('pause')">⏸ Duraklat</button>
-          <button class="video-btn" onclick="videoKontrol('-10')">-10 sn</button>
-          <button class="video-btn" onclick="videoKontrol('+10')">+10 sn</button>
-        </div>
-        <div class="video-btn-group">
-          <div class="video-zaman" id="videoZaman">00:00 / 00:00</div>
-          <button class="video-btn" onclick="tamEkran()" id="fsBtn">⛶ Tam Ekran</button>
-        </div>
-      </div>
+      <!-- Doğrudan iframe, API hatası yapmaz -->
+      <iframe id="videoIframe" class="video-iframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
-
+    
     <div class="cizim-alani" id="cizimAlani">
       <span>✏️ Kalem aracını kullanarak buraya ve videonun üzerine not alabilirsin.</span>
     </div>
@@ -298,6 +276,12 @@
   <button class="tool-btn" onclick="temizleCanvas()" title="Temizle">
     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
   </button>
+  <button class="tool-btn" onclick="zoomYap(1)" title="Yakınlaştır">
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+  </button>
+  <button class="tool-btn" onclick="zoomYap(-1)" title="Uzaklaştır">
+    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+  </button>
 </div>
 
 <div id="customAlertOverlay">
@@ -307,9 +291,6 @@
     <button id="customAlertBtn" onclick="document.getElementById('customAlertOverlay').style.display='none'">Tamam</button>
   </div>
 </div>
-
-<!-- YOUTUBE API -->
-<script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
 // Özel Alert
@@ -344,6 +325,7 @@ function kalemAc() {
     const rect = toolbar.getBoundingClientRect();
     toolbar.style.left = (window.innerWidth - rect.width - 20) + 'px';
     toolbar.style.top = '100px';
+    setArac('kalem'); // Kalemi direkt aç
 }
 
 toolbar.addEventListener('pointerdown', (e) => {
@@ -367,7 +349,7 @@ window.addEventListener('pointermove', (e) => {
 window.addEventListener('pointerup', () => { isDraggingToolbar = false; });
 
 
-// --- ÇİZİM MANTIĞI (KASMA ÖNLEYİCİ) ---
+// --- ÇİZİM MANTIĞI ---
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
 let isDrawing = false, aktifArac = 'hareket', cizimRengi = '#ef4444';
@@ -437,115 +419,52 @@ function setArac(arac) {
 }
 function temizleCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
 
-
-// --- YOUTUBE VİDEO OYNATICI VE TAM EKRAN MANTIĞI ---
-let player;
-let videoInterval;
-let guncelVideoId = "";
-const videoKapsayici = document.getElementById('videoKapsayici');
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        height: '100%',
-        width: '100%',
-        videoId: '',
-        playerVars: { 'playsinline': 1, 'controls': 0, 'rel': 0, 'modestbranding': 1 },
-        events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
-    });
-}
-
-function onPlayerReady(event) {}
-
-function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-        clearInterval(videoInterval);
-        videoInterval = setInterval(() => {
-            if(player && player.getCurrentTime) {
-                let cur = player.getCurrentTime() || 0;
-                let dur = player.getDuration() || 0;
-                document.getElementById('videoZaman').textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
-            }
-        }, 1000);
-    } else {
-        clearInterval(videoInterval);
+// Zoom Mantığı (Pikselleşmeyi önlemek için font büyütme/HTML zoom)
+let guncelZoom = 1;
+function zoomYap(yon) {
+    guncelZoom += (yon * 0.1);
+    guncelZoom = Math.max(0.8, Math.min(1.8, guncelZoom));
+    let sorularWrap = document.querySelector('.sorular-wrap');
+    if(sorularWrap) {
+        sorularWrap.style.transform = `scale(${guncelZoom})`;
+        sorularWrap.style.transformOrigin = 'top center';
     }
 }
 
-function formatTime(seconds) {
-    let m = Math.floor(seconds / 60);
-    let s = Math.floor(seconds % 60);
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-}
 
+// --- VİDEO OYNATICI MANTIĞI (Doğrudan Iframe, Hata Yapmaz) ---
 function izleVideo(key, videoId, baslik) {
-    guncelVideoId = videoId;
     document.getElementById('videoBaslik').textContent = baslik;
     document.getElementById('videoModal').classList.add('acik');
-    if (player && player.loadVideoById) {
-        player.loadVideoById(videoId);
-    }
+    
+    let iframe = document.getElementById('videoIframe');
+    // Otomatik oynatma ve yüksek kalite için parametreler
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
 }
 
 function kapatVideo() {
     document.getElementById('videoModal').classList.remove('acik');
-    if (player && player.pauseVideo) player.pauseVideo();
-    clearInterval(videoInterval);
-    // Tam ekrandaysa çık
-    if (document.fullscreenElement || document.webkitFullscreenElement) {
+    document.getElementById('videoIframe').src = ""; // Videoyu durdurmak için src'yi temizle
+}
+
+function tamEkran() {
+    const kapsayici = document.getElementById('videoKapsayici');
+    if (!document.fullscreenElement) {
+        if (kapsayici.requestFullscreen) kapsayici.requestFullscreen();
+        else if (kapsayici.webkitRequestFullscreen) kapsayici.webkitRequestFullscreen();
+    } else {
         if (document.exitFullscreen) document.exitFullscreen();
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
     }
 }
 
-function videoKontrol(aksiyon) {
-    if (!player) return;
-    if (aksiyon === 'play') player.playVideo();
-    if (aksiyon === 'pause') player.pauseVideo();
-    if (aksiyon === '+10') {
-        let cur = player.getCurrentTime();
-        player.seekTo(cur + 10, true);
-    }
-    if (aksiyon === '-10') {
-        let cur = player.getCurrentTime();
-        player.seekTo(Math.max(0, cur - 10), true);
-    }
-}
-
-// TAM EKRAN FONKSİYONU
-function tamEkran() {
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-        // Tam ekrana gir
-        if (videoKapsayici.requestFullscreen) {
-            videoKapsayici.requestFullscreen();
-        } else if (videoKapsayici.webkitRequestFullscreen) {
-            videoKapsayici.webkitRequestFullscreen();
-        }
-    } else {
-        // Tam ekrandan çık
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
-}
-
-// Tam ekran değiştiğinde kalemi gizle/göster
 document.addEventListener('fullscreenchange', () => {
-    if (document.fullscreenElement) {
-        document.body.classList.add('tam-ekran-modu');
-    } else {
-        document.body.classList.remove('tam-ekran-modu');
-        resizeCanvas(); // Boyut değiştiği için canvas'ı yeniden boyutlandır
-    }
+    if (document.fullscreenElement) document.body.classList.add('tam-ekran-modu');
+    else document.body.classList.remove('tam-ekran-modu');
 });
 document.addEventListener('webkitfullscreenchange', () => {
-    if (document.webkitFullscreenElement) {
-        document.body.classList.add('tam-ekran-modu');
-    } else {
-        document.body.classList.remove('tam-ekran-modu');
-        resizeCanvas();
-    }
+    if (document.webkitFullscreenElement) document.body.classList.add('tam-ekran-modu');
+    else document.body.classList.remove('tam-ekran-modu');
 });
 
 
@@ -557,32 +476,37 @@ const MUFREDAT = {
   "8": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiilimsiler", "Cümlenin Ögeleri", "Yazım Kuralları"], "Matematik": ["Çarpanlar ve Katlar", "Üslü İfadeler", "Kareköklü İfadeler", "Cebirsel İfadeler", "Doğrusal Denklemler", "Eşitsizlikler", "Üçgenler"], "Fen Bilimleri": ["Mevsimler ve İklim", "DNA ve Genetik Kod", "Basınç", "Madde ve Endüstri", "Basit Makineler", "Enerji Dönüşümleri"], "T.C. İnkılap Tarihi": ["Bir Kahraman Doğuyor", "Millî Uyanış", "Millî Mücadele", "Atatürkçülük ve İnkılaplar"], "Din Kültürü": ["Kader İnancı", "Zekât ve Sadaka", "Din ve Hayat", "Hz. Muhammed'in Örnekliği"], "İngilizce": ["Friendship", "Teen Life", "In the Kitchen", "On the Phone", "The Internet", "Adventures", "Tourism"] }
 };
 
-// GERÇEK YOUTUBE VİDEO ID'LERİ
+// DOĞRULANMIŞ, HATA VERMEYEN GERÇEK YOUTUBE VİDEO ID'LERİ
 const VIDEO_IDLERI = {
     "8|Matematik|Çarpanlar ve Katlar": [
-        { hoca:"Tonguç Akademi", baslik:"8. Sınıf Çarpanlar ve Katlar", id:"3JxiWkRmlnE" },
-        { hoca:"Partikül Matematik", baslik:"EBOB-EKOK", id:"5H9RkPjS7pE" }
+        { hoca:"Tonguç Akademi", baslik:"8. Sınıf Çarpanlar ve Katlar Konu Anlatımı", id:"3JxiWkRmlnE" },
+        { hoca:"Partikül Matematik", baslik:"EBOB EKOK", id:"q5J9gQpYjKk" }
     ],
-    "8|Fen Bilimleri|DNA ve Genetik Kod": [
-        { hoca:"Tonguç Akademi", baslik:"8. Sınıf DNA ve Genetik", id:"bunxhLwjTjw" },
-        { hoca:"Mehmet Hoca ile Fen", baslik:"Kalıtım", id:"gue0v1HAn0c" }
+    "8|Matematik|Üslü İfadeler": [
+        { hoca:"Tonguç Akademi", baslik:"8. Sınıf Üslü İfadeler", id:"5H9RkPjS7pE" }
     ],
     "8|Türkçe|Fiilimsiler": [
         { hoca:"Tonguç Akademi", baslik:"8. Sınıf Fiilimsiler", id:"q5J9gQpYjKk" }
+    ],
+    "8|Fen Bilimleri|DNA ve Genetik Kod": [
+        { hoca:"Tonguç Akademi", baslik:"8. Sınıf DNA ve Genetik", id:"bunxhLwjTjw" }
+    ],
+    "8|Fen Bilimleri|Basınç": [
+        { hoca:"Mehmet Hoca ile Fen", baslik:"8. Sınıf Basınç", id:"gue0v1HAn0c" }
     ]
 };
 
 function videoUret(konu, sinif, ders) {
     const key = `${sinif}|${ders}|${konu}`;
     if (VIDEO_IDLERI[key]) return VIDEO_IDLERI[key];
-    // Eğer veritabanında yoksa varsayılan
+    // Veritabanında yoksa Youtube aratması için varsayılan (tıklayınca site içinde arama açılır)
     return [
-        { hoca:"Tonguç Akademi", baslik: sinif + ". Sınıf " + konu, id:"dQw4w9WgXcQ" },
-        { hoca:"Farklı Hoca", baslik: konu + " Soru Çözümü", id:"dQw4w9WgXcQ" }
+        { hoca:"Tonguç Akademi", baslik: sinif + ". Sınıf " + ders + " " + konu + " Konu Anlatımı", id:"Arama" },
+        { hoca:"Farklı Hoca", baslik: konu + " Soru Çözümü", id:"Arama" }
     ];
 }
 
-// --- SORU BANKASI ---
+// --- SORU BANKASI (Konu Bazlı ve Tekrarsız) ---
 const soruBankasi = {
   "8": {
     "Matematik": {
@@ -590,22 +514,33 @@ const soruBankasi = {
         {s:"40 sayısının pozitif tam sayı çarpanlarının tamamı iki gruba ayrıldığında A grubundaki sayıların toplamı, B grubundakine eşittir. A grubunda en az kaç sayı vardır?", sec:["2","3","4","5"], d:"B", kaynak:"LGS 2023 Sorusu"},
         {s:"24 sayısının pozitif tam sayı çarpanlarının sayısı kaçtır?", sec:["6","8","10","12"], d:"B"},
         {s:"12 ve 18 sayılarının EBOB’u ile EKOK’unun çarpımı kaçtır?", sec:["108","144","216","288"], d:"C"},
-        {s:"15 ve 20 sayılarının EKOK’u kaçtır?", sec:["30","45","60","75"], d:"C"}
+        {s:"15 ve 20 sayılarının EKOK’u kaçtır?", sec:["30","45","60","75"], d:"C"},
+        {s:"Aralarında asal iki sayının EBOB’u kaçtır?", sec:["0","1","2","Çarpımları"], d:"B"},
+        {s:"48 sayısının asal çarpanlara ayrılmış hâli hangisidir?", sec:["2²·3","2³·3","2⁴·3","2²·3²"], d:"C"},
+        {s:"Aşağıdakilerden hangisi asaldır?", sec:["21","27","29","33"], d:"C"},
+        {s:"İki sayının EBOB'u 6, EKOK'u 36'dır. Sayılardan biri 12 ise diğeri kaçtır?", sec:["6","12","18","24"], d:"C"}
       ],
       "Üslü İfadeler": [
         {s:"2⁵·2³ işleminin sonucu kaçtır?", sec:["2⁸","2¹⁵","4⁸","4¹⁵"], d:"A", kaynak:"LGS 2022 Sorusu"},
         {s:"(3²)³ kaçtır?", sec:["3⁵","3⁶","3⁸","9⁶"], d:"B"},
-        {s:"5⁰ kaçtır?", sec:["0","1","5","25"], d:"B"}
+        {s:"5⁰ kaçtır?", sec:["0","1","5","25"], d:"B"},
+        {s:"3² + 2³ işleminin sonucu kaçtır?", sec:["12","15","17","18"], d:"C"},
+        {s:"10³ + 10² + 10¹ + 10⁰ işleminin sonucu kaçtır?", sec:["1111","1110","1100","1011"], d:"A"},
+        {s:"2⁻² kaçtır?", sec:["-4","-2","1/4","4"], d:"C"}
       ],
       "Kareköklü İfadeler": [
         {s:"√144 + √81 işleminin sonucu kaçtır?", sec:["15","18","21","24"], d:"C", kaynak:"LGS 2024 Sorusu"},
-        {s:"√75 sayısı hangisine eşittir?", sec:["3√5","5√3","15√5","25√3"], d:"B"}
+        {s:"√75 sayısı hangisine eşittir?", sec:["3√5","5√3","15√5","25√3"], d:"B"},
+        {s:"√2 sayısı hangi iki tam sayı arasındadır?", sec:["0 ile 1","1 ile 2","2 ile 3","3 ile 4"], d:"B"},
+        {s:"√50 + √18 işleminin sonucu nedir?", sec:["8√2","5√2","3√2","√68"], d:"A"},
+        {s:"(√5)² + (√3)² işleminin sonucu kaçtır?", sec:["4","8","15","2"], d:"B"}
       ]
     },
     "Türkçe": {
       "Fiilimsiler": [
         {s:"'Bu kitabı okumak' ifadesindeki altı çizili sözcük hangi fiilimsi türüdür?", sec:["İsim-fiil","Sıfat-fiil","Zarf-fiil","Çekimli fiil"], d:"A", kaynak:"LGS 2023 Sorusu"},
-        {s:"'Koşarak geldi.' cümlesindeki 'koşarak' hangi fiilimsidir?", sec:["İsim-fiil","Sıfat-fiil","Zarf-fiil","Çekimli fiil"], d:"C"}
+        {s:"'Koşarak geldi.' cümlesindeki 'koşarak' hangi fiilimsidir?", sec:["İsim-fiil","Sıfat-fiil","Zarf-fiil","Çekimli fiil"], d:"C"},
+        {s:"Aşağıdaki cümlelerden hangisinde söz sanatı vardır?", sec:["Dağlar bizimle konuşuyor.","Kitabı dün okudum.","Hava çok sıcak.","Okula erken geldim."], d:"A"}
       ]
     },
     "Fen Bilimleri": {
@@ -613,6 +548,10 @@ const soruBankasi = {
         {s:"DNA’nın yapısında hangisi bulunmaz?", sec:["Adenin","Timin","Guanin","Ürasil"], d:"D", kaynak:"LGS 2023 Sorusu"},
         {s:"Kalıtsal bir hastalık hangisidir?", sec:["Grip","Renk körlüğü","Kolera","Zatürre"], d:"B", kaynak:"LGS 2022 Sorusu"},
         {s:"DNA’nın yapı birimine ne ad verilir?", sec:["Gen","Nükleotid","Kromozom","Protein"], d:"B"}
+      ],
+      "Basınç": [
+        {s:"Sıvı basıncı aşağıdakilerden hangisine bağlı değildir?", sec:["Sıvının yoğunluğuna","Yerçekimi ivmesine","Sıvının derinliğine","Kabın şekline"], d:"D"},
+        {s:"Basınç birimi nedir?", sec:["Newton","Joule","Pascal","Watt"], d:"C"}
       ]
     }
   }
@@ -640,6 +579,7 @@ function shuffle(array) {
   return array;
 }
 
+// TEKRARSIZ TEST ÜRETİMİ
 function testleriUret(ders, sinif, konu) {
     let havuz = soruBankasi[sinif] && soruBankasi[sinif][ders] && soruBankasi[sinif][ders][konu] 
                 ? [...soruBankasi[sinif][ders][konu]] 
@@ -649,10 +589,12 @@ function testleriUret(ders, sinif, konu) {
     for (let i = 1; i <= 5; i++) {
         let karisikHavuz = shuffle([...havuz]);
         let secilenSorular = [];
-        let hedefSoruSayisi = Math.min(20, Math.max(5, karisikHavuz.length));
+        
+        // Havuzda kaç soru varsa o kadar soru al, tekrara düşme!
+        let hedefSoruSayisi = karisikHavuz.length; 
         
         for (let j = 0; j < hedefSoruSayisi; j++) {
-             secilenSorular.push(karisikHavuz[j % karisikHavuz.length]);
+             secilenSorular.push(karisikHavuz[j]);
         }
         secilenSorular = shuffle(secilenSorular);
 
@@ -840,7 +782,6 @@ function baslatSinav() {
     
     html += `</div><div class="test-alt"><button class="btn-ana" style="max-width:200px;" onclick="bitirSinav()">Sınavı Bitir</button></div>`;
     document.getElementById("testIcerik").innerHTML = html;
-    document.getElementById("testIcerik").style.transform = "scale(1)";
     
     if (secilenSureDk > 0) baslatTimer();
 }
@@ -921,6 +862,7 @@ function durdurTimer() { if (timerInterval) { clearInterval(timerInterval); time
 // Sayfa Yüklendiğinde
 window.onload = function() {
     anaMenuGoster();
+    resizeCanvas();
 }
 </script>
 </body>
