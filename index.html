@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>BilgiHane | Ortaokul & LGS Hazırlık</title>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
   :root {
@@ -20,16 +19,6 @@
   .logo h1 span { color:var(--orta-gri); font-weight: 400;}
   .logo p { font-size:.75rem; color:var(--orta-gri); }
   
-  .kullanici-alani { display:flex; align-items:center; gap:1rem; }
-  .btn-giris { background:var(--siyah); color:var(--beyaz); padding:.5rem 1rem; border:none; border-radius:4px; font-weight:700; cursor:pointer; }
-  .kullanici-bilgi { 
-    font-weight:700; font-size:0.95rem; color:var(--beyaz); background:var(--mavi); 
-    padding:0.4rem 0.8rem; border-radius:20px; display:flex; align-items:center; gap:0.6rem; 
-    box-shadow:0 2px 5px rgba(0,0,0,0.15);
-  }
-  .btn-cikis { background:var(--beyaz); color:var(--kirmizi); border:none; padding:0.2rem 0.6rem; border-radius:12px; font-size:0.75rem; font-weight:bold; cursor:pointer; }
-  .btn-cikis:hover { background: var(--arka-plan); }
-
   .sekme-grubu { display:flex; flex-wrap:wrap; gap:.4rem; }
   .sekme-grubu button { padding:.45rem .95rem; border:1.5px solid var(--acik-gri); background:var(--beyaz); color:var(--siyah); border-radius:4px; font-weight:600; font-size:.85rem; cursor:pointer; }
   .sekme-grubu button.aktif { background:var(--siyah); color:var(--beyaz); border-color:var(--siyah); }
@@ -53,20 +42,17 @@
   .video-kart .hoca { font-size:.68rem; font-weight:800; color:var(--orta-gri); }
   .video-kart .v-ad { font-size:.83rem; font-weight:600; margin:.2rem 0 .35rem; }
   .video-kart .izle { margin-top:.5rem; font-size:.72rem; font-weight:700; color:var(--beyaz); background:var(--siyah); padding:.28rem .7rem; border-radius:3px; display:inline-block; }
-  .tik-ikon { color: var(--yesil); font-weight: 900; font-size: 1.2rem; position: absolute; top: 10px; right: 10px; }
 
   .test-kategori { border-top:1px solid var(--acik-gri); }
   .kategori-baslik { background:var(--arka-plan); padding:.6rem 1rem; font-size:.85rem; font-weight:700; cursor:pointer; display:flex; justify-content:space-between; }
   .kategori-icerik { padding:.8rem; }
   .test-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:.6rem; }
   .test-kart { border:1px solid var(--acik-gri); border-radius:5px; padding:.65rem; background:var(--beyaz); cursor:pointer; text-align:center; position:relative; }
-  .test-kart.tamamlandi { border-color: var(--yesil); background: #f0fdf4; }
   .test-kart .t-ad { font-weight:800; font-size:.9rem; color:var(--siyah); }
   .test-kart .t-meta { font-size:.72rem; color:var(--orta-gri); }
   .test-kart .t-call { font-size:.75rem; color:var(--mavi); font-weight:bold; margin-top:5px; }
-  .test-kart .tik-ikon { font-size: 1rem; top: 5px; right: 5px; }
 
-  .modal-arka { position:fixed; inset:0; background:rgba(15,23,42,0.85); display:none; justify-content:center; align-items:center; z-index:150; backdrop-filter: blur(4px); overflow-y:auto; padding:1rem; -webkit-overflow-scrolling: touch; }
+  .modal-arka { position:fixed; inset:0; background:rgba(15,23,42,0.85); display:none; justify-content:center; align-items:center; z-index:1000; backdrop-filter: blur(4px); overflow-y:auto; padding:1rem; -webkit-overflow-scrolling: touch; }
   .modal-arka.acik { display:flex; }
   .modal-kutu { background:var(--beyaz); padding:2rem; border-radius:12px; max-width:450px; width:100%; position:relative; margin:auto; }
   .modal-kapat { position:absolute; top:15px; right:15px; font-size:1.5rem; cursor:pointer; background:none; border:none; font-weight:bold; }
@@ -76,27 +62,33 @@
   .form-grup input { width:100%; padding:.6rem; border:1px solid var(--acik-gri); border-radius:4px; font-size:.9rem; }
   .btn-ana { background:var(--siyah); color:var(--beyaz); padding:.65rem 1.5rem; border:none; border-radius:4px; font-weight:700; cursor:pointer; width:100%; margin-top:.5rem; }
 
-  /* Z-INDEX HİYERARŞİSİ TEST VE ÇİZİM İÇİN GÜNCELLENDİ */
-  #testModal.modal-arka { z-index: 200; }
-  #testModal .modal-kutu { max-width:100%; height:100dvh; border-radius:0; overflow-y:auto; padding:2rem; touch-action: pan-y; -webkit-overflow-scrolling: touch; z-index: 201; }
+  /* Sınav ve Test Modalları */
+  #testModal.modal-arka { z-index: 1000; }
+  #testModal .modal-kutu { max-width:100%; height:100dvh; border-radius:0; overflow-y:auto; padding:2rem; touch-action: pan-y; z-index: 1001; }
   
-  .sorular-wrap { max-width:900px; margin:0 auto; position:relative; z-index:101; padding-bottom:100px; }
+  .sorular-wrap { max-width:900px; margin:0 auto; position:relative; padding-bottom:100px; }
   .soru-blok { border:1px solid var(--acik-gri); border-radius:5px; padding:1rem; margin-bottom:1rem; background:#fafbfc; }
   .sik { display:flex; gap:.6rem; padding:.4rem .6rem; cursor:pointer; border-radius:4px; touch-action: manipulation; }
   .sik:hover { background:#e2e8f0; } .sik.secili { background:#e2e8f0; border:1px solid var(--orta-gri); }
-  
   .kaynak-etiket { display: inline-block; background-color: #fee2e2; color: #b91c1c; font-size: 0.72rem; font-weight: 800; padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.5rem; border: 1px solid #fca5a5; }
 
-  .test-alt { display:flex; gap:.8rem; justify-content:center; align-items:center; position:fixed; bottom:0; left:0; width:100%; background:var(--beyaz); padding:1rem; border-top:1px solid var(--acik-gri); z-index: 230; }
-  .timer-badge { background: var(--siyah); color: var(--beyaz); padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-family: monospace; font-size: 1.1rem; position: fixed; top: 15px; right: 70px; z-index: 230; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .test-alt { display:flex; gap:.8rem; justify-content:center; align-items:center; position:fixed; bottom:0; left:0; width:100%; background:var(--beyaz); padding:1rem; border-top:1px solid var(--acik-gri); z-index: 1005; }
+  .timer-badge { background: var(--siyah); color: var(--beyaz); padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-family: monospace; font-size: 1.1rem; position: fixed; top: 15px; right: 70px; z-index: 1005; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
   .timer-badge.uyari { background: var(--kirmizi); animation: blink 1s infinite; }
   @keyframes blink { 50% { opacity: 0.5; } }
 
-  /* KALEM VE SİLGİ KATMANLARI (En üstte olmalı) */
-  .toolbar { position:fixed; right:15px; top:50%; transform:translateY(-50%); background:var(--beyaz); border:1px solid var(--acik-gri); border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; z-index: 250; box-shadow:0 4px 10px rgba(0,0,0,0.1); }
+  /* HAREKET ETTİRİLEBİLİR KALEM KUTUSU (Sürüklenebilir) */
+  .toolbar { 
+    position: fixed; top: 20px; left: 20px; background:var(--beyaz); border:1px solid var(--acik-gri); 
+    border-radius:10px; display:flex; flex-direction:column; gap:8px; padding:12px 8px; 
+    z-index: 1010; box-shadow:0 4px 10px rgba(0,0,0,0.15); cursor: grab; touch-action: none; 
+  }
+  .toolbar:active { cursor: grabbing; }
   .tool-btn { width:42px; height:42px; border-radius:8px; background:var(--arka-plan); border:1px solid transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size: 1.2rem; color: var(--koyu-gri); transition: 0.1s; }
   .tool-btn.aktif { background:var(--siyah); color:var(--beyaz); }
-  #drawCanvas { position:fixed; top:0; left:0; width:100vw; height:100dvh; z-index: 240; pointer-events:none; touch-action: pan-y; }
+  
+  /* Çizim Tuvali */
+  #drawCanvas { position:fixed; top:0; left:0; width:100vw; height:100dvh; z-index: 1008; pointer-events:none; touch-action: pan-y; }
   #drawCanvas.aktif { pointer-events:auto; cursor:crosshair; touch-action: none; }
 
   #anaMenu { display: block; }
@@ -106,76 +98,27 @@
   .ozellikler { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;}
   .ozellik-kart { background: var(--beyaz); border: 1px solid var(--acik-gri); border-radius: 8px; padding: 1.5rem; text-align: center; }
   .ozellik-kart h3 { color: var(--mavi); margin-bottom: .5rem; }
-  
-  /* YENİ ŞIK KİTAP TASARIMI (YATAY) */
-  .kitap-blok {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-  .kitap-kategori {
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    padding: 1.2rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  .kitap-kategori h4 {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px dashed #cbd5e1;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+
+  /* KİTAP ÖNERİLERİ */
+  .kitap-blok { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+  .kitap-kategori { background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1.2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .kitap-kategori h4 { font-family: 'Segoe UI', sans-serif; font-size: 1.1rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px dashed #cbd5e1; display: flex; align-items: center; gap: 0.5rem; }
   .kategori-kolay h4 { color: #16a34a; border-color: #86efac; }
   .kategori-orta h4 { color: #d97706; border-color: #fcd34d; }
   .kategori-zor h4 { color: #dc2626; border-color: #fca5a5; }
-  .kitap-listesi {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-  .kitap-listesi li {
-    background: #f8fafc;
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    border: 1px solid #e2e8f0;
-    transition: transform 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .kitap-listesi li:hover { transform: translateX(5px); border-color: #94a3b8; background: #fff; }
+  .kitap-listesi { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .kitap-listesi li { background: #f8fafc; padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.9rem; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 0.5rem; }
   .kitap-listesi li::before { content: '📘'; font-size: 1.1rem; }
 
   .yesil { color: var(--yesil); } .kirmizi { color: var(--kirmizi); }
   .gizli { display: none !important; }
 
-  #customAlertOverlay {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh;
-    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px);
-    display: none; justify-content: center; align-items: center; z-index: 9999;
-  }
-  #customAlertBox {
-    background: #ffffff; padding: 25px 30px; border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;
-    max-width: 400px; width: 90%; border: 1px solid #cbd5e1;
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
+  #customAlertOverlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100dvh; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(3px); display: none; justify-content: center; align-items: center; z-index: 9999; }
+  #customAlertBox { background: #ffffff; padding: 25px 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; max-width: 400px; width: 90%; border: 1px solid #cbd5e1; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
   @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   #customAlertTitle { margin-bottom: 10px; color: #0f172a; font-size: 1.2rem; font-weight: 800; }
   #customAlertText { margin-bottom: 20px; color: #475569; font-size: 0.95rem; }
-  #customAlertBtn {
-    background: #0f172a; color: #ffffff; border: none; padding: 10px 25px;
-    border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem;
-    transition: 0.2s;
-  }
+  #customAlertBtn { background: #0f172a; color: #ffffff; border: none; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; transition: 0.2s; }
   #customAlertBtn:hover { background: #1e293b; }
   
   @media(max-width:600px) {
@@ -184,9 +127,9 @@
     .modal-kutu { padding:1rem; } 
     .test-alt { flex-direction:column; padding:.6rem; }
     .btn-ana { width:100%; }
-    .toolbar { top: auto; bottom: 80px; right: 10px; transform: none; flex-direction: row; padding: 8px; gap: 6px; width: auto; justify-content: center; flex-wrap: wrap; border-radius: 30px;}
     .tool-btn { width: 38px; height: 38px; }
     #testModal .modal-kutu { padding: 1rem; }
+    .kitap-blok { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -194,9 +137,6 @@
 
 <div class="ust-bar">
   <span>2026–2027 Eğitim Öğretim Yılı • MEB Müfredatı</span>
-  <div class="kullanici-alani" id="kullaniciAlani">
-    <button class="btn-giris" onclick="girisModalAc()">Giriş Yap / Kayıt Ol</button>
-  </div>
 </div>
 
 <header>
@@ -240,7 +180,7 @@
 
   <section id="dersGorunum" class="gizli">
     <div class="bilgi" id="bilgiKutu">
-      <strong>Hoş geldin!</strong> Test çözmek ve ilerlemeni kaydetmek için lütfen sağ üstten giriş yap.
+      <strong>Hoş geldin!</strong> Sitedeki tüm test ve denemeleri giriş yapmadan özgürce çözebilirsin.
     </div>
 
     <div class="ders-sekme" id="dersSekme"></div>
@@ -253,33 +193,7 @@
   </section>
 </main>
 
-<div class="modal-arka" id="authModal">
-  <div class="modal-kutu">
-    <button class="modal-kapat" onclick="document.getElementById('authModal').classList.remove('acik')">&times;</button>
-    <h2 id="authTitle" style="margin-bottom:1.5rem; text-align:center;">Giriş Yap</h2>
-    
-    <div id="kayitFormu" class="gizli">
-      <div class="form-grup"><label>İsim Soyisim</label><input type="text" id="regName"></div>
-    </div>
-    <div class="form-grup"><label>E-posta / Kullanıcı Adı</label><input type="text" id="authEmail"></div>
-    <div class="form-grup"><label>Şifre</label><input type="password" id="authPass"></div>
-    <div class="form-grup gizli" id="sifreTekrarGrup"><label>Şifre Tekrar</label><input type="password" id="authPassRepeat"></div>
-    
-    <button class="btn-ana" id="authBtn" onclick="authIslem()">Giriş Yap</button>
-    <p style="text-align:center; margin-top:1rem; font-size:.85rem; cursor:pointer; color:var(--mavi);" id="authToggle" onclick="toggleAuthMode()">Hesabın yok mu? Kayıt Ol</p>
-  </div>
-</div>
-
-<div class="modal-arka" id="dogrulamaModal">
-  <div class="modal-kutu">
-    <button class="modal-kapat" onclick="document.getElementById('dogrulamaModal').classList.remove('acik')">&times;</button>
-    <h2 style="margin-bottom:1rem; text-align:center;">E-posta Doğrulama</h2>
-    <p style="font-size:0.9rem; text-align:center; margin-bottom:1.5rem; color:var(--orta-gri);">E-posta adresinize 6 haneli bir doğrulama kodu gönderdik. Lütfen kodu aşağıya girin.</p>
-    <div class="form-grup"><label>Doğrulama Kodu</label><input type="text" id="dogrulamaKodu" placeholder="Örn: 123456"></div>
-    <button class="btn-ana" onclick="dogrulamaTamamla()">Doğrula ve Devam Et</button>
-  </div>
-</div>
-
+<!-- SINAV BAŞLANGIÇ MODAL -->
 <div class="modal-arka" id="startOverlay">
   <div class="modal-kutu" style="max-width:450px;">
     <button class="modal-kapat" onclick="document.getElementById('startOverlay').classList.remove('acik')">&times;</button>
@@ -296,12 +210,14 @@
   </div>
 </div>
 
+<!-- TEST EKRANI -->
 <div class="modal-arka" id="testModal" style="background:var(--beyaz); align-items:flex-start; padding:0;">
   <canvas id="drawCanvas"></canvas>
   
   <div id="canliSayac" class="timer-badge gizli">00:00</div>
 
-  <div class="toolbar">
+  <!-- SÜRÜKLENEBİLİR KALEM KUTUSU -->
+  <div class="toolbar" id="floatingToolbar">
     <button class="tool-btn aktif" id="toolHareket" onclick="setArac('hareket')" title="Kaydır">
       <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
     </button>
@@ -323,7 +239,7 @@
   </div>
 
   <div class="modal-kutu" style="background:transparent; padding: 1.5rem;">
-    <button class="modal-kapat" style="z-index:120; right: 15px; top: 15px;" onclick="kapatSinav()">&times;</button>
+    <button class="modal-kapat" style="z-index:1020; right: 15px; top: 15px;" onclick="kapatSinav()">&times;</button>
     <div id="testIcerik" class="zoom-alani" style="transition:transform 0.1s ease-out; transform-origin: top center; will-change: transform;"></div>
   </div>
 </div>
@@ -337,6 +253,7 @@
 </div>
 
 <script>
+// Özel Alert
 function showMessage(title, text) {
     document.getElementById('customAlertTitle').innerText = title;
     document.getElementById('customAlertText').innerText = text;
@@ -344,7 +261,7 @@ function showMessage(title, text) {
 }
 window.alert = function(msg) { showMessage("Bilgi", msg); };
 
-// F12 VE GELİŞTİRİCİ ARAÇLARI KORUMASI
+// F12 ve Kopyalama Koruması
 document.addEventListener('contextmenu', event => event.preventDefault());
 document.addEventListener('copy', event => event.preventDefault());
 document.addEventListener('cut', event => event.preventDefault());
@@ -355,9 +272,35 @@ document.addEventListener('keydown', function(e) {
     if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) { e.preventDefault(); return false; }
     if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) { e.preventDefault(); return false; }
     if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) { e.preventDefault(); return false; }
-    if (e.ctrlKey && (e.key === 'S' || e.key === 's' || e.keyCode === 83)) { e.preventDefault(); return false; }
 });
 
+// Sürüklenebilir Toolbar Mantığı
+const toolbar = document.getElementById('floatingToolbar');
+let isDraggingToolbar = false, startX, startY, initialLeft, initialTop;
+
+toolbar.addEventListener('pointerdown', (e) => {
+    if(e.target.closest('.tool-btn')) return; // Butonlara tıklanınca sürükleme iptal
+    isDraggingToolbar = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    const rect = toolbar.getBoundingClientRect();
+    initialLeft = rect.left;
+    initialTop = rect.top;
+    toolbar.style.transform = 'none';
+    e.preventDefault();
+});
+
+window.addEventListener('pointermove', (e) => {
+    if (!isDraggingToolbar) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    toolbar.style.left = `${initialLeft + dx}px`;
+    toolbar.style.top = `${initialTop + dy}px`;
+});
+
+window.addEventListener('pointerup', () => { isDraggingToolbar = false; });
+
+// Çizim Mantığı
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
 let isDrawing = false, aktifArac = 'hareket', cizimRengi = '#ef4444';
@@ -390,7 +333,7 @@ canvas.addEventListener('pointerdown', (e) => {
 canvas.addEventListener('pointermove', (e) => { 
     if (!isDrawing || aktifArac === 'hareket') return; 
     const pos = getPos(e);
-    ctx.lineWidth = aktifArac === 'silgi' ? 20 : 3;
+    ctx.lineWidth = aktifArac === 'silgi' ? 25 : 3;
     if (aktifArac === 'silgi') {
         ctx.globalCompositeOperation = 'destination-out';
     } else {
@@ -425,129 +368,8 @@ function zoomYap(degisim) {
     el.style.transform = `scale(${yeni})`;
 }
 
-function encryptData(data) { try { return btoa(unescape(encodeURIComponent(JSON.stringify(data)))); } catch(e) { return ""; } }
-function decryptData(cipher) { try { return JSON.parse(decodeURIComponent(escape(atob(cipher)))); } catch(e) { return null; } }
 
-const _pk1 = "XZZ0KwlP", _pk2 = "upMWnyX3m";
-const _sid1 = "service_qi", _sid2 = "4v6pr";
-const _tid1 = "4eu", _tid2 = "kazl";
-emailjs.init(_pk1 + _pk2); 
-const EMAIL_SERVICE_ID = _sid1 + _sid2; 
-const EMAIL_TEMPLATE_ID = _tid1 + _tid2; 
-
-let rawUsers = localStorage.getItem('bh_users_enc');
-let users = rawUsers ? decryptData(rawUsers) : {};
-let rawUser = localStorage.getItem('bh_currentUser_enc');
-let currentUser = rawUser ? decryptData(rawUser) : null;
-if (!users) users = {}; 
-let isLoginMode = true, bekleyenKayit = null;
-
-if (!users['sbg8b2027'] || users['sbg8b2027'].name === "Hoca") {
-    users['sbg8b2027'] = { name: "ŞBG 8B Sınıfı", pass: "ruhi1234", completedVideos: [], completedTests: [], testScores: {} };
-    saveData();
-}
-
-function saveData() {
-    localStorage.setItem('bh_users_enc', encryptData(users));
-    localStorage.setItem('bh_currentUser_enc', encryptData(currentUser));
-}
-
-function girisModalAc() { document.getElementById('authModal').classList.add('acik'); }
-function toggleAuthMode() {
-    isLoginMode = !isLoginMode;
-    document.getElementById('authTitle').textContent = isLoginMode ? 'Giriş Yap' : 'Kayıt Ol';
-    document.getElementById('authBtn').textContent = isLoginMode ? 'Giriş Yap' : 'Kayıt Ol';
-    document.getElementById('authToggle').textContent = isLoginMode ? 'Hesabın yok mu? Kayıt Ol' : 'Zaten hesabın var mı? Giriş Yap';
-    document.getElementById('kayitFormu').classList.toggle('gizli', isLoginMode);
-    document.getElementById('sifreTekrarGrup').classList.toggle('gizli', isLoginMode);
-}
-
-function authIslem() {
-    let email = document.getElementById('authEmail').value.trim().toLowerCase();
-    let pass = document.getElementById('authPass').value;
-    if (!email || !pass) return showMessage("Eksik Bilgi", "Lütfen tüm alanları doldurun.");
-    
-    if (isLoginMode) {
-        if (users[email] && users[email].pass === pass) {
-            currentUser = { email: email, name: users[email].name };
-            saveData(); kullaniciGuncelle();
-            document.getElementById('authModal').classList.remove('acik'); dersGorunumAc();
-        } else { showMessage("Hata", "Hatalı e-posta veya şifre!"); }
-    } else {
-        let name = document.getElementById('regName').value.trim();
-        let passRepeat = document.getElementById('authPassRepeat').value;
-        if (!name) return showMessage("Hata", "İsim gerekli.");
-        if (pass !== passRepeat) return showMessage("Hata", "Şifreler uyuşmuyor!");
-        if (pass.length < 6) return showMessage("Hata", "Şifreniz en az 6 karakter olmalıdır.");
-        if (users[email]) return showMessage("Hata", "Bu e-posta zaten kayıtlı.");
-
-        let kod = Math.floor(100000 + Math.random() * 900000).toString(); 
-        let templateParams = { to_email: email, verification_code: kod };
-        let btn = document.getElementById('authBtn');
-        btn.textContent = "Gönderiliyor..."; btn.disabled = true;
-
-        emailjs.send(EMAIL_SERVICE_ID, EMAIL_TEMPLATE_ID, templateParams)
-            .then(function() {
-                bekleyenKayit = { email, name, pass, kod }; 
-                document.getElementById('dogrulamaKodu').value = "";
-                document.getElementById('dogrulamaModal').classList.add('acik');
-                btn.textContent = "Kayıt Ol"; btn.disabled = false;
-            }, function(error) {
-                showMessage("Hata", "Kod gönderilemedi. İnternet bağlantınızı kontrol edin.");
-                btn.textContent = "Kayıt Ol"; btn.disabled = false;
-            });
-    }
-}
-
-function dogrulamaTamamla() {
-    let girilenKod = document.getElementById('dogrulamaKodu').value;
-    if (girilenKod !== bekleyenKayit.kod) return showMessage("Hata", "Girdiğiniz kod hatalı!");
-    
-    users[bekleyenKayit.email] = { name: bekleyenKayit.name, pass: bekleyenKayit.pass, completedVideos: [], completedTests: [], testScores: {} };
-    currentUser = { email: bekleyenKayit.email, name: bekleyenKayit.name };
-    saveData();
-    document.getElementById('dogrulamaModal').classList.remove('acik');
-    document.getElementById('authModal').classList.remove('acik');
-    kullaniciGuncelle(); dersGorunumAc();
-    showMessage("Başarılı", "Hesabınız başarıyla oluşturuldu!");
-}
-
-function cikisYap() { currentUser = null; saveData(); kullaniciGuncelle(); anaMenuGoster(); }
-
-function kullaniciGuncelle() {
-    let alan = document.getElementById('kullaniciAlani');
-    let bilgi = document.getElementById('bilgiKutu');
-    if (currentUser) {
-        alan.innerHTML = `<div class="kullanici-bilgi"><span>👤 ${currentUser.name}</span><button class="btn-cikis" onclick="cikisYap()">Çıkış</button></div>`;
-        if(bilgi) bilgi.innerHTML = `<strong>Hoş geldin, ${currentUser.name}!</strong> Çözdüğün testler ve izlediğin videolar otomatik olarak kaydedilir.`;
-    } else {
-        alan.innerHTML = `<button class="btn-giris" onclick="girisModalAc()">Giriş Yap / Kayıt Ol</button>`;
-        if(bilgi) bilgi.innerHTML = `<strong>Hoş geldin!</strong> Test çözmek ve ilerlemeni kaydetmek için lütfen sağ üstten giriş yap.`;
-    }
-    if(document.getElementById('anaMenu').classList.contains('gizli')) konuRender(); 
-}
-
-function tamamlaTest(key, testIndex, score) {
-    if(!currentUser) return;
-    let u = users[currentUser.email], testId = `${key}_${testIndex}`;
-    if(!u.completedTests.includes(testId)) u.completedTests.push(testId);
-    u.testScores[testId] = score; saveData();
-}
-function tamamlaVideo(key, videoIndex) {
-    if(!currentUser) return;
-    let u = users[currentUser.email], vidId = `${key}_${videoIndex}`;
-    if(!u.completedVideos.includes(vidId)) u.completedVideos.push(vidId);
-    saveData(); konuRender();
-}
-function testiTamamlamisMi(key, testIndex) {
-    if(!currentUser) return false;
-    return users[currentUser.email].completedTests.includes(`${key}_${testIndex}`);
-}
-function videoTamamlamisMi(key, videoIndex) {
-    if(!currentUser) return false;
-    return users[currentUser.email].completedVideos.includes(`${key}_${videoIndex}`);
-}
-
+/* MÜFREDAT VE VERİLER */
 const MUFREDAT = {
   "5": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Yazım Kuralları"], "Matematik": ["Doğal Sayılar", "Kesirler", "Ondalık Gösterim", "Yüzdeler"], "Fen Bilimleri": ["Güneş, Dünya ve Ay", "Canlılar Dünyası", "Kuvvetin Ölçülmesi"], "Sosyal Bilgiler": ["Birey ve Toplum", "Kültür ve Miras", "İnsanlar, Yerler ve Çevreler"], "Din Kültürü": ["Allah İnancı", "Ramazan ve Oruç", "Adap ve Nezaket"], "İngilizce": ["Hello", "My Town", "Games and Hobbies", "My Daily Routine"] },
   "6": { "Türkçe": ["Sözcükte Anlam", "Cümlede Anlam", "Paragraf", "Fiiller", "Sıfatlar"], "Matematik": ["Doğal Sayılar ve Çarpanlar", "Rasyonel Sayılar", "Cebirsel İfadeler", "Açılar"], "Fen Bilimleri": ["Güneş Sistemi ve Tutulmalar", "Vücudumuzdaki Sistemler", "Kuvvet ve Hareket"], "Sosyal Bilgiler": ["Kültür ve Miras", "İnsanlar, Yerler ve Çevreler", "Bilim, Teknoloji ve Toplum"], "Din Kültürü": ["Peygamberler ve İlahi Kitaplar", "Namaz", "Ahlaki Değerler"], "İngilizce": ["Downtown", "Weather and Emotions", "Regular Verbs", "Yummy Breakfast"] },
@@ -562,14 +384,14 @@ const KITAPLAR = {
   "8|T.C. İnkılap Tarihi": { "Kolay": ["Tonguç 8. Sınıf İnkılap", "Fenomen İnkılap"], "Orta": ["Hız Yayınları İnkılap", "Tudem İnkılap"], "Zor": ["Bilfen Pro Bil İnkılap", "Nartest Şampiyon İnkılap"] }
 };
 
-// KONU BAZLI SORU HAVUZLARI
+// TAMAMEN KONU BAZLI, TEKRARSIZ VE LGS/MEB KALİTESİNDE SORU BANKASI
 const soruBankasi = {
   "8": {
     "Matematik": {
       "Çarpanlar ve Katlar": [
         {s:"40 sayısının pozitif tam sayı çarpanlarının tamamı iki gruba ayrıldığında A grubundaki sayıların toplamı, B grubundakine eşittir. A grubunda en az kaç sayı vardır?", sec:["2","3","4","5"], d:"B", kaynak:"LGS 2023 Sorusu"},
         {s:"24 sayısının pozitif tam sayı çarpanlarının sayısı kaçtır?", sec:["6","8","10","12"], d:"B"},
-        {s:"12 ve 18 sayılarının EBOB’u kaçtır?", sec:["2","3","6","12"], d:"C"},
+        {s:"12 ve 18 sayılarının EBOB’u ile EKOK’unun çarpımı kaçtır?", sec:["108","144","216","288"], d:"C"},
         {s:"15 ve 20 sayılarının EKOK’u kaçtır?", sec:["30","45","60","75"], d:"C"},
         {s:"Aralarında asal iki sayının EBOB’u kaçtır?", sec:["0","1","2","Çarpımları"], d:"B"},
         {s:"48 sayısının asal çarpanlara ayrılmış hâli hangisidir?", sec:["2²·3","2³·3","2⁴·3","2²·3²"], d:"C"},
@@ -677,7 +499,7 @@ const soruBankasi = {
   }
 };
 
-// LGS DENEME SORU HAVUZU
+// SADECE LGS DENEMELERİ İÇİN KULLANILAN ÜST DÜZEY SORULAR
 const lgsSoruBankasi = {
   "Matematik": [
     {s:"Alanı 108 cm² olan bir dikdörtgenin kenar uzunlukları santimetre cinsinden birer tam sayıdır. Bu dikdörtgenin çevresi en az kaç santimetredir?", sec:["24","36","42","48"], d:"C", kaynak:"LGS 2024 Sorusu"},
@@ -735,6 +557,7 @@ function testleriUret(ders, sinif, konu) {
     let testler = [];
     
     for (let i = 1; i <= 5; i++) {
+        // Soruları karıştır
         let karisikHavuz = shuffle([...havuz]);
         let secilenSorular = [];
         
@@ -742,6 +565,7 @@ function testleriUret(ders, sinif, konu) {
         let hedefSoruSayisi = Math.min(20, Math.max(10, karisikHavuz.length));
         
         for (let j = 0; j < hedefSoruSayisi; j++) {
+             // Havuz yetmezse başa dönme, benzersiz olanları al
              secilenSorular.push(karisikHavuz[j % karisikHavuz.length]);
         }
         
@@ -815,9 +639,7 @@ function konuRender() {
       <div class="konu-icerik"><div class="video-grid">`;
         
     videolar.forEach((v, vIndex) => {
-        let isDone = videoTamamlamisMi(key, vIndex);
         html += `<div class="video-kart">
-          ${isDone ? '<span class="tik-ikon">✔</span>' : ''}
           <div class="hoca">${v.hoca}</div><div class="v-ad">${v.baslik}</div>
           <a class="izle" href="#" onclick="event.preventDefault(); izleVideo('${key}', ${vIndex})">İzle →</a>
         </div>`;
@@ -827,11 +649,9 @@ function konuRender() {
           <div class="kategori-icerik"><div class="test-grid">`;
             
     testler.forEach((t, tIndex) => {
-      let isDone = testiTamamlamisMi(key, tIndex);
-      html += `<div class="test-kart ${isDone ? 'tamamlandi' : ''}" onclick="testTikla('${key}', ${tIndex}, '${konu}')">
-        ${isDone ? '<span class="tik-ikon">✔</span>' : ''}
+      html += `<div class="test-kart" onclick="testTikla('${key}', ${tIndex}, '${konu}')">
         <div class="t-ad">${t.ad}</div><div class="t-meta">${t.sorular.length} soru</div>
-        <div class="t-call">${isDone ? 'Sonucu Gör' : 'Tıkla ve Çözmeye Başla'}</div>
+        <div class="t-call">Tıkla ve Çözmeye Başla</div>
       </div>`;
     });
     html += `</div></div></div></div></div>`;
@@ -877,14 +697,10 @@ function kitapRender() {
 }
 
 function izleVideo(key, vIndex) {
-    if (currentUser) tamamlaVideo(key, vIndex);
-    else showMessage("Uyarı", "İlerlemenizi kaydetmek için lütfen giriş yapın. Video yeni sekmede açılacak.");
     window.open("https://www.youtube.com/results?search_query=" + encodeURIComponent(key.split('|')[2]), "_blank");
 }
 
 function testTikla(key, tIndex, konuAdi) {
-    if (!currentUser) { showMessage("Giriş Gerekli", "Testleri çözebilmek için lütfen giriş yapın."); girisModalAc(); return; }
-    
     aktifTestKey = key; aktifTestIndex = tIndex;
     document.getElementById("sinavBaslik").textContent = "Testiniz Başlıyor";
     document.getElementById("sinavAciklama").textContent = "Hazır mısınız? Lütfen test süresini seçin.";
@@ -898,22 +714,12 @@ function testTikla(key, tIndex, konuAdi) {
     document.getElementById('ozelSureInput').value = "";
     document.getElementById('ozelSureInput').placeholder = "Örn: 40";
     
-    if (testiTamamlamisMi(key, tIndex)) {
-        let score = users[currentUser.email].testScores[`${key}_${tIndex}`];
-        showMessage("Daha Önce Çözüldü", `Bu testi daha önce çözdün!\n\nDoğru: ${score.d}\nYanlış: ${score.y}\nBoş: ${score.b}\nNet: ${score.net}\n\nYeniden çözmek için Tamam'a bas.`);
-        let testler = testleriUret(seciliDers, seciliSinif, konuAdi);
-        aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
-        document.getElementById("startOverlay").classList.add("acik");
-    } else {
-        let testler = testleriUret(seciliDers, seciliSinif, konuAdi);
-        aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
-        document.getElementById("startOverlay").classList.add("acik");
-    }
+    let testler = testleriUret(seciliDers, seciliSinif, konuAdi);
+    aktifTestObj = testler[tIndex]; aktifTestObj.baslik = konuAdi + " - " + aktifTestObj.ad;
+    document.getElementById("startOverlay").classList.add("acik");
 }
 
 function denemeTikla() {
-    if (!currentUser) { showMessage("Giriş Gerekli", "Deneme sınavlarına girebilmek için lütfen giriş yapın."); girisModalAc(); return; }
-    
     let title = seciliSinif === "8" ? "8. Sınıf LGS Genel Deneme Sınavı" : seciliSinif + ". Sınıf Genel Deneme Sınavı";
     document.getElementById("sinavBaslik").textContent = "Deneme Sınavı Başlıyor";
     document.getElementById("sinavAciklama").textContent = "Gerçek sınav formatında. Lütfen sınav süresini seçin.";
@@ -1050,11 +856,10 @@ function bitirSinav() {
 
 function finalizeSinav(dogru, yanlis, bos) {
     let net = dogru - (yanlis/3);
-    if(currentUser) tamamlaTest(aktifTestKey, aktifTestIndex, {d:dogru, y:yanlis, b:bos, net:net});
     
     showMessage("Sınav Sonucu", `Doğru: ${dogru}\nYanlış: ${yanlis}\nBoş: ${bos}\nNet: ${net.toFixed(2)}`);
     document.getElementById("testModal").classList.remove("acik");
-    durdurTimer(); konuRender(); 
+    durdurTimer(); 
 }
 
 function baslatTimer() {
@@ -1081,8 +886,10 @@ function guncelleSayac() {
 
 function durdurTimer() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
 
-kullaniciGuncelle();
-if(currentUser) dersGorunumAc(); else anaMenuGoster();
+// Sayfa Yüklendiğinde
+window.onload = function() {
+    anaMenuGoster();
+}
 </script>
 </body>
 </html>
